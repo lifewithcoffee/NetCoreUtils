@@ -46,7 +46,7 @@ namespace NetCoreUtils.Database
             }
             catch (Exception ex)
             {
-                _logger.WriteException(ex);
+                _logger.LogError(ex.ToString());
             }
 
             return result;
@@ -62,7 +62,7 @@ namespace NetCoreUtils.Database
             }
             catch (Exception ex)
             {
-                _logger.WriteException(ex);
+                _logger.LogError(ex.ToString());
             }
 
             return result;

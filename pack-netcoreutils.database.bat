@@ -1,0 +1,1 @@
+dotnet pack NetCoreUtils.Database\NetCoreUtils.Database.csproj -c Release -o E:\rp\local-nuget-packages

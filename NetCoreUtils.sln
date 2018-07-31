@@ -13,6 +13,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreUtils.XunitTest", "N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreUtils.MsTest", "NetCoreUtils.MsTest\NetCoreUtils.MsTest.csproj", "{9873F1D4-BC26-415E-885A-1DB3B7972605}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{07CA0D10-DB32-4A64-BB19-7EB4D43C679D}"
+	ProjectSection(SolutionItems) = preProject
+		pack-netcoreutils.bat = pack-netcoreutils.bat
+		pack-netcoreutils.database.bat = pack-netcoreutils.database.bat
+		README.md = README.md
+		update-netcoreutils-dep.bat = update-netcoreutils-dep.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
