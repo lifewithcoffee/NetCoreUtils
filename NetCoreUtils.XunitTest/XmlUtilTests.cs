@@ -23,6 +23,14 @@ namespace NetCoreUtils.XunitTest
         public List<ChildObject2> ChildObject2List { get; set; } = new List<ChildObject2>();
     }
 
+
+    [XmlRoot(nameof(MyXmlUtilObject))]
+    public class MyXmlUtilObjectWithNoise : MyXmlUtilObject
+    {
+        [XmlAttribute]
+        public int NoisyProp { get; set; }
+    }
+
     public class ChildObject
     {
         [XmlAttribute]
@@ -107,6 +115,40 @@ namespace NetCoreUtils.XunitTest
 
             Assert.Equal(4, de.ChildObject2List.Count);
             Assert.Equal(de.ChildObject2List[0].Value, obj.ChildObject2List[0].Value);
+        }
+
+        [Fact]
+        public void From_noisy_string()
+        {
+            string xmlstr = @"
+            <MyXmlUtilObject Name=""test name 123"" NoisyProp=""1342"">
+                <Length>123</Length>
+                <ChildObjects>
+                    <ChildObject Prop=""中文测试，某属性"">value 1</ChildObject>
+                    <ChildObject Prop=""prop abc"">中文测试，某值</ChildObject>
+                    <ChildObject Prop=""prop xyz 1234"">prop xyz 1234</ChildObject>
+                    <NoiseElem2 Value=""1234"" />
+                </ChildObjects>
+
+                <NoiseElem Value=""1234"" />
+            </MyXmlUtilObject>";
+
+            var de = new XmlUtil<MyXmlUtilObjectWithNoise>().ConvertFromString(xmlstr);
+
+            Assert.Equal(de.Name, obj.Name);
+            Assert.Equal(de.Length, obj.Length);
+
+            Assert.Equal(1342, de.NoisyProp);
+
+            // because "Ignored" is an ignored element, which won't be serialized to the file;
+            // thus, when deserialize from the file it won't be signed the number it was
+            Assert.NotEqual(de.Ignored, obj.Ignored);
+            Assert.Equal(0, de.Ignored);
+
+            Assert.Equal(3, de.ChildObjects.Count);
+            Assert.Equal(de.ChildObjects[0].Prop, obj.ChildObjects[0].Prop);
+
+            Assert.Empty(de.ChildObject2List); // the relevant element <AnotherList> removed from the xml string
         }
     }
 }
