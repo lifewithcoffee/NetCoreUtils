@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreUtils.Database", "Ne
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6A2D2033-6874-4547-A09F-A357DE547B3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreUtils.XunitTest", "NetCoreUtils.XunitTest\NetCoreUtils.XunitTest.csproj", "{82F47201-8068-4755-82D4-B29398C99484}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreUtils.XunitTest", "NetCoreUtils.XunitTest\NetCoreUtils.XunitTest.csproj", "{82F47201-8068-4755-82D4-B29398C99484}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreUtils.MsTest", "NetCoreUtils.MsTest\NetCoreUtils.MsTest.csproj", "{9873F1D4-BC26-415E-885A-1DB3B7972605}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreUtils.MsTest", "NetCoreUtils.MsTest\NetCoreUtils.MsTest.csproj", "{9873F1D4-BC26-415E-885A-1DB3B7972605}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{07CA0D10-DB32-4A64-BB19-7EB4D43C679D}"
 	ProjectSection(SolutionItems) = preProject
