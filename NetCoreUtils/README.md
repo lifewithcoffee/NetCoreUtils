@@ -12,4 +12,5 @@
 
 **Enhancement**:
 
-- Add a logger class
+- Add Logger
+- Add SafeCaller
