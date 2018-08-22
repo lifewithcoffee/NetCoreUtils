@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using NetCoreUtils.Diagnosis;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;

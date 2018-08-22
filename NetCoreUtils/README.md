@@ -10,8 +10,6 @@
 
 - Rename namespace "Diagnose" to "Diagnosis"
 
-**Bug Fix**: (nil)
-
 **Enhancement**:
 
 - Add a logger class
