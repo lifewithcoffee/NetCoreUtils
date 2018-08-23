@@ -19,7 +19,6 @@ namespace NetCoreUtils.Diagnosis.Logging
         private void Init_Internal(bool addConsoleTraceListener)
         {
             // output to visual studio output window
-            //_tracker.Listeners.Add(new DefaultTraceListener()); 
             _tracker.Listeners.Add(new VsOutputListener());
 
             // output to console
@@ -28,13 +27,11 @@ namespace NetCoreUtils.Diagnosis.Logging
 
             // output to file
             string logFileDir = Path.Combine(Directory.GetCurrentDirectory(), "xunitlogs");
-            string logFilePath = $"{logFileDir}\\sclog-{DateTime.Now.ToString("yyyy-MM-dd")}.log";
-            //_tracker.Listeners.Add(new TextWriterTraceListener(logFilePath));
-            _tracker.Listeners.Add(new TextFileOutputListener(logFilePath));
-            //_tracker.AutoFlush = true;
+            string logFileName = $"xunitlog-{DateTime.Now.ToString("yyyy-MM-dd")}.log";
+            _tracker.Listeners.Add(new TextFileOutputListener(logFileDir, logFileName));
 
             hasInitialized = true;
-            this.WriteInfo(string.Format("Logger initialized, current log file: {0}", logFilePath));
+            this.WriteInfo($"Logger initialized, current log file: {logFileDir}\\{logFileName}");
         }
 
         /// <summary>
@@ -70,7 +67,8 @@ namespace NetCoreUtils.Diagnosis.Logging
                     innerException = innerException.InnerException;
                 }
 
-                _tracker.WriteLine(ex.StackTrace);
+                string message_with_delimiters = $"||{ex.StackTrace.Replace("\n", "\n||")}";
+                _tracker.WriteLine(message_with_delimiters);
             }
         }
 
@@ -82,7 +80,6 @@ namespace NetCoreUtils.Diagnosis.Logging
                 {
                     string message = string.Format(format, args);
                     _tracker.WriteLine($"{DateTime.Now.ToString(timeFormat)}|Error  |{message}");
-                    //_tracker.Flush();
                 }
                 catch (Exception ex)
                 {

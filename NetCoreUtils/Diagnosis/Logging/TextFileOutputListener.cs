@@ -8,24 +8,32 @@ namespace NetCoreUtils.Diagnosis.Logging
 {
     public class TextFileOutputListener : IOutput
     {
+        TextWriter writer = null;
 
-        public TextFileOutputListener(string filePath)
+        public TextFileOutputListener(string filePath, string fileName)
         {
+            if(!Directory.Exists(filePath))
+                Directory.CreateDirectory(filePath);
+
+            string fullFilePath = Path.Combine(filePath, fileName);
+
+            writer = File.AppendText(fullFilePath);
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            if(writer != null)
+                writer.Dispose();
+        }
 
         public void Write(string message)
         {
-            //using (StreamWriter w = File.AppendText("log.txt"))
-            //{
-
-            //}
+            writer.Write(message);
         }
 
         public void WriteLine(string message)
         {
-
+            writer.WriteLine(message);
         }
     }
 }

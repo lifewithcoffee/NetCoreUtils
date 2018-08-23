@@ -10,6 +10,11 @@ namespace NetCoreUtils.MsTest
     [TestClass]
     public class LoggerTests
     {
+        void throw_an_exception()
+        {
+            throw new Exception("Some exception");
+        }
+
         [TestMethod]
         public void Test_logger()
         {
@@ -18,7 +23,14 @@ namespace NetCoreUtils.MsTest
                 logger.WriteError("An error message.");
                 logger.WriteWarning("An warning message.");
                 logger.WriteInfo("An info message.");
-                logger.WriteException(new Exception("Some exception"), "Some additional message");
+                try
+                {
+                    throw_an_exception();
+                }
+                catch(Exception ex)
+                {
+                    logger.WriteException(ex, "Some additional message");
+                }
                 logger.WriteTrace("An trace message.");
             }
         }
