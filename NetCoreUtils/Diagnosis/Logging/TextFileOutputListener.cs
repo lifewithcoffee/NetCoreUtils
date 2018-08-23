@@ -6,10 +6,10 @@ using System.Text;
 
 namespace NetCoreUtils.Diagnosis.Logging
 {
-    public class TextFileTraceListener : IOutput
+    public class TextFileOutputListener : IOutput
     {
 
-        public TextFileTraceListener(string filePath)
+        public TextFileOutputListener(string filePath)
         {
         }
 

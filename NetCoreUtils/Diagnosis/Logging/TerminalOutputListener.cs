@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NetCoreUtils.Diagnosis.Logging
 {
-    public class TerminalTraceListener : IOutput
+    public class TerminalOutputListener : IOutput
     {
         public void Dispose() { }
 

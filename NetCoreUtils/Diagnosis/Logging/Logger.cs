@@ -12,7 +12,7 @@ namespace NetCoreUtils.Diagnosis.Logging
     {
         private object Locker = new object();
         private bool hasInitialized = false;
-        const string timeFormat = "yyyy-MM-dd HH:mm:ss.fff";
+        const string timeFormat = "y-MM-dd HH:mm:ss.fff";
 
         private Tracker _tracker = new Tracker();
 
@@ -20,17 +20,17 @@ namespace NetCoreUtils.Diagnosis.Logging
         {
             // output to visual studio output window
             //_tracker.Listeners.Add(new DefaultTraceListener()); 
-            _tracker.Listeners.Add(new VsOutputTraceListener());
+            _tracker.Listeners.Add(new VsOutputListener());
 
             // output to console
             if (addConsoleTraceListener)
-                _tracker.Listeners.Add(new TerminalTraceListener());
+                _tracker.Listeners.Add(new TerminalOutputListener());
 
             // output to file
             string logFileDir = Path.Combine(Directory.GetCurrentDirectory(), "xunitlogs");
             string logFilePath = $"{logFileDir}\\sclog-{DateTime.Now.ToString("yyyy-MM-dd")}.log";
             //_tracker.Listeners.Add(new TextWriterTraceListener(logFilePath));
-            _tracker.Listeners.Add(new TextFileTraceListener(logFilePath));
+            _tracker.Listeners.Add(new TextFileOutputListener(logFilePath));
             //_tracker.AutoFlush = true;
 
             hasInitialized = true;
@@ -61,7 +61,7 @@ namespace NetCoreUtils.Diagnosis.Logging
         {
             lock (Locker)
             {
-                WriteError(ex.Message + " | " + additionalMsg);
+                WriteError(ex.Message + "; " + additionalMsg);
 
                 Exception innerException = ex.InnerException;
                 while (innerException != null)
@@ -81,7 +81,7 @@ namespace NetCoreUtils.Diagnosis.Logging
                 try
                 {
                     string message = string.Format(format, args);
-                    _tracker.WriteLine($"{DateTime.Now.ToString(timeFormat)} | Error   | {message}");
+                    _tracker.WriteLine($"{DateTime.Now.ToString(timeFormat)}|Error  |{message}");
                     //_tracker.Flush();
                 }
                 catch (Exception ex)
@@ -98,7 +98,7 @@ namespace NetCoreUtils.Diagnosis.Logging
                 try
                 {
                     string message = string.Format(format, args);
-                    _tracker.WriteLine($"{DateTime.Now.ToString(timeFormat)} | Warning | {message}");
+                    _tracker.WriteLine($"{DateTime.Now.ToString(timeFormat)}|Warning|{message}");
                 }
                 catch (Exception ex)
                 {
@@ -123,7 +123,7 @@ namespace NetCoreUtils.Diagnosis.Logging
                 try
                 {
                     string message = string.Format(format, args);
-                    _tracker.WriteLine($"{DateTime.Now.ToString(timeFormat)} | Info    | {message}");
+                    _tracker.WriteLine($"{DateTime.Now.ToString(timeFormat)}|Info   |{message}");
                 }
                 catch (Exception ex)
                 {
@@ -146,7 +146,7 @@ namespace NetCoreUtils.Diagnosis.Logging
             lock (Locker)
             {
                 string message = string.Format(format, args);
-                _tracker.WriteLine($"{DateTime.Now.ToString(timeFormat)} | Trace   | {message}");
+                _tracker.WriteLine($"{DateTime.Now.ToString(timeFormat)}|Trace  |{message}");
             }
 #endif
         }
