@@ -8,46 +8,57 @@ using System.Threading.Tasks;
 
 namespace NetCoreUtils.Diagnosis.Logging
 {
+    public class LoggerConfig
+    {
+        public char Delimiter { get; set; } = ',';
+        public bool OutputToTerminal { get; set; } = false;
+        public string LogFileExtension { get; set; } = "csv";
+    }
+
     public class Logger : IDisposable
     {
         private object Locker = new object();
         private bool hasInitialized = false;
         const string timeFormat = "y-MM-dd HH:mm:ss.fff";
 
+        private LoggerConfig config = new LoggerConfig();
+
         private Tracker _tracker = new Tracker();
 
-        private void Init_Internal(bool addConsoleTraceListener)
+        private void Init_Internal()
         {
             // output to visual studio output window
             _tracker.Listeners.Add(new VsOutputListener());
 
             // output to console
-            if (addConsoleTraceListener)
+            if (config.OutputToTerminal)
                 _tracker.Listeners.Add(new TerminalOutputListener());
 
             // output to file
             string logFileDir = Path.Combine(Directory.GetCurrentDirectory(), "xunitlogs");
-            string logFileName = $"xunitlog-{DateTime.Now.ToString("yyyy-MM-dd")}.log";
+            string logFileName = $"xunitlog-{DateTime.Now.ToString("yyyy-MM-dd")}.{config.LogFileExtension}";
             _tracker.Listeners.Add(new TextFileOutputListener(logFileDir, logFileName));
 
             hasInitialized = true;
-            this.WriteInfo($"Logger initialized, current log file: {logFileDir}\\{logFileName}");
         }
 
         /// <summary>
         /// Initialize the log file and timer
         /// </summary>
-        public Logger(bool addConsoleTraceListener = false)
+        public Logger(LoggerConfig config = null)
         {
             lock(Locker) {
                 if (!hasInitialized)
                 {
-                    Init_Internal(addConsoleTraceListener);
+                    if (config != null)
+                        this.config = config;
+
+                    Init_Internal();
                     
                     var timer = new System.Timers.Timer(86400000); // 24 hours
                     timer.Elapsed += (s, e) => {
                         this.WriteInfo(string.Format("Log initialization timer event triggered. Interval: ", timer.Interval));
-                        this.Init_Internal(addConsoleTraceListener);
+                        this.Init_Internal();
                     };
                     timer.Enabled = true;
                 }
@@ -58,7 +69,7 @@ namespace NetCoreUtils.Diagnosis.Logging
         {
             lock (Locker)
             {
-                WriteError(ex.Message + "; " + additionalMsg);
+                WriteError($"{ex.Message}. {additionalMsg}");
 
                 Exception innerException = ex.InnerException;
                 while (innerException != null)
@@ -67,7 +78,8 @@ namespace NetCoreUtils.Diagnosis.Logging
                     innerException = innerException.InnerException;
                 }
 
-                string message_with_delimiters = $"||{ex.StackTrace.Replace("\n", "\n||")}";
+                string message_with_delimiters = $"{ex.StackTrace.Replace("\n", $"\n{config.Delimiter}{config.Delimiter}")}";
+                message_with_delimiters = $"{config.Delimiter}{config.Delimiter}{message_with_delimiters}";
                 _tracker.WriteLine(message_with_delimiters);
             }
         }
@@ -79,7 +91,7 @@ namespace NetCoreUtils.Diagnosis.Logging
                 try
                 {
                     string message = string.Format(format, args);
-                    _tracker.WriteLine($"{DateTime.Now.ToString(timeFormat)}|Error  |{message}");
+                    _tracker.WriteLine($"{DateTime.Now.ToString(timeFormat)}{config.Delimiter}Error  {config.Delimiter}{message}");
                 }
                 catch (Exception ex)
                 {
@@ -95,7 +107,7 @@ namespace NetCoreUtils.Diagnosis.Logging
                 try
                 {
                     string message = string.Format(format, args);
-                    _tracker.WriteLine($"{DateTime.Now.ToString(timeFormat)}|Warning|{message}");
+                    _tracker.WriteLine($"{DateTime.Now.ToString(timeFormat)}{config.Delimiter}Warning{config.Delimiter}{message}");
                 }
                 catch (Exception ex)
                 {
@@ -120,7 +132,7 @@ namespace NetCoreUtils.Diagnosis.Logging
                 try
                 {
                     string message = string.Format(format, args);
-                    _tracker.WriteLine($"{DateTime.Now.ToString(timeFormat)}|Info   |{message}");
+                    _tracker.WriteLine($"{DateTime.Now.ToString(timeFormat)}{config.Delimiter}Info   {config.Delimiter}{message}");
                 }
                 catch (Exception ex)
                 {
@@ -137,13 +149,13 @@ namespace NetCoreUtils.Diagnosis.Logging
             }
         }
         
-        public void WriteTrace(string format, params object[] args)
+        public void WriteDebug(string format, params object[] args)
         {
 #if DEBUG
             lock (Locker)
             {
                 string message = string.Format(format, args);
-                _tracker.WriteLine($"{DateTime.Now.ToString(timeFormat)}|Trace  |{message}");
+                _tracker.WriteLine($"{DateTime.Now.ToString(timeFormat)}{config.Delimiter}Debug  {config.Delimiter}{message}");
             }
 #endif
         }

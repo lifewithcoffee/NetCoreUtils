@@ -18,7 +18,7 @@ namespace NetCoreUtils.MsTest
         [TestMethod]
         public void Test_logger()
         {
-            using (var logger = new Logger(true))
+            using (var logger = new Logger(new LoggerConfig { OutputToTerminal = true }))
             {
                 logger.WriteError("An error message.");
                 logger.WriteWarning("An warning message.");
@@ -31,7 +31,7 @@ namespace NetCoreUtils.MsTest
                 {
                     logger.WriteException(ex, "Some additional message");
                 }
-                logger.WriteTrace("An trace message.");
+                logger.WriteDebug("An trace message.");
             }
         }
     }
