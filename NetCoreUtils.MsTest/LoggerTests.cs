@@ -21,6 +21,10 @@ namespace NetCoreUtils.MsTest
             using (var logger = new Logger(new LoggerConfig { OutputToTerminal = true }))
             {
                 logger.WriteError("An error message.");
+                logger.WriteDetails("some detail\nsome detail\nsome more details", 0);
+                logger.WriteDetails("some detail\nsome detail\nsome more details");
+                logger.WriteDetails("some detail\nsome detail\nsome more details", 2);
+
                 logger.WriteWarning("An warning message.");
                 logger.WriteInfo("An info message.");
                 try

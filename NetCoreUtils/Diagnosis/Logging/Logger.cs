@@ -10,9 +10,12 @@ namespace NetCoreUtils.Diagnosis.Logging
 {
     public class LoggerConfig
     {
-        public char Delimiter { get; set; } = ',';
+        public char Delimiter { get; set; } = '|';
         public bool OutputToTerminal { get; set; } = false;
-        public string LogFileExtension { get; set; } = "csv";
+        public string LogFileExtension { get; set; } = "log";
+        public string LogFolderName { get; set; } = "logs";
+        public string LogFilePrefix { get; set; } = "log-";
+        public int indentSize = 4;
     }
 
     public class Logger : IDisposable
@@ -35,8 +38,8 @@ namespace NetCoreUtils.Diagnosis.Logging
                 _tracker.Listeners.Add(new TerminalOutputListener());
 
             // output to file
-            string logFileDir = Path.Combine(Directory.GetCurrentDirectory(), "xunitlogs");
-            string logFileName = $"xunitlog-{DateTime.Now.ToString("yyyy-MM-dd")}.{config.LogFileExtension}";
+            string logFileDir = Path.Combine(Directory.GetCurrentDirectory(), config.LogFolderName);
+            string logFileName = $"{config.LogFilePrefix}{DateTime.Now.ToString("yyyy-MM-dd")}.{config.LogFileExtension}";
             _tracker.Listeners.Add(new TextFileOutputListener(logFileDir, logFileName));
 
             hasInitialized = true;
@@ -78,8 +81,18 @@ namespace NetCoreUtils.Diagnosis.Logging
                     innerException = innerException.InnerException;
                 }
 
-                string message_with_delimiters = $"{ex.StackTrace.Replace("\n", $"\n{config.Delimiter}{config.Delimiter}")}";
-                message_with_delimiters = $"{config.Delimiter}{config.Delimiter}{message_with_delimiters}";
+                this.WriteDetails(ex.StackTrace, 0);
+            }
+        }
+
+        public void WriteDetails(string message, int indent = 1)
+        {
+            lock (Locker)
+            {
+                string indentStr = new string(' ', indent * config.indentSize);
+                string linePrefix = $"{config.Delimiter}{config.Delimiter}{indentStr}";
+                string message_with_delimiters = message.Replace("\n", $"\n{linePrefix}");
+                message_with_delimiters = $"{linePrefix}{message_with_delimiters}";
                 _tracker.WriteLine(message_with_delimiters);
             }
         }
