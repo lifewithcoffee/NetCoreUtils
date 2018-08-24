@@ -15,10 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreUtils.MsTest", "NetC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{07CA0D10-DB32-4A64-BB19-7EB4D43C679D}"
 	ProjectSection(SolutionItems) = preProject
-		pack-netcoreutils.bat = pack-netcoreutils.bat
-		pack-netcoreutils.database.bat = pack-netcoreutils.database.bat
+		nuget.config = nuget.config
+		pack-all.bat = pack-all.bat
 		README.md = README.md
-		update-netcoreutils-dep.bat = update-netcoreutils-dep.bat
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreUtils.Logging", "NetCoreUtils.Logging\NetCoreUtils.Logging.csproj", "{8510B2F5-2328-4988-8BF4-9307747825BC}"
