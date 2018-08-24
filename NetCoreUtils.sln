@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		update-netcoreutils-dep.bat = update-netcoreutils-dep.bat
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreUtils.Logging", "NetCoreUtils.Logging\NetCoreUtils.Logging.csproj", "{8510B2F5-2328-4988-8BF4-9307747825BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreUtils.Logging", "NetCoreUtils.Logging\NetCoreUtils.Logging.csproj", "{8510B2F5-2328-4988-8BF4-9307747825BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
