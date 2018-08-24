@@ -1,1 +1,0 @@
-dotnet pack NetCoreUtils\NetCoreUtils.csproj -c Release -o E:\rp\local-nuget-packages
