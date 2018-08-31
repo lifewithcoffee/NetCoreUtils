@@ -40,11 +40,7 @@ namespace TestWebApp
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddColoredConsoleLogger(c =>
-            {
-                c.LogLevel = LogLevel.Information;
-                c.Color = ConsoleColor.DarkYellow;
-            });
+            loggerFactory.AddNetCoreUtilsLogger();
 
             if (env.IsDevelopment())
             {

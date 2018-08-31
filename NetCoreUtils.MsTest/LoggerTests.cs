@@ -38,5 +38,15 @@ namespace NetCoreUtils.MsTest
                 logger.WriteDebug("An trace message.");
             }
         }
+
+        [TestMethod]
+        public void construct_the_same_logger_twice()
+        {
+            using (var logger = new Logger(new LoggerConfig { OutputToTerminal = true }))
+            using (var logger2 = new Logger(new LoggerConfig { OutputToTerminal = true }))
+            {
+
+            }
+        }
     }
 }
