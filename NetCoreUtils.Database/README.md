@@ -4,6 +4,10 @@
 
 ## Release Notes
 
+### v0.2.1.5
+
+- (not tested) Add RejectAllChanges() in IUnitOfWork
+
 ### v0.2.0.4
 
 - Provide category name for injected logs of UnitOfWork and RepositoryBase

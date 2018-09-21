@@ -18,6 +18,7 @@ namespace NetCoreUtils.Database
     public interface IUnitOfWork<TDbContext>: ICommittable where TDbContext : DbContext
     {
         TDbContext Context { get; }
+        void RejectAllChanges();
     }
 
     public class UnitOfWork<TDbContext> : IUnitOfWork<TDbContext> where TDbContext : DbContext
@@ -49,6 +50,24 @@ namespace NetCoreUtils.Database
             }
 
             return result;
+        }
+
+        public void RejectAllChanges()
+        {
+            var changedEntries = _context.ChangeTracker.Entries().Where(e => e.State != EntityState.Unchanged);
+            foreach (var entry in changedEntries)
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.State = EntityState.Detached;
+                        break;
+                    case EntityState.Modified: // todo: all apply "entry.State == EntityState.Unchanged;" instead?
+                    case EntityState.Deleted:
+                        entry.Reload(); 
+                        break;
+                }
+            }
         }
 
         public bool Commit()
