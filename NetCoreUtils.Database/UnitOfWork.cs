@@ -27,7 +27,7 @@ namespace NetCoreUtils.Database
 
         public TDbContext Context { get { return _context; } }
 
-        public UnitOfWork(TDbContext context, ILogger<ICommittable> logger)
+        public UnitOfWork(TDbContext context, ILogger<UnitOfWork<TDbContext>> logger)
         {
             _context = context;
             _logger = logger;

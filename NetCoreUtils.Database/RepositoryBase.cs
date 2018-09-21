@@ -12,6 +12,8 @@ namespace NetCoreUtils.Database
         where TEntity : class
         where TDbContext : DbContext
     {
+        TDbContext Context { get; }
+
         TEntity GetById(int? id);
         Task<TEntity> GetByIdAsync(int? id);
         IQueryable<TEntity> GetAll();
@@ -50,7 +52,9 @@ namespace NetCoreUtils.Database
         protected ILogger Logger { get { return _logger; } }
         protected DbSet<TEntity> DbSet { get { return DbSet; } }
 
-        public RepositoryBase(IUnitOfWork<TDbContext> unitOfWork, ILogger logger)
+        public TDbContext Context { get {return _unitOfWork.Context;} }
+
+        public RepositoryBase(IUnitOfWork<TDbContext> unitOfWork, ILogger<RepositoryBase<TEntity, TDbContext>> logger)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
