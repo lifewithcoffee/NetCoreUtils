@@ -50,7 +50,7 @@ namespace NetCoreUtils.Database
 
         protected IUnitOfWork<TDbContext> UnitOfWork { get { return _unitOfWork; } }
         protected ILogger Logger { get { return _logger; } }
-        protected DbSet<TEntity> DbSet { get { return DbSet; } }
+        protected DbSet<TEntity> DbSet { get { return dbSet; } }
 
         public TDbContext Context { get {return _unitOfWork.Context;} }
 
@@ -140,8 +140,7 @@ namespace NetCoreUtils.Database
         public virtual void Delete(Expression<Func<TEntity, bool>> where)
         {
             IEnumerable<TEntity> objects = dbSet.Where<TEntity>(where).AsEnumerable();
-            foreach (TEntity obj in objects)
-                this.Delete(obj);
+            dbSet.RemoveRange(objects);
         }
 
         public virtual void DeleteRange(IEnumerable<TEntity> entities)
