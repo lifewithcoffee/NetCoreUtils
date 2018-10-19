@@ -14,11 +14,18 @@ namespace NetCoreUtils.Database
     {
         TDbContext Context { get; }
 
+        void EnableQueryTracking(bool enabled);
+
         TEntity GetById(int? id);
         Task<TEntity> GetByIdAsync(int? id);
         IQueryable<TEntity> GetAll();
         IQueryable<TEntity> GetMany(Expression<Func<TEntity, bool>> where);
         IQueryable<TEntity> GetManyLocalFirst(Expression<Func<TEntity, bool>> where);
+
+        TEntity GetByIdNoTracking(int? id);
+        Task<TEntity> GetByIdNoTrackingAsync(int? id);
+        IQueryable<TEntity> GetAllNoTracking();
+        IQueryable<TEntity> GetManyNoTracking(Expression<Func<TEntity, bool>> where);
 
         bool Exist(Expression<Func<TEntity, bool>> predicate);
         Task<bool> ExistAsync(Expression<Func<TEntity, bool>> predicate);
@@ -62,6 +69,14 @@ namespace NetCoreUtils.Database
             dbSet = unitOfWork.Context.Set<TEntity>();
         }
 
+        public void EnableQueryTracking(bool enabled)
+        {
+            if(enabled)
+                _unitOfWork.Context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+            else
+                _unitOfWork.Context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        }
+
         public bool Exist(Expression<Func<TEntity, bool>> predicate)
         {
             return dbSet.Any<TEntity>(predicate);
@@ -80,6 +95,14 @@ namespace NetCoreUtils.Database
                 return dbSet.Find(id);
         }
 
+        // from: https://stackoverflow.com/questions/34967116/how-to-combine-find-and-asnotracking
+        public TEntity GetByIdNoTracking(int? id)
+        {
+            var entity = this.GetById(id);
+            Context.Entry(entity).State = EntityState.Detached;
+            return entity;
+        }
+
         public async Task<TEntity> GetByIdAsync(int? id)
         {
             if(id == null)
@@ -88,11 +111,19 @@ namespace NetCoreUtils.Database
                 return await dbSet.FindAsync(id);
         }
 
+        public async Task<TEntity> GetByIdNoTrackingAsync(int? id)
+        {
+            var entity = await GetByIdAsync(id);
+            Context.Entry(entity).State = EntityState.Detached;
+            return entity;
+        }
+
         /// <summary> Reason of not implementing AddAsync:
-        /// 
         /// According to: http://stackoverflow.com/questions/42034282/are-there-dbset-updateasync-and-removeasync-in-net-core
-        /// DbSet.AddAsync() should not be used:
+        /// DbSet.AddAsync() should not be used.
         /// 
+        /// Quote:
+        ///
         /// AddAsync however, only begins tracking an entity but won't actually send any changes 
         /// to the database until you call SaveChanges or SaveChangesAsync. You shouldn't really 
         /// be using this method unless you know what you're doing. The reason the async version 
@@ -104,7 +135,6 @@ namespace NetCoreUtils.Database
         /// be used.
         /// 
         /// The same reason is also applied to Remove and Update methods.
-        /// 
         /// </summary>
         public virtual TEntity Add(TEntity entity)
         {
@@ -154,12 +184,22 @@ namespace NetCoreUtils.Database
             return dbSet;
         }
 
+        public IQueryable<TEntity> GetAllNoTracking()
+        {
+            return dbSet.AsNoTracking();
+        }
+        
         /// <returns>See the return comment of <see cref="GetAll()"/></returns>
         public virtual IQueryable<TEntity> GetMany(Expression<Func<TEntity, bool>> where)
         {
             // Don't use "where.Compile(), otherwise when do "ToList()", such an exception will throw out: 
             // "There is already an open DataReader associated with this Command which must be closed first"
             return dbSet.Where(where);
+        }
+
+        public IQueryable<TEntity> GetManyNoTracking(Expression<Func<TEntity, bool>> where)
+        {
+            return dbSet.AsNoTracking().Where(where);
         }
 
         /// <summary>
