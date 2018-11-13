@@ -53,34 +53,35 @@ namespace NetCoreUtils.Database
         /// 
         /// The same reason is also applied to Remove and Update methods.
         /// </summary>
-        public TEntity Add(TEntity entity)
+        public virtual TEntity Add(TEntity entity)
         {
             dbSet.Add(entity);
             return entity;
         }
 
-        public void AddRange(IEnumerable<TEntity> entities)
+        public virtual void AddRange(IEnumerable<TEntity> entities)
         {
             dbSet.AddRange(entities);
         }
 
-        public void Remove(TEntity entity)
+        // there is no DbSet.RemoveAsync() available
+        public virtual void Remove(TEntity entity)
         {
             dbSet.Remove(entity);
         }
 
-        public void Remove(Expression<Func<TEntity, bool>> where)
+        public virtual void Remove(Expression<Func<TEntity, bool>> where)
         {
             IEnumerable<TEntity> objects = dbSet.Where<TEntity>(where).AsEnumerable();
             dbSet.RemoveRange(objects);
         }
 
-        public void RemoveRange(IEnumerable<TEntity> entities)
+        public virtual void RemoveRange(IEnumerable<TEntity> entities)
         {
             dbSet.RemoveRange(entities);
         }
 
-        public void Update(TEntity entity)
+        public virtual void Update(TEntity entity)
         {
             //old impl in EF
             //dbSet.Attach(entity);
@@ -90,17 +91,17 @@ namespace NetCoreUtils.Database
             dbSet.Update(entity);
         }
 
-        public void UpdateRange(IEnumerable<TEntity> entities)
+        public virtual void UpdateRange(IEnumerable<TEntity> entities)
         {
             dbSet.UpdateRange(entities);
         }
 
-        public bool Commit()
+        public virtual bool Commit()
         {
             return this._unitOfWork.Commit();
         }
 
-        public async Task<bool> CommitAsync()
+        public virtual async Task<bool> CommitAsync()
         {
             return await this._unitOfWork.CommitAsync();
         }

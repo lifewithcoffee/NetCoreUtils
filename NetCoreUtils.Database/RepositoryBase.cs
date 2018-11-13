@@ -8,58 +8,35 @@ using System.Threading.Tasks;
 
 namespace NetCoreUtils.Database
 {
-    public interface IRepositoryBase<TEntity, TDbContext>
+    public interface IRepositoryBase<TEntity>
         : ICommittable
         , IRepositoryRead<TEntity>
         , IRepositoryWrite<TEntity>
         where TEntity : class
-        where TDbContext : DbContext
-    {
-        void EnableQueryTracking(bool enabled);
-        TDbContext Context { get; }
-    }
+    { }
 
     /// <summary>
     /// originated from (but changed quite a lot):
     /// http://www.asp.net/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application
     /// https://github.com/MarlabsInc/webapi-angularjs-spa/blob/28bea19b3267aeed1768920b0d77be329b0278a5/source/ResourceMetadata/ResourceMetadata.Data/Infrastructure/RepositoryBase.cs
     /// </summary>
-    abstract public class RepositoryBase<TEntity, TDbContext>
-        : IRepositoryBase<TEntity, TDbContext>
-        , ICommittable
+    public class RepositoryBase<TEntity, TDbContext> : IRepositoryBase<TEntity>
         where TEntity : class 
         where TDbContext : DbContext
     {
         private readonly IUnitOfWork<TDbContext> _unitOfWork;
-        private readonly ILogger _logger;
-        private readonly DbSet<TEntity> dbSet;
 
+        private readonly DbSet<TEntity> dbSet;
         private readonly RepositoryRead<TEntity, TDbContext> repoReader;
         private readonly RepositoryWrite<TEntity, TDbContext> repoWriter;
 
-        protected IUnitOfWork<TDbContext> UnitOfWork { get { return _unitOfWork; } }
-        protected ILogger Logger { get { return _logger; } }
-        protected DbSet<TEntity> DbSet { get { return dbSet; } }
-
-        public TDbContext Context { get {return _unitOfWork.Context;} }
-
-        public RepositoryBase(IUnitOfWork<TDbContext> unitOfWork, ILogger<RepositoryBase<TEntity, TDbContext>> logger)
+        public RepositoryBase(IUnitOfWork<TDbContext> unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            dbSet = unitOfWork.Context.Set<TEntity>();
 
+            dbSet = unitOfWork.Context.Set<TEntity>();
             repoReader = new RepositoryRead<TEntity, TDbContext>(unitOfWork);
             repoWriter = new RepositoryWrite<TEntity, TDbContext>(unitOfWork);
-
-            _logger = logger;
-        }
-
-        public void EnableQueryTracking(bool enabled)
-        {
-            if(enabled)
-                _unitOfWork.Context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
-            else
-                _unitOfWork.Context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public bool Exist(Expression<Func<TEntity, bool>> predicate)
@@ -77,7 +54,6 @@ namespace NetCoreUtils.Database
             return repoReader.GetById(id);
         }
 
-        // from: https://stackoverflow.com/questions/34967116/how-to-combine-find-and-asnotracking
         public TEntity GetByIdNoTracking(int? id)
         {
             return repoReader.GetByIdNoTracking(id);
@@ -113,7 +89,7 @@ namespace NetCoreUtils.Database
             repoWriter.UpdateRange(entities);
         }
 
-        public virtual void Remove(TEntity entity)  // there is no DbSet.RemoveAsync() available
+        public virtual void Remove(TEntity entity)  
         {
             repoWriter.Remove(entity);
         }
@@ -128,7 +104,6 @@ namespace NetCoreUtils.Database
             repoWriter.RemoveRange(entities);
         }
 
-        /// <returns>Return IQueryable to use QueryableExtensions methods like Load(), Include() etc. </returns>
         public virtual IQueryable<TEntity> GetAll()
         {
             return repoReader.GetAll();
@@ -139,7 +114,6 @@ namespace NetCoreUtils.Database
             return repoReader.GetAllNoTracking();
         }
         
-        /// <returns>See the return comment of <see cref="GetAll()"/></returns>
         public virtual IQueryable<TEntity> GetMany(Expression<Func<TEntity, bool>> where)
         {
             return repoReader.GetMany(where);

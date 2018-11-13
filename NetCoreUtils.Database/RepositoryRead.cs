@@ -18,6 +18,7 @@ namespace NetCoreUtils.Database
         IQueryable<TEntity> GetAll();
         IQueryable<TEntity> GetAllNoTracking();
 
+        // Return IQueryable to use QueryableExtensions methods like Load(), Include() etc.
         IQueryable<TEntity> GetMany(Expression<Func<TEntity, bool>> where);
         IQueryable<TEntity> GetManyNoTracking(Expression<Func<TEntity, bool>> where);
         IQueryable<TEntity> GetManyLocalFirst(Expression<Func<TEntity, bool>> where);
@@ -39,27 +40,27 @@ namespace NetCoreUtils.Database
             this.dbSet = unitOfWork.Context.Set<TEntity>();
         }
 
-        public bool Exist(Expression<Func<TEntity, bool>> predicate)
+        public virtual bool Exist(Expression<Func<TEntity, bool>> predicate)
         {
             return dbSet.Any<TEntity>(predicate);
         }
 
-        public async Task<bool> ExistAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual async Task<bool> ExistAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await dbSet.AnyAsync<TEntity>(predicate);
         }
 
-        public IQueryable<TEntity> GetAll()
+        public virtual IQueryable<TEntity> GetAll()
         {
             return dbSet;
         }
 
-        public IQueryable<TEntity> GetAllNoTracking()
+        public virtual IQueryable<TEntity> GetAllNoTracking()
         {
             return dbSet.AsNoTracking();
         }
 
-        public TEntity GetById(int? id)
+        public virtual TEntity GetById(int? id)
         {
             if(id == null)
                 return null;
@@ -67,7 +68,7 @@ namespace NetCoreUtils.Database
                 return dbSet.Find(id);
         }
 
-        public async Task<TEntity> GetByIdAsync(int? id)
+        public virtual async Task<TEntity> GetByIdAsync(int? id)
         {
             if(id == null)
                 return null;
@@ -75,21 +76,22 @@ namespace NetCoreUtils.Database
                 return await dbSet.FindAsync(id);
         }
 
-        public TEntity GetByIdNoTracking(int? id)
+        // from: https://stackoverflow.com/questions/34967116/how-to-combine-find-and-asnotracking
+        public virtual TEntity GetByIdNoTracking(int? id)
         {
             var entity = this.GetById(id);
             _unitOfWork.Context.Entry(entity).State = EntityState.Detached;
             return entity;
         }
 
-        public async Task<TEntity> GetByIdNoTrackingAsync(int? id)
+        public virtual async Task<TEntity> GetByIdNoTrackingAsync(int? id)
         {
             var entity = await GetByIdAsync(id);
             _unitOfWork.Context.Entry(entity).State = EntityState.Detached;
             return entity;
         }
 
-        public IQueryable<TEntity> GetMany(Expression<Func<TEntity, bool>> where)
+        public virtual IQueryable<TEntity> GetMany(Expression<Func<TEntity, bool>> where)
         {
             // Don't use "where.Compile(), otherwise when do "ToList()", such an exception will throw out: 
             // "There is already an open DataReader associated with this Command which must be closed first"
@@ -108,12 +110,12 @@ namespace NetCoreUtils.Database
         /// be included in the return collection.
         /// </summary>
         /// <returns>See the return comment of <see cref="GetAll()"/></returns>
-        public IQueryable<TEntity> GetManyLocalFirst(Expression<Func<TEntity, bool>> where)
+        public virtual IQueryable<TEntity> GetManyLocalFirst(Expression<Func<TEntity, bool>> where)
         {
             return dbSet.FindLocalFirst(where);
         }
 
-        public IQueryable<TEntity> GetManyNoTracking(Expression<Func<TEntity, bool>> where)
+        public virtual IQueryable<TEntity> GetManyNoTracking(Expression<Func<TEntity, bool>> where)
         {
             return dbSet.AsNoTracking().Where(where);
         }

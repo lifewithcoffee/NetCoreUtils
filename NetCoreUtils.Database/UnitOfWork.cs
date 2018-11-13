@@ -18,6 +18,7 @@ namespace NetCoreUtils.Database
     public interface IUnitOfWork<TDbContext>: ICommittable where TDbContext : DbContext
     {
         TDbContext Context { get; }
+        void EnableQueryTracking(bool enabled);
         void RejectAllChanges();
     }
 
@@ -34,6 +35,14 @@ namespace NetCoreUtils.Database
             _logger = logger;
 
             _logger.LogTrace("Initializing UnitOfWork with system default setting");
+        }
+
+        public void EnableQueryTracking(bool enabled)
+        {
+            if(enabled)
+                _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+            else
+                _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public async Task<bool> CommitAsync()
