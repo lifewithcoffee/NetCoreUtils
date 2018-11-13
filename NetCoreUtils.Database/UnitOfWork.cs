@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace NetCoreUtils.Database
 {
-    public interface ICommittable: IDisposable
+    public interface ICommittable
     {
         bool Commit();
         Task<bool> CommitAsync();
@@ -84,11 +84,6 @@ namespace NetCoreUtils.Database
             }
 
             return result;
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
         }
     }
 }

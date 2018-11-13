@@ -7,6 +7,11 @@
 ### v0.2.4.8-working
 
 - Segregate read and write operations into separate interfaces and class implementations
+- Decide to remove IDisposable from Committable since EF DbContext can manage itself and an DI framework can help to dispose an injected DbContext as well
+
+Incompatible changes:
+
+- "Delete" methods are renamed to "Remove" to keep consistant with EF's method naming
 
 ### v0.2.3.7
 

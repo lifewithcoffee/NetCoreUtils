@@ -25,15 +25,15 @@ namespace NetCoreUtils.Database
         bool Exist(Expression<Func<TEntity, bool>> predicate);
         Task<bool> ExistAsync(Expression<Func<TEntity, bool>> predicate);
     }
-
-    public class RepositoryBaseRead<TEntity, TDbContext> : IRepositoryRead<TEntity>
+    
+    public class RepositoryRead<TEntity, TDbContext> : IRepositoryRead<TEntity>
         where TEntity : class
         where TDbContext : DbContext
     {
         private IUnitOfWork<TDbContext> _unitOfWork;
         private DbSet<TEntity> dbSet;
 
-        public RepositoryBaseRead(IUnitOfWork<TDbContext> unitOfWork)
+        public RepositoryRead(IUnitOfWork<TDbContext> unitOfWork)
         {
             this._unitOfWork = unitOfWork;
             this.dbSet = unitOfWork.Context.Set<TEntity>();
