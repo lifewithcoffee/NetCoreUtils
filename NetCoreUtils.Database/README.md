@@ -4,6 +4,10 @@
 
 ## Release Notes
 
+### v0.2.4.8-working
+
+- Segregate read and write operations into separate interfaces and class implementations
+
 ### v0.2.3.7
 
 - (not tested) Enhancement: add NoTracking methods
