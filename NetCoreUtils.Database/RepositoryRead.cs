@@ -7,6 +7,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NetCoreUtils.Database
 {
+    /**
+     * Need to declare an impl in the application project:
+     * 
+     * public class RepositoryReader<TEntity>
+     *   : RepositoryReader<TEntity, ApplicationDbContext>
+     *   where TEntity : class
+     * {
+     *   public RepositoryReader(IUnitOfWork<ApplicationDbContext> unitOfWork)
+     *       : base(unitOfWork)
+     *   { }
+     * }
+     */
     public interface IRepositoryRead<TEntity>
         where TEntity : class
     {
@@ -27,7 +39,18 @@ namespace NetCoreUtils.Database
         Task<bool> ExistAsync(Expression<Func<TEntity, bool>> predicate);
     }
     
-    public class RepositoryRead<TEntity, TDbContext> : IRepositoryRead<TEntity>
+    /**
+     * For DI registration:
+     * services.AddScoped(typeof(IRepositoryRead<,>), typeof(RepositoryRead<,>));
+     */
+    public interface IRepositoryRead<TEntity, TDbContext>
+        : IRepositoryRead<TEntity>
+        where TEntity : class
+        where TDbContext : DbContext
+    { }
+
+    public class RepositoryRead<TEntity, TDbContext>
+        : IRepositoryRead<TEntity, TDbContext>
         where TEntity : class
         where TDbContext : DbContext
     {

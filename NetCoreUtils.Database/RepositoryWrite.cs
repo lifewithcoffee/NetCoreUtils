@@ -8,7 +8,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NetCoreUtils.Database
 {
-    public interface IRepositoryWrite<TEntity> : ICommittable
+   /**
+    * Need to declare an impl in the application project:
+    * 
+    * public class RepositoryWriter<TEntity>
+    *   : RepositoryWrite<TEntity, ApplicationDbContext>
+    *   where TEntity : class
+    * {
+    *   public RepositoryWriter(IUnitOfWork<ApplicationDbContext> unitOfWork)
+    *       : base(unitOfWork)
+    *   { }
+    * }
+    */
+    public interface IRepositoryWrite<TEntity>
+        : ICommittable
         where TEntity : class
     {
         TEntity Add(TEntity entity);
@@ -22,7 +35,18 @@ namespace NetCoreUtils.Database
         void RemoveRange(IEnumerable<TEntity> entities);
     }
 
-    public class RepositoryWrite<TEntity, TDbContext> : IRepositoryWrite<TEntity>
+    /**
+     * For DI registration:
+     * services.AddScoped(typeof(IRepositoryWrite<,>), typeof(RepositoryWrite<,>));
+     */
+    public interface IRepositoryWrite<TEntity, TDbContext>
+        : IRepositoryWrite<TEntity>
+        where TEntity : class
+        where TDbContext : DbContext
+    { }
+
+    public class RepositoryWrite<TEntity, TDbContext>
+        : IRepositoryWrite<TEntity, TDbContext>
         where TEntity : class
         where TDbContext : DbContext
     {

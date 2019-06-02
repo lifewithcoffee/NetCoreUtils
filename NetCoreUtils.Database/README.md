@@ -1,11 +1,63 @@
 # NetCoreUtils.Database
 
+## Usage
+
+- Add local single template type parameter `Repository<TEntity>` implementatiion (without TDbContext):
+
+``` c#
+  public class RepositoryReader<TEntity>
+      : RepositoryRead<TEntity, ApplicationDbContext>
+      where TEntity : class
+  {
+      public RepositoryReader(IUnitOfWork<ApplicationDbContext> unitOfWork)
+          : base(unitOfWork)
+      { }
+  }
+
+  public class RepositoryWriter<TEntity>
+      : RepositoryWrite<TEntity, ApplicationDbContext>
+      where TEntity : class
+  {
+      public RepositoryWriter(IUnitOfWork<ApplicationDbContext> unitOfWork)
+          : base(unitOfWork)
+      { }
+  }
+
+  public class RepositoryBase<TEntity>
+      : RepositoryBase<TEntity, ApplicationDbContext>
+      where TEntity : class
+  {
+      public RepositoryBase(
+          IUnitOfWork<ApplicationDbContext> unitOfWork,
+          IRepositoryRead<TEntity, ApplicationDbContext> repoReader,
+          IRepositoryWrite<TEntity, ApplicationDbContext> repoWriter
+      ) : base(unitOfWork, repoReader, repoWriter)
+      { }
+  }
+```
+
+- Add DI registration:
+
+``` c#
+  services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+  services.AddScoped(typeof(IRepositoryRead<,>), typeof(RepositoryRead<,>));
+  services.AddScoped(typeof(IRepositoryWrite<,>), typeof(RepositoryWrite<,>));
+
+  services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
+  services.AddScoped(typeof(IRepositoryRead<>), typeof(RepositoryReader<>));
+  services.AddScoped(typeof(IRepositoryWrite<>), typeof(RepositoryWriter<>));
+```
+
 ## About
 
 ## Release Notes
 
 ### v0.3.0.8-working
 
+- Add interfaces with the same generic template parameter number for easy DI registration like:
+  services.AddScoped(typeof(IRepositoryBase<,>), typeof(RepositoryBase<,>))
+  services.AddScoped(typeof(IRepositoryWrite<,>), typeof(RepositoryWrite<,>));
+  services.AddScoped(typeof(IRepositoryRead<,>), typeof(RepositoryRead<,>));
 - Segregate read and write operations into separate interfaces and class implementations
 - Declare all methods in the implementation classes as "virtual"
 - Remove "abstract" from RepositoryBase<> definition

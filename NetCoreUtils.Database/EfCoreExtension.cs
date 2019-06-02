@@ -27,14 +27,10 @@ namespace NetCoreUtils.Database
             collection.CollectionChanged += (s, e) =>
             {
                 if (e.NewItems != null)
-                {
                     context.AddRange(e.NewItems.Cast<TEntity>());
-                }
 
                 if (e.OldItems != null)
-                {
                     context.RemoveRange(e.OldItems.Cast<TEntity>());
-                }
             };
 
             return collection;
@@ -43,6 +39,7 @@ namespace NetCoreUtils.Database
         // There's no need to have a FindLocalFirstAsync() as we can do FindLocalFirst(..).ToListAsync()
         public static IQueryable<T> FindLocalFirst<T>(this DbSet<T> dbSet, Expression<Func<T, bool>> predicate) where T : class
         {
+            // TODO - now dbSet seems to have a 'Local' member, test it: var local2 = dbSet.Local.Where(predicate.Compile());
             var local = dbSet.GetLocal().Where(predicate.Compile()); // query 'Local' to see if data has been loaded
             if (local.Any())
                 return local.AsQueryable();
