@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NetCoreUtils.Misc
+namespace NetCoreUtils.MethodCall
 {
     public static class PipeForwardExt
     {

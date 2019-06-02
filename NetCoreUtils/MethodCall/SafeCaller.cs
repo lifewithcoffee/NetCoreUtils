@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetCoreUtils.Misc
+namespace NetCoreUtils.MethodCall
 {
     public class SafeCall
     {
