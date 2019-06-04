@@ -52,12 +52,24 @@
 
 ## Release Notes
 
-### v0.3.0.8-working
+### (working)
 
+### v0.4.0.9
+
+*Enhancement:*
+
+- Upgrade to .net core 2.2
 - Add interfaces with the same generic template parameter number for easy DI registration like:
   services.AddScoped(typeof(IRepositoryBase<,>), typeof(RepositoryBase<,>))
   services.AddScoped(typeof(IRepositoryWrite<,>), typeof(RepositoryWrite<,>));
   services.AddScoped(typeof(IRepositoryRead<,>), typeof(RepositoryRead<,>));
+
+*Incompatible changes:*
+
+- Rename RepositoryBase to Repository
+
+### v0.3.0.8-working
+
 - Segregate read and write operations into separate interfaces and class implementations
 - Declare all methods in the implementation classes as "virtual"
 - Remove "abstract" from RepositoryBase<> definition

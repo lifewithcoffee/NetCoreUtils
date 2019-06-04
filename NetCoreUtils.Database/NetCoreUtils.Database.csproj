@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Version>0.3.0.8</Version>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <Version>0.4.0.9</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="corecmd" Version="0.2.3.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
     <PackageReference Include="microsoft.extensions.logging" Version="2.1.1" />
-    <PackageReference Include="netcoreutils" Version="0.2.0.3" />
+    <PackageReference Include="netcoreutils" Version="0.3.0.4" />
   </ItemGroup>
 
 </Project>
