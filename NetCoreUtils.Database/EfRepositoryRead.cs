@@ -54,24 +54,24 @@ namespace NetCoreUtils.Database
             return await _repoReader.ExistAsync(predicate);
         }
 
-        public virtual TEntity GetById(int? id)
+        public virtual TEntity Get(int? id)
         {
-            return _repoReader.GetById(id);
+            return _repoReader.Get(id);
         }
 
-        public virtual async Task<TEntity> GetByIdAsync(int? id)
+        public virtual async Task<TEntity> GetAsync(int? id)
         {
-            return await _repoReader.GetByIdAsync(id);
+            return await _repoReader.GetAsync(id);
         }
 
-        public virtual IQueryable<TEntity> GetAll()
+        public virtual IQueryable<TEntity> QueryAll()
         {
-            return _repoReader.GetAll();
+            return _repoReader.QueryAll();
         }
 
-        public IQueryable<TEntity> GetMany(Expression<Func<TEntity, bool>> where)
+        public IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> where)
         {
-            return _repoReader.GetMany(where);
+            return _repoReader.Query(where);
         }
         #endregion
 
@@ -83,14 +83,14 @@ namespace NetCoreUtils.Database
         // from: https://stackoverflow.com/questions/34967116/how-to-combine-find-and-asnotracking
         public virtual TEntity GetByIdNoTracking(int? id)
         {
-            var entity = _repoReader.GetById(id);
+            var entity = _repoReader.Get(id);
             _unitOfWork.Context.Entry(entity).State = EntityState.Detached;
             return entity;
         }
 
         public virtual async Task<TEntity> GetByIdNoTrackingAsync(int? id)
         {
-            var entity = await _repoReader.GetByIdAsync(id);
+            var entity = await _repoReader.GetAsync(id);
             _unitOfWork.Context.Entry(entity).State = EntityState.Detached;
             return entity;
         }
@@ -106,7 +106,7 @@ namespace NetCoreUtils.Database
         /// will only return the dataset from the loaded first call, i.e. the just written new data will not
         /// be included in the return collection.
         /// </summary>
-        /// <returns>See the return comment of <see cref="GetAll()"/></returns>
+        /// <returns>See the return comment of <see cref="QueryAll()"/></returns>
         public virtual IQueryable<TEntity> GetManyLocalFirst(Expression<Func<TEntity, bool>> where)
         {
             return dbSet.FindLocalFirst(where);

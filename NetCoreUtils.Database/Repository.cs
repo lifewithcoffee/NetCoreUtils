@@ -83,14 +83,14 @@ namespace NetCoreUtils.Database
             return await _repoReader.ExistAsync(predicate);
         }
 
-        public TEntity GetById(int? id)
+        public TEntity Get(int? id)
         {
-            return _repoReader.GetById(id);
+            return _repoReader.Get(id);
         }
 
-        public async Task<TEntity> GetByIdAsync(int? id)
+        public async Task<TEntity> GetAsync(int? id)
         {
-            return await _repoReader.GetByIdAsync(id);
+            return await _repoReader.GetAsync(id);
         }
 
         public virtual TEntity Add(TEntity entity)
@@ -128,14 +128,14 @@ namespace NetCoreUtils.Database
             _repoWriter.RemoveRange(entities);
         }
 
-        public virtual IQueryable<TEntity> GetAll()
+        public virtual IQueryable<TEntity> QueryAll()
         {
-            return _repoReader.GetAll();
+            return _repoReader.QueryAll();
         }
         
-        public virtual IQueryable<TEntity> GetMany(Expression<Func<TEntity, bool>> where)
+        public virtual IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> where)
         {
-            return _repoReader.GetMany(where);
+            return _repoReader.Query(where);
         }
 
         public bool Commit()

@@ -22,12 +22,12 @@ namespace NetCoreUtils.Database
     public interface IRepositoryRead<TEntity>
         where TEntity : class
     {
-        TEntity GetById(int? id);
-        Task<TEntity> GetByIdAsync(int? id);
+        TEntity Get(int? id);
+        Task<TEntity> GetAsync(int? id);
 
         // Return IQueryable to use QueryableExtensions methods like Load(), Include() etc.
-        IQueryable<TEntity> GetMany(Expression<Func<TEntity, bool>> where);
-        IQueryable<TEntity> GetAll();
+        IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> where);
+        IQueryable<TEntity> QueryAll();
 
         bool Exist(Expression<Func<TEntity, bool>> predicate);
         Task<bool> ExistAsync(Expression<Func<TEntity, bool>> predicate);
@@ -67,12 +67,12 @@ namespace NetCoreUtils.Database
             return await dbSet.AnyAsync<TEntity>(predicate);
         }
 
-        public virtual IQueryable<TEntity> GetAll()
+        public virtual IQueryable<TEntity> QueryAll()
         {
             return dbSet;
         }
 
-        public virtual TEntity GetById(int? id)
+        public virtual TEntity Get(int? id)
         {
             if(id == null)
                 return null;
@@ -80,7 +80,7 @@ namespace NetCoreUtils.Database
                 return dbSet.Find(id);
         }
 
-        public virtual async Task<TEntity> GetByIdAsync(int? id)
+        public virtual async Task<TEntity> GetAsync(int? id)
         {
             if(id == null)
                 return null;
@@ -89,7 +89,7 @@ namespace NetCoreUtils.Database
         }
 
 
-        public virtual IQueryable<TEntity> GetMany(Expression<Func<TEntity, bool>> where)
+        public virtual IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> where)
         {
             // Don't use "where.Compile(), otherwise when do "ToList()", such an exception will throw out: 
             // "There is already an open DataReader associated with this Command which must be closed first"
