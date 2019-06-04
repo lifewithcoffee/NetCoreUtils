@@ -23,7 +23,7 @@ namespace NetCoreUtils.Database
      *      { }
      *  }
      */
-    public interface IRepositoryBase<TEntity>
+    public interface IRepository<TEntity>
         : ICommittable
         , IRepositoryRead<TEntity>
         , IRepositoryWrite<TEntity>
@@ -34,8 +34,8 @@ namespace NetCoreUtils.Database
      * For DI registration:
      * services.AddScoped(typeof(IRepositoryBase<,>), typeof(RepositoryBase<,>));
      */
-    public interface IRepositoryBase<TEntity, TDbContext>
-        : IRepositoryBase<TEntity>
+    public interface IRepository<TEntity, TDbContext>
+        : IRepository<TEntity>
         where TEntity : class
         where TDbContext : DbContext
     {
@@ -47,8 +47,8 @@ namespace NetCoreUtils.Database
     /// http://www.asp.net/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application
     /// https://github.com/MarlabsInc/webapi-angularjs-spa/blob/28bea19b3267aeed1768920b0d77be329b0278a5/source/ResourceMetadata/ResourceMetadata.Data/Infrastructure/RepositoryBase.cs
     /// </summary>
-    public class RepositoryBase<TEntity, TDbContext>
-        : IRepositoryBase<TEntity, TDbContext>
+    public class Repository<TEntity, TDbContext>
+        : IRepository<TEntity, TDbContext>
         where TEntity : class 
         where TDbContext : DbContext
     {
@@ -60,7 +60,7 @@ namespace NetCoreUtils.Database
 
         public TDbContext Context { get { return _unitOfWork.Context;  } }
 
-        public RepositoryBase(
+        public Repository(
             IUnitOfWork<TDbContext> unitOfWork,
             IRepositoryRead<TEntity, TDbContext> repoReader,
             IRepositoryWrite<TEntity, TDbContext> repoWriter
@@ -88,19 +88,9 @@ namespace NetCoreUtils.Database
             return _repoReader.GetById(id);
         }
 
-        public TEntity GetByIdNoTracking(int? id)
-        {
-            return _repoReader.GetByIdNoTracking(id);
-        }
-
         public async Task<TEntity> GetByIdAsync(int? id)
         {
             return await _repoReader.GetByIdAsync(id);
-        }
-
-        public async Task<TEntity> GetByIdNoTrackingAsync(int? id)
-        {
-            return await _repoReader.GetByIdNoTrackingAsync(id);
         }
 
         public virtual TEntity Add(TEntity entity)
@@ -142,25 +132,10 @@ namespace NetCoreUtils.Database
         {
             return _repoReader.GetAll();
         }
-
-        public IQueryable<TEntity> GetAllNoTracking()
-        {
-            return _repoReader.GetAllNoTracking();
-        }
         
         public virtual IQueryable<TEntity> GetMany(Expression<Func<TEntity, bool>> where)
         {
             return _repoReader.GetMany(where);
-        }
-
-        public IQueryable<TEntity> GetManyNoTracking(Expression<Func<TEntity, bool>> where)
-        {
-            return _repoReader.GetManyNoTracking(where);
-        }
-
-        public virtual IQueryable<TEntity> GetManyLocalFirst(Expression<Func<TEntity, bool>> where)
-        {
-            return _repoReader.GetManyLocalFirst(where); // NOTICE: see RepositoryBaseRead.GetManyLocalFirst()'s comment
         }
 
         public bool Commit()

@@ -9,16 +9,19 @@ using Microsoft.EntityFrameworkCore;
 namespace NetCoreUtils.Database
 {
    /**
-    * Need to declare an impl in the application project:
+    * - Do not use Aysnc methods in writing operations, see the comment in
+    *   Add() and AddRange() implementations for details
+    *   
+    * - Need to declare an impl in the application project:
     * 
-    * public class RepositoryWriter<TEntity>
-    *   : RepositoryWrite<TEntity, ApplicationDbContext>
-    *   where TEntity : class
-    * {
-    *   public RepositoryWriter(IUnitOfWork<ApplicationDbContext> unitOfWork)
-    *       : base(unitOfWork)
-    *   { }
-    * }
+    *     public class RepositoryWriter<TEntity>
+    *       : RepositoryWrite<TEntity, ApplicationDbContext>
+    *       where TEntity : class
+    *     {
+    *       public RepositoryWriter(IUnitOfWork<ApplicationDbContext> unitOfWork)
+    *           : base(unitOfWork)
+    *       { }
+    *     }
     */
     public interface IRepositoryWrite<TEntity>
         : ICommittable
@@ -35,10 +38,10 @@ namespace NetCoreUtils.Database
         void RemoveRange(IEnumerable<TEntity> entities);
     }
 
-    /**
-     * For DI registration:
-     * services.AddScoped(typeof(IRepositoryWrite<,>), typeof(RepositoryWrite<,>));
-     */
+   /**
+    * For DI registration:
+    * services.AddScoped(typeof(IRepositoryWrite<,>), typeof(RepositoryWrite<,>));
+    */
     public interface IRepositoryWrite<TEntity, TDbContext>
         : IRepositoryWrite<TEntity>
         where TEntity : class
@@ -75,7 +78,7 @@ namespace NetCoreUtils.Database
         /// to access the database asynchronously. For all other cases the non async method should
         /// be used.
         /// 
-        /// The same reason is also applied to Remove and Update methods.
+        /// The same reason is also applied to AddRagne, Remove and Update methods.
         /// </summary>
         public virtual TEntity Add(TEntity entity)
         {
@@ -83,12 +86,20 @@ namespace NetCoreUtils.Database
             return entity;
         }
 
+        /// <summary> Do not use AddRagneAsync() if not necessary
+        /// According to: https://stackoverflow.com/questions/56241351/what-is-the-difference-between-addrange-and-addrangeasync-in-ef-core
+        /// AddRangeAsync() may be slower and should only used when value
+        /// generators need access to the database before they generate a
+        /// value.
+        /// 
+        /// The reason looks the same with that of AddAsync()
+        /// 
+        /// </summary>
         public virtual void AddRange(IEnumerable<TEntity> entities)
         {
             dbSet.AddRange(entities);
         }
 
-        // there is no DbSet.RemoveAsync() available
         public virtual void Remove(TEntity entity)
         {
             dbSet.Remove(entity);
@@ -107,11 +118,13 @@ namespace NetCoreUtils.Database
 
         public virtual void Update(TEntity entity)
         {
-            //old impl in EF
-            //dbSet.Attach(entity);
-            //_unitOfWork.Context.Entry(entity).State = EntityState.Modified;
+           /**
+            * For reference, the old impl in EF6:
+            *
+            * dbSet.Attach(entity);
+            * _unitOfWork.Context.Entry(entity).State = EntityState.Modified; 
+            */
 
-            // new impl in EF core
             dbSet.Update(entity);
         }
 
