@@ -61,7 +61,15 @@
 
 ## Usage
 
-- Add local single template type parameter `Repository<TEntity>` implementatiion (without TDbContext):
+### Register basic dependencies
+
+(Implemented in Extensions.cs)
+
+``` c#
+  services.AddRepositories();
+```
+
+### Add local `Repository<TEntity>` implementatiion
 
 ``` c#
   public class RepositoryReader<TEntity>
@@ -95,14 +103,10 @@
   }
 ```
 
-- Add DI registration:
+then register the dependency:
 
 ``` c#
-  services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
-  services.AddScoped(typeof(IRepositoryRead<,>), typeof(RepositoryRead<,>));
-  services.AddScoped(typeof(IRepositoryWrite<,>), typeof(RepositoryWrite<,>));
-
-  services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
+  services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
   services.AddScoped(typeof(IRepositoryRead<>), typeof(RepositoryReader<>));
   services.AddScoped(typeof(IRepositoryWrite<>), typeof(RepositoryWriter<>));
 ```
