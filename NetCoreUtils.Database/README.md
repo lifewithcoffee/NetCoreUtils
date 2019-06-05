@@ -1,58 +1,15 @@
 # NetCoreUtils.Database
 
-## Usage
-
-- Add local single template type parameter `Repository<TEntity>` implementatiion (without TDbContext):
-
-``` c#
-  public class RepositoryReader<TEntity>
-      : RepositoryRead<TEntity, ApplicationDbContext>
-      where TEntity : class
-  {
-      public RepositoryReader(IUnitOfWork<ApplicationDbContext> unitOfWork)
-          : base(unitOfWork)
-      { }
-  }
-
-  public class RepositoryWriter<TEntity>
-      : RepositoryWrite<TEntity, ApplicationDbContext>
-      where TEntity : class
-  {
-      public RepositoryWriter(IUnitOfWork<ApplicationDbContext> unitOfWork)
-          : base(unitOfWork)
-      { }
-  }
-
-  public class RepositoryBase<TEntity>
-      : RepositoryBase<TEntity, ApplicationDbContext>
-      where TEntity : class
-  {
-      public RepositoryBase(
-          IUnitOfWork<ApplicationDbContext> unitOfWork,
-          IRepositoryRead<TEntity, ApplicationDbContext> repoReader,
-          IRepositoryWrite<TEntity, ApplicationDbContext> repoWriter
-      ) : base(unitOfWork, repoReader, repoWriter)
-      { }
-  }
-```
-
-- Add DI registration:
-
-``` c#
-  services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
-  services.AddScoped(typeof(IRepositoryRead<,>), typeof(RepositoryRead<,>));
-  services.AddScoped(typeof(IRepositoryWrite<,>), typeof(RepositoryWrite<,>));
-
-  services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
-  services.AddScoped(typeof(IRepositoryRead<>), typeof(RepositoryReader<>));
-  services.AddScoped(typeof(IRepositoryWrite<>), typeof(RepositoryWriter<>));
-```
-
 ## About
 
 ## Release Notes
 
 ### (working)
+
+### v1.0.0
+
+- Add dependency injection extension method
+- Change version schema to three digits
 
 ### v0.4.0.9
 
@@ -101,3 +58,52 @@
 ### v0.1.1.3
 
 - Update: dependent NetCoreUtils package
+
+## Usage
+
+- Add local single template type parameter `Repository<TEntity>` implementatiion (without TDbContext):
+
+``` c#
+  public class RepositoryReader<TEntity>
+      : RepositoryRead<TEntity, ApplicationDbContext>
+      where TEntity : class
+  {
+      public RepositoryReader(IUnitOfWork<ApplicationDbContext> unitOfWork)
+          : base(unitOfWork)
+      { }
+  }
+
+  public class RepositoryWriter<TEntity>
+      : RepositoryWrite<TEntity, ApplicationDbContext>
+      where TEntity : class
+  {
+      public RepositoryWriter(IUnitOfWork<ApplicationDbContext> unitOfWork)
+          : base(unitOfWork)
+      { }
+  }
+
+  public class RepositoryBase<TEntity>
+      : RepositoryBase<TEntity, ApplicationDbContext>
+      where TEntity : class
+  {
+      public RepositoryBase(
+          IUnitOfWork<ApplicationDbContext> unitOfWork,
+          IRepositoryRead<TEntity, ApplicationDbContext> repoReader,
+          IRepositoryWrite<TEntity, ApplicationDbContext> repoWriter
+      ) : base(unitOfWork, repoReader, repoWriter)
+      { }
+  }
+```
+
+- Add DI registration:
+
+``` c#
+  services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+  services.AddScoped(typeof(IRepositoryRead<,>), typeof(RepositoryRead<,>));
+  services.AddScoped(typeof(IRepositoryWrite<,>), typeof(RepositoryWrite<,>));
+
+  services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
+  services.AddScoped(typeof(IRepositoryRead<>), typeof(RepositoryReader<>));
+  services.AddScoped(typeof(IRepositoryWrite<>), typeof(RepositoryWriter<>));
+```
+
