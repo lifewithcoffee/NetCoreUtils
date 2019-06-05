@@ -51,8 +51,7 @@ namespace NetCoreUtils.Database
 
     static public class ServiceExtension
     {
-        /**
-         * To register a single generic type interface of IRepository<TEntity>, like:
+        /** To register a single generic type interface of IRepository<TEntity>, like:
          * 
          *      services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
          *      services.AddScoped(typeof(IRepositoryRead<>), typeof(RepositoryReader<>));
@@ -90,7 +89,7 @@ namespace NetCoreUtils.Database
          *          { }
          *      }
          */
-        static private void AddRepositories(this IServiceCollection services)
+        static public void AddRepositories(this IServiceCollection services)
         {
             services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 

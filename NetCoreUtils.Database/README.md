@@ -6,7 +6,7 @@
 
 ### (working)
 
-### v1.0.0
+### v1.0.1
 
 - Add dependency injection extension method
 - Change version schema to three digits
