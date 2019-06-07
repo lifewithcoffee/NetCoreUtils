@@ -8,22 +8,22 @@
 
 ### v0.3.0.4
 
-**Incompatible Change**:
+*Incompatible Change*:
 
 - Upgrade to .net core 2.2
 - Rename namespace "Misc" to "MethodCall"
 
-**Enhancement**:
+*Enhancement*:
 
 - Add PipeForwardExt
 
 ### v0.2.0.3
 
-**Incompatible Change**:
+*Incompatible Change*:
 
 - Rename namespace "Diagnose" to "Diagnosis"
 
-**Enhancement**:
+*Enhancement*:
 
 - Add Logger
 - Add SafeCaller
