@@ -71,7 +71,7 @@ namespace NetCoreUtils.Database
                     case EntityState.Added:
                         entry.State = EntityState.Detached;
                         break;
-                    case EntityState.Modified: // todo: all apply "entry.State == EntityState.Unchanged;" instead?
+                    case EntityState.Modified: // todo: or apply "entry.State == EntityState.Unchanged;" instead?
                     case EntityState.Deleted:
                         entry.Reload(); 
                         break;

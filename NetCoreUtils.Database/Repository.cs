@@ -39,7 +39,6 @@ namespace NetCoreUtils.Database
         where TEntity : class
         where TDbContext : DbContext
     {
-        TDbContext Context { get; }
     }
 
     /// <summary>
@@ -52,23 +51,14 @@ namespace NetCoreUtils.Database
         where TEntity : class 
         where TDbContext : DbContext
     {
-        private readonly IUnitOfWork<TDbContext> _unitOfWork;
-
-        private readonly DbSet<TEntity> dbSet;
         private readonly IRepositoryRead<TEntity, TDbContext> _repoReader;
         private readonly IRepositoryWrite<TEntity, TDbContext> _repoWriter;
 
-        public TDbContext Context { get { return _unitOfWork.Context;  } }
-
         public Repository(
-            IUnitOfWork<TDbContext> unitOfWork,
             IRepositoryRead<TEntity, TDbContext> repoReader,
             IRepositoryWrite<TEntity, TDbContext> repoWriter
-            )
-        {
-            _unitOfWork = unitOfWork;
+        ){
 
-            dbSet = unitOfWork.Context.Set<TEntity>();
             _repoReader = repoReader;
             _repoWriter = repoWriter;
         }
