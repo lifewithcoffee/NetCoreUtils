@@ -30,11 +30,10 @@ namespace NetCoreUtils.Database
         private IEfRepositoryRead<TEntity, TDbContext> _efRepoRead;
 
         public EfRepository(
-            IUnitOfWork<TDbContext> unitOfWork,
             IRepositoryRead<TEntity, TDbContext> repoReader,
             IRepositoryWrite<TEntity, TDbContext> repoWriter,
             IEfRepositoryRead<TEntity, TDbContext> efRepoRead
-            ):base(unitOfWork,repoReader,repoWriter)
+            ):base(repoReader,repoWriter)
         {
             _efRepoRead = efRepoRead;
         }
