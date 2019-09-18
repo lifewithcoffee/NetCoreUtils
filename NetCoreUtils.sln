@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2042
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreUtils", "NetCoreUtils\NetCoreUtils.csproj", "{E3E9C8FC-723C-4944-AC5F-92C5CFAC8E9F}"
 EndProject
@@ -22,7 +22,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreUtils.Logging", "NetCoreUtils.Logging\NetCoreUtils.Logging.csproj", "{8510B2F5-2328-4988-8BF4-9307747825BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWebApp", "TestWebApp\TestWebApp.csproj", "{925AEFC2-01C7-4720-B2EC-F6809E874CB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestWebApp", "TestWebApp\TestWebApp.csproj", "{925AEFC2-01C7-4720-B2EC-F6809E874CB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreUtils.TestCli", "NetCoreUtils.TestCli\NetCoreUtils.TestCli.csproj", "{30EB8D19-0B00-43DA-9EF1-E83665A05506}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,6 +56,10 @@ Global
 		{925AEFC2-01C7-4720-B2EC-F6809E874CB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{925AEFC2-01C7-4720-B2EC-F6809E874CB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{925AEFC2-01C7-4720-B2EC-F6809E874CB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30EB8D19-0B00-43DA-9EF1-E83665A05506}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30EB8D19-0B00-43DA-9EF1-E83665A05506}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30EB8D19-0B00-43DA-9EF1-E83665A05506}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30EB8D19-0B00-43DA-9EF1-E83665A05506}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{82F47201-8068-4755-82D4-B29398C99484} = {6A2D2033-6874-4547-A09F-A357DE547B3F}
 		{9873F1D4-BC26-415E-885A-1DB3B7972605} = {6A2D2033-6874-4547-A09F-A357DE547B3F}
 		{925AEFC2-01C7-4720-B2EC-F6809E874CB5} = {6A2D2033-6874-4547-A09F-A357DE547B3F}
+		{30EB8D19-0B00-43DA-9EF1-E83665A05506} = {6A2D2033-6874-4547-A09F-A357DE547B3F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F9BE06A1-7DBB-4FDA-AE83-8A714E94F542}
