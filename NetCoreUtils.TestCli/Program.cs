@@ -10,7 +10,7 @@ namespace NetCoreUtils.TestCli
 {
     class DefaultCommand
     {
-        public void TestLogging()
+        public void TestHostedService()
         {
             var builder = new HostBuilder()
             .ConfigureAppConfiguration((hostingContext, config) =>

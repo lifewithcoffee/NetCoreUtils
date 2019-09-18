@@ -12,6 +12,7 @@ namespace NetCoreUtils.TestCli.HostedServices
     {
         private readonly ILogger _logger;
         private readonly IApplicationLifetime _appLifetime;
+        private Timer _timer;
 
         public LifetimeEventsHostedService(
             ILogger<LifetimeEventsHostedService> logger,
@@ -26,6 +27,16 @@ namespace NetCoreUtils.TestCli.HostedServices
             _appLifetime.ApplicationStarted.Register(OnStarted);
             _appLifetime.ApplicationStopping.Register(OnStopping);
             _appLifetime.ApplicationStopped.Register(OnStopped);
+
+            // terminate service after several seconds
+            int count = 5;
+            _timer = new Timer(state => {
+                _logger.LogInformation($"count = {count}");
+                if(--count < 0)
+                {
+                    _appLifetime.StopApplication();
+                }
+            }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
 
             return Task.CompletedTask;
         }
