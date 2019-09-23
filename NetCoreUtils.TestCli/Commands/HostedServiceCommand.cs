@@ -61,15 +61,7 @@ namespace NetCoreUtils.TestCli.Commands
                     var useSerilog = hostContext.Configuration.GetValue<bool>("Logging:UseSerilog");
                     if (useSerilog)
                     {
-                        Log.Logger = new LoggerConfiguration()
-                            .MinimumLevel.Information()
-                            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                            .Enrich.FromLogContext()
-                            .WriteTo.Console()
-                            .CreateLogger();
-
-                        Log.Information("Serilog initialized");
-
+                        Log.Information("Config to use Serilog");
                         logging.AddSerilog();
                     }
                     else
