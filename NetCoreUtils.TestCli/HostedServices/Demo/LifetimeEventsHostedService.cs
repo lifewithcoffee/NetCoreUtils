@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NetCoreUtils.TestCli.HostedServices
+namespace NetCoreUtils.TestCli.HostedServices.Demo
 {
     class LifetimeEventsHostedService : IHostedService
     {
