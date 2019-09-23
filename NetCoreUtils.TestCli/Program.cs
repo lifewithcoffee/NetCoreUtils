@@ -5,35 +5,81 @@ using Microsoft.Extensions.Logging;
 using System;
 using CoreCmd.CommandExecution;
 using NetCoreUtils.TestCli.HostedServices;
+using Serilog;
+using Serilog.Events;
+using System.IO;
+using System.Configuration;
 
 namespace NetCoreUtils.TestCli
 {
+    public class NetCoreUtilsOptions
+    {
+        public string TestConfig { get; set; }
+    }
+
     class DefaultCommand
     {
-        public void TestHostedService()
+        /**
+         * Use serilog: set UseSerilog to true in the appsettings.Development.json
+         * Environment variable prefix: NETCOREUTILS_
+         */
+        public void HostedService()
         {
-            var builder = new HostBuilder()
-            .ConfigureAppConfiguration((hostingContext, config) =>
-            {
-                config.AddEnvironmentVariables();
+            new HostBuilder()
+                //.ConfigureContainer<>
+                .ConfigureHostConfiguration(config =>
+                {
+                    config.AddEnvironmentVariables(prefix: "NETCOREUTILS_");
+                })
+                .ConfigureAppConfiguration((hostContext, config) =>
+                {
+                    config.SetBasePath(Directory.GetCurrentDirectory());
+                    Console.WriteLine($"Directory.GetCurrentDirectory() = {Directory.GetCurrentDirectory()}");
+                    config.AddJsonFile("appsettings.json", optional: true);
+                    config.AddJsonFile(
+                        $"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json",
+                        optional: true);
 
-                //if (args != null)
-                //    config.AddCommandLine(args);
-            })
-            .ConfigureServices((hostContext, services) =>
-            {
-                services.AddOptions();
-                //services.Configure<DaemonConfig>(hostContext.Configuration.GetSection("Daemon"));
-                services.AddHostedService<LifetimeEventsHostedService>();
-                services.AddHostedService<TimedHostedService>();
-            })
-            .ConfigureLogging((hostingContext, logging) =>
-            {
-                logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                logging.AddConsole();
-            });
+                    //if (args != null)
+                    //    config.AddCommandLine(args);
+                })
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.AddOptions();
 
-            builder.RunConsoleAsync().Wait();
+                    // config for options
+                    var sec = hostContext.Configuration.GetSection("NetCoreUtils");
+                    services.Configure<NetCoreUtilsOptions>(sec);
+                    services.AddSingleton(sec.Get<NetCoreUtilsOptions>());
+
+                    // config hosted services
+                    services.AddHostedService<LifetimeEventsHostedService>();
+                    services.AddHostedService<TimedHostedService>();
+                })
+                .ConfigureLogging((hostContext, logging) =>
+                {
+                    var useSerilog = hostContext.Configuration.GetValue<bool>("Logging:UseSerilog");
+                    if (useSerilog)
+                    {
+                        Log.Logger = new LoggerConfiguration()
+                            .MinimumLevel.Information()
+                            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                            .Enrich.FromLogContext()
+                            .WriteTo.Console()
+                            .CreateLogger();
+
+                        Log.Information("Serilog initialized");
+
+                        logging.AddSerilog();
+                    }
+                    else
+                    {
+                        logging.AddConfiguration(hostContext.Configuration.GetSection("Logging"));
+                        logging.AddConsole();
+                    }
+                })
+                //.UseSerilog()
+                .Build().Run(); // or: builder.RunConsoleAsync().Wait();
         }
     }
 

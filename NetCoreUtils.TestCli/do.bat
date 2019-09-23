@@ -1,6 +1,6 @@
 @echo off
 SET DEBUG_PATH=%CD%\bin\Debug\netcoreapp2.2
-SET ASPNETCORE_ENVIRONMENT=Development
+SET NETCOREUTILS_ENVIRONMENT=Development
 
 dotnet %DEBUG_PATH%\NetCoreUtils.TestCli.dll %*
 

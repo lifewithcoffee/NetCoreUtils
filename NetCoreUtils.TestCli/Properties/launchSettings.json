@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "NetCoreUtils.TestCli": {
+      "commandName": "Project",
+      "commandLineArgs": "hosted-service",
+      "environmentVariables": {
+        "NETCOREUTILS_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
