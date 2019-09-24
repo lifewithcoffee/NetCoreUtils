@@ -20,7 +20,7 @@ namespace NetCoreUtils.TestCli.DotNettyDemo.Servers
                 .Handler(new ActionChannelInitializer<IChannel>(channel =>
                 {
                     IChannelPipeline pipeline = channel.Pipeline;
-                    pipeline.AddLast(new UdpChannelHandler());
+                    pipeline.AddLast(new GeneralChannelHandler());
                 }))
                 .BindAsync(12808);
 

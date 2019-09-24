@@ -18,16 +18,22 @@ namespace NetCoreUtils.TestCli.Commands
 {
     class DotNettyCommand
     {
-        public void TcpServer()
+        public void TcpEchoServer()
         {
             Log.Information("dot-netty TCP server started:");
             new EchoServer().Execute().Wait();
         }
 
-        public void TcpClient()
+        public void TcpEchoClient()
         {
             Log.Information("dot-netty TCP client started:");
             new EchoClient().Execute().Wait();
+        }
+
+        public void TcpServer()
+        {
+            Log.Information("dot-netty TCP client started:");
+            new TcpServer().Execute().Wait();
         }
 
         public void UdpServer()

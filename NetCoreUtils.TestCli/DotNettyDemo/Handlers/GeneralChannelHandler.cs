@@ -8,20 +8,26 @@ using System.Text;
 
 namespace NetCoreUtils.TestCli.DotNettyDemo.Handlers
 {
-    class UdpChannelHandler : SimpleChannelInboundHandler<object>
+    class GeneralChannelHandler : SimpleChannelInboundHandler<object>
     {
         protected override void ChannelRead0(IChannelHandlerContext ctx, object msg)
         {
-            Log.Information("UdpChannelHandler.ChannelRead0() called");
+            Log.Information("GeneralChannelHandler.ChannelRead0() called");
 
-            var package = msg as DatagramPacket;
-            if(package != null)
-                Console.WriteLine("Received:" + package.Content.ToString(Encoding.UTF8));
+            // for receiving UDP data
+            var packet = msg as DatagramPacket;
+            if(packet != null)
+                Console.WriteLine("Received DatagramPacket:" + packet.Content.ToString(Encoding.UTF8));
+
+            // for receiving TCP data
+            var byteBuffer = msg as IByteBuffer;
+            if (byteBuffer != null)
+                Console.WriteLine("Received IByteBuffer: " + byteBuffer.ToString(Encoding.UTF8));
         }
 
         public override void ChannelActive(IChannelHandlerContext context)
         {
-            Log.Information("UdpChannelHandler.ChannelActive() called");
+            Log.Information("GeneralChannelHandler.ChannelActive() called");
         }
 
         public override void ChannelReadComplete(IChannelHandlerContext context)
@@ -31,7 +37,7 @@ namespace NetCoreUtils.TestCli.DotNettyDemo.Handlers
 
         public override void ChannelInactive(IChannelHandlerContext context)
         {
-            Log.Information("UdpChannelHandler.ChannelInactive() called");
+            Log.Information("GeneralChannelHandler.ChannelInactive() called");
         }
 
         public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)

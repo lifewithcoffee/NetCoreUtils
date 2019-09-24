@@ -6,11 +6,39 @@ namespace NetCoreUtils.TestCli.DotNettyDemo.Handlers
     using System.Text;
     using DotNetty.Buffers;
     using DotNetty.Transport.Channels;
+    using DotNetty.Transport.Channels.Sockets;
 
     public class EchoServerHandler : ChannelHandlerAdapter
     {
+        public override void ChannelActive(IChannelHandlerContext context)
+        {
+            base.ChannelActive(context);
+
+            Console.WriteLine($"EchoServerHandler.ChannelActive() called: context = {context}");
+        }
+
+        public override void ChannelInactive(IChannelHandlerContext context)
+        {
+            base.ChannelInactive(context);
+
+            Console.WriteLine($"EchoServerHandler.ChannelInactive() called: context = {context}");
+        }
+
+        public override void Read(IChannelHandlerContext context)
+        {
+            base.Read(context);
+
+            Console.WriteLine($"EchoServerHandler.Read() called");
+        }
+
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
+            Console.WriteLine($"Received: {message.ToString()}");
+
+            var packet = message as DatagramPacket;
+            if (packet != null)
+                Console.WriteLine("Received:" + packet.Content.ToString(Encoding.UTF8));
+
             var buffer = message as IByteBuffer;
             if (buffer != null)
             {
