@@ -24,20 +24,9 @@ namespace NetCoreUtils.TestCli.DotNettyDemo.Handlers
             Console.WriteLine($"EchoServerHandler.ChannelInactive() called: context = {context}");
         }
 
-        public override void Read(IChannelHandlerContext context)
-        {
-            base.Read(context);
-
-            Console.WriteLine($"EchoServerHandler.Read() called");
-        }
-
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
             Console.WriteLine($"Received: {message.ToString()}");
-
-            var packet = message as DatagramPacket;
-            if (packet != null)
-                Console.WriteLine("Received:" + packet.Content.ToString(Encoding.UTF8));
 
             var buffer = message as IByteBuffer;
             if (buffer != null)

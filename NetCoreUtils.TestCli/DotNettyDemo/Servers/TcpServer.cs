@@ -21,8 +21,9 @@ namespace NetCoreUtils.TestCli.DotNettyDemo.Servers
             IChannel boundChannel = await new ServerBootstrap()
                 .Group(bossGroup, workerGroup)
                 .Channel<TcpServerSocketChannel>()
-                .Option(ChannelOption.SoBacklog, 100)
-                .Handler(new LoggingHandler("SRV-LSTN"))
+                .Option(ChannelOption.SoBacklog, 1024)
+                .Option(ChannelOption.TcpNodelay, true)     // newly added
+                //.Handler(new LoggingHandler("SRV-LSTN"))
                 .ChildHandler(new ActionChannelInitializer<IChannel>(channel =>
                 {
                     IChannelPipeline pipeline = channel.Pipeline;
