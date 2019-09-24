@@ -18,21 +18,22 @@ namespace NetCoreUtils.TestCli.Commands
 {
     class DotNettyCommand
     {
-        IExecutable _echoClient = new EchoClient();
-        IExecutable _echoServer = new EchoServer();
-
         public void TcpServer()
         {
-            Log.Information("dot-netty server executed");
-            _echoServer.Execute().Wait();
+            Log.Information("dot-netty TCP server started:");
+            new EchoServer().Execute().Wait();
         }
 
         public void TcpClient()
         {
-            Log.Information("dot-netty tcp-client executed");
-            _echoClient.Execute().Wait();
+            Log.Information("dot-netty TCP client started:");
+            new EchoClient().Execute().Wait();
         }
-       
 
+        public void UdpServer()
+        {
+            Log.Information("dot-netty UDP server started:");
+            new UdpServer().Execute().Wait();
+        }
     }
 }
