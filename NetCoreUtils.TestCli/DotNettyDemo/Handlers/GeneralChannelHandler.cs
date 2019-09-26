@@ -23,11 +23,19 @@ namespace NetCoreUtils.TestCli.DotNettyDemo.Handlers
             var byteBuffer = msg as IByteBuffer;
             if (byteBuffer != null)
                 Console.WriteLine("Received IByteBuffer: " + byteBuffer.ToString(Encoding.UTF8));
+
+        }
+
+        public override void ChannelRead(IChannelHandlerContext ctx, object msg)
+        {
+            base.ChannelRead(ctx, msg);
+            ctx.FireChannelRead(msg);
         }
 
         public override void ChannelActive(IChannelHandlerContext context)
         {
             Log.Information("GeneralChannelHandler.ChannelActive() called");
+            context.FireChannelActive();
         }
 
         public override void ChannelReadComplete(IChannelHandlerContext context)
@@ -43,6 +51,19 @@ namespace NetCoreUtils.TestCli.DotNettyDemo.Handlers
         public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)
         {
             Log.Error($"Error: {exception}");
+        }
+    }
+
+    class GeneralChannelHandler2 : SimpleChannelInboundHandler<object>
+    {
+        public override void ChannelActive(IChannelHandlerContext context)
+        {
+            Log.Information("GeneralChannelHandler2.ChannelActive() called");
+        }
+
+        protected override void ChannelRead0(IChannelHandlerContext ctx, object msg)
+        {
+            Log.Information("GeneralChannelHandler2.ChannelRead0() called");
         }
     }
 }

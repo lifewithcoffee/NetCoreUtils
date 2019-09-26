@@ -1,7 +1,9 @@
-﻿using DotNetty.Codecs;
+﻿using DotNetty.Buffers;
+using DotNetty.Codecs;
 using DotNetty.Handlers.Logging;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
+using DotNetty.Transport.Channels.Embedded;
 using DotNetty.Transport.Channels.Sockets;
 using NetCoreUtils.TestCli.DotNettyDemo;
 using NetCoreUtils.TestCli.DotNettyDemo.Clients;
@@ -32,7 +34,7 @@ namespace NetCoreUtils.TestCli.Commands
 
         public void TcpServer()
         {
-            Log.Information("dot-netty TCP client started:");
+            Log.Information("dot-netty TCP server started:");
             new TcpServer().Execute().Wait();
         }
 
@@ -40,6 +42,17 @@ namespace NetCoreUtils.TestCli.Commands
         {
             Log.Information("dot-netty UDP server started:");
             new UdpServer().Execute().Wait();
+        }
+
+        /// <summary>
+        /// Embedded channel can be used in dotnetty channel unit test, see dotnetty official project's unit tests
+        /// </summary>
+        public void EmbeddedChannel()
+        {
+            EmbeddedChannel channel = new EmbeddedChannel(new StringDecoder(Encoding.UTF8));
+            channel.WriteInbound(Unpooled.WrappedBuffer(new byte[] { (byte)0xE2, (byte)0x98, (byte)0xA2 }));
+            string myObject = channel.ReadInbound<string>();
+            Console.WriteLine(myObject);
         }
     }
 }

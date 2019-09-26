@@ -32,6 +32,7 @@ namespace NetCoreUtils.TestCli.DotNettyDemo.Servers
                     //pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(ushort.MaxValue, 0, 2, 0, 2));       // TODO: why no data will be received if enable this statement?
 
                     pipeline.AddLast(new GeneralChannelHandler());
+                    pipeline.AddLast(new GeneralChannelHandler2());
                 })).BindAsync(18007);
 
             Console.ReadLine();
