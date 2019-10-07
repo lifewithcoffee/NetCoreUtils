@@ -4,7 +4,11 @@
 
 ## Release Notes
 
-## (working)
+## v0.4 (working)
+
+*Incompatible Change*:
+
+- Upgrade to .net core 3.0
 
 ### v0.3.0.4
 

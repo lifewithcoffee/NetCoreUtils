@@ -44,7 +44,9 @@ Two reasons:
 
 ## Release Notes
 
-### (working)
+### v1.2 (working)
+
+- Upgrade to .net core 3.0
 
 ## v1.1
 
