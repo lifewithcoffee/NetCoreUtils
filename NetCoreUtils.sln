@@ -15,7 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreUtils.MsTest", "NetC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{07CA0D10-DB32-4A64-BB19-7EB4D43C679D}"
 	ProjectSection(SolutionItems) = preProject
-		nuget.config = nuget.config
 		pack-all.bat = pack-all.bat
 		README.md = README.md
 	EndProjectSection
