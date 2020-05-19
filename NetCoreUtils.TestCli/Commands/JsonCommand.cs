@@ -10,15 +10,18 @@ namespace NetCoreUtils.TestCli.Commands
     {
         JsonService _svc = new JsonService();
 
+        //const string vivaldi_bookmark_path = @"C:\Users\Ron\appdata\local\Vivaldi\User Data\Default\Bookmarks";
+        const string vivaldi_bookmark_path = @"C:\_temp\Bookmarks";
+
         public void Test1()
         {
-            _svc.PrintJson(File.ReadAllBytes(@"C:\Users\Ron\appdata\local\Vivaldi\User Data\Default\Bookmarks").AsSpan());
+            _svc.PrintJson(File.ReadAllBytes(vivaldi_bookmark_path).AsSpan());
         }
 
         public void Test2()
         {
             //_svc.ReadJson(File.ReadAllText(@"C:\_temp\vivaldi-bookmarks"));
-            _svc.ReadJson(File.ReadAllText(@"C:\Users\Ron\appdata\local\Vivaldi\User Data\Default\Bookmarks"));
+            _svc.ReadJson(File.ReadAllText(vivaldi_bookmark_path));
         }
     }
 }
