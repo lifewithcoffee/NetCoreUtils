@@ -13,15 +13,14 @@ namespace NetCoreUtils.TestCli.Commands
         //const string vivaldi_bookmark_path = @"C:\Users\Ron\appdata\local\Vivaldi\User Data\Default\Bookmarks";
         const string vivaldi_bookmark_path = @"C:\_temp\Bookmarks";
 
-        public void Test1()
+        public void PrintAll()
         {
-            _svc.PrintJson(File.ReadAllBytes(vivaldi_bookmark_path).AsSpan());
+            _svc.PrintJsonByTokenType(File.ReadAllBytes(vivaldi_bookmark_path).AsSpan());
         }
 
-        public void Test2()
+        public void PrintVivaldiBookmark(int maxLevel)
         {
-            //_svc.ReadJson(File.ReadAllText(@"C:\_temp\vivaldi-bookmarks"));
-            _svc.ReadJson(File.ReadAllText(vivaldi_bookmark_path));
+            _svc.PrintVivaldiBookmarkJson(File.ReadAllText(vivaldi_bookmark_path), maxLevel);
         }
     }
 }
