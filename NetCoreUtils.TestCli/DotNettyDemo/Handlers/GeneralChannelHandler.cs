@@ -28,6 +28,7 @@ namespace NetCoreUtils.TestCli.DotNettyDemo.Handlers
 
         public override void ChannelRead(IChannelHandlerContext ctx, object msg)
         {
+            Log.Information("GeneralChannelHandler.ChannelRead() called!!!!!!");
             base.ChannelRead(ctx, msg);
             ctx.FireChannelRead(msg);
         }

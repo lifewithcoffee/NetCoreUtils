@@ -13,7 +13,7 @@ namespace NetCoreUtils.TestCli.DotNettyDemo.Servers
 {
     class TcpServer : IExecutable
     {
-        public async Task Execute()
+        public async Task ExecuteAsync()
         {
             IEventLoopGroup bossGroup = new MultithreadEventLoopGroup(1);
             IEventLoopGroup workerGroup = new MultithreadEventLoopGroup();

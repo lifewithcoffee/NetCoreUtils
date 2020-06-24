@@ -11,7 +11,7 @@ namespace NetCoreUtils.TestCli.DotNettyDemo.Servers
 {
     class UdpServer : IExecutable
     {
-        public async Task Execute()
+        public async Task ExecuteAsync()
         {
             var clientChannel = await new Bootstrap()
                 .Group(new MultithreadEventLoopGroup())

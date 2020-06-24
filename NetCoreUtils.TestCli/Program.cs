@@ -7,12 +7,13 @@ using CoreCmd.CommandExecution;
 using System.IO;
 using Serilog;
 using Serilog.Events;
+using System.Threading.Tasks;
 
 namespace NetCoreUtils.TestCli
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
@@ -21,7 +22,7 @@ namespace NetCoreUtils.TestCli
                 .WriteTo.Console()
                 .CreateLogger();
 
-            new AssemblyCommandExecutor().Execute(args);
+            await new AssemblyCommandExecutor().ExecuteAsync(args);
         }
     }
 }

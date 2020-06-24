@@ -14,7 +14,7 @@ namespace NetCoreUtils.TestCli.DotNettyDemo.Clients
 {
     class EchoClient : IExecutable
     {
-        public async Task Execute()
+        public async Task ExecuteAsync()
         {
             var group = new MultithreadEventLoopGroup();
 

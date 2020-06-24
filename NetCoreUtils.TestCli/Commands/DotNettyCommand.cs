@@ -20,28 +20,28 @@ namespace NetCoreUtils.TestCli.Commands
 {
     class DotNettyCommand
     {
-        public void TcpEchoServer()
+        public async Task TcpEchoServer()
         {
-            Log.Information("dot-netty TCP server started:");
-            new EchoServer().Execute().Wait();
+            Log.Information("DotNetty TCP server started:");
+            await new EchoServer().ExecuteAsync();
         }
 
-        public void TcpEchoClient()
+        public async Task TcpEchoClient()
         {
-            Log.Information("dot-netty TCP client started:");
-            new EchoClient().Execute().Wait();
+            Log.Information("DotNetty TCP client started:");
+            await new EchoClient().ExecuteAsync();
         }
 
-        public void TcpServer()
+        public async Task TcpServer()
         {
-            Log.Information("dot-netty TCP server started:");
-            new TcpServer().Execute().Wait();
+            Log.Information("DotNetty TCP server started:");
+            await new TcpServer().ExecuteAsync();
         }
 
-        public void UdpServer()
+        public async Task UdpServer()
         {
-            Log.Information("dot-netty UDP server started:");
-            new UdpServer().Execute().Wait();
+            Log.Information("DotNetty UDP server started:");
+            await new UdpServer().ExecuteAsync();
         }
 
         /// <summary>

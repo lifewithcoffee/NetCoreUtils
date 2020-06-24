@@ -7,6 +7,6 @@ namespace NetCoreUtils.TestCli.DotNettyDemo
 {
     public interface IExecutable
     {
-        Task Execute();
+        Task ExecuteAsync();
     }
 }
