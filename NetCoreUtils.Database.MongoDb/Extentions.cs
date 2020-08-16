@@ -10,7 +10,7 @@ namespace NetCoreUtils.Database.MongoDb
         public int Port { get; set; } = 27017;
     }
 
-    static public class Class1
+    static public class Extentions
     {
         static public void AddMongoDb(this IServiceCollection services, MongoDbSetting setting)
         {
