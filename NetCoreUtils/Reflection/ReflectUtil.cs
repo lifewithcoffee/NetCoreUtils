@@ -1,41 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
-namespace NetCoreUtils.TestCli.ReflectUtils
+namespace NetCoreUtils.Reflection
 {
-    public interface ISomeInterface
-    {
-        void DoSomething();
-    }
-
-    public class Impl1 : ISomeInterface
-    {
-        public void DoSomething()
-        {
-            Console.WriteLine("Do1.DoSomething() called");
-        }
-    }
-
-    public class Impl2 : ISomeInterface
-    {
-        public void DoSomething()
-        {
-            Console.WriteLine("Do2.DoSomething() called");
-        }
-    }
-
     /// <summary>
     /// Methods in this class can be used to implemnt an DI auto-injector
     /// </summary>
     public class ReflectUtil
     {
 
-        public IEnumerable<object> GetAllImplementationInstances2(Type interfaceType)
+        public IEnumerable<object> GetAllImplementationInstances2(Assembly assembly, Type interfaceType)
         {
-            var interfaceImpls = typeof(Program)
-                .Assembly
+            var interfaceImpls = assembly
                 .ExportedTypes
                 .Where(x => interfaceType.IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)      // make sure the type is an initializable class that implements the interface
                 .Select(Activator.CreateInstance);
@@ -43,10 +22,9 @@ namespace NetCoreUtils.TestCli.ReflectUtils
             return interfaceImpls;
         }
 
-        public List<T> GetAllImplementationInstances1<T>()
+        public List<T> GetAllImplementationInstances1<T>(Assembly assembly)
         {
-            var interfaceImpls = typeof(Program)
-                .Assembly
+            var interfaceImpls = assembly
                 .ExportedTypes
                 .Where(x => typeof(T).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)      // make sure the type is an initializable class that implements the interface
                 .Select(Activator.CreateInstance).Cast<T>().ToList();
