@@ -4,11 +4,12 @@
 
 ## Release Notes
 
-## v0.4 (working)
+## v1.0.0
 
 *Incompatible Change*:
 
-- Upgrade to .net core 3.0
+- Upgrade to .net core 3.1
+- Add ReflectUtil
 
 ### v0.3.0.4
 

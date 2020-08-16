@@ -1,5 +1,4 @@
 ﻿using NetCoreUtils.Reflection;
-using NetCoreUtils.TestCli.ReflectUtils;
 using System;
 using System.Collections.Generic;
 using System.Text;
