@@ -22,27 +22,27 @@ namespace NetCoreUtils.Database.MongoDb
         IMongoQueryable<TDoc> QueryAll();
     }
 
-    public class RepositoryRead<TEntity> : IRepositoryRead<TEntity> where TEntity : MongoDocBase
+    public class RepositoryRead<TDoc> : IRepositoryRead<TDoc> where TDoc : MongoDocBase
     {
-        private IMongoCollection<TEntity> _collection;
+        private IMongoCollection<TDoc> _collection;
 
         public RepositoryRead(IMongoDatabase db)
         {
-            _collection = db.GetCollection<TEntity>(typeof(TEntity).Name);
+            _collection = db.GetCollection<TDoc>(typeof(TDoc).Name);
         }
 
-        public bool Exist(Expression<Func<TEntity, bool>> where)
+        public bool Exist(Expression<Func<TDoc, bool>> where)
         {
             return _collection.Find(where).Any();
         }
 
-        public async Task<bool> ExistAsync(Expression<Func<TEntity, bool>> where)
+        public async Task<bool> ExistAsync(Expression<Func<TDoc, bool>> where)
         {
             var cursor = await _collection.FindAsync(where);
             return await cursor.AnyAsync();
         }
 
-        public TEntity Get(string id)
+        public TDoc Get(string id)
         {
             var objectId = new ObjectId(id);
             return _collection.Find(d => d.Id.Equals(objectId)).SingleOrDefault();
@@ -52,31 +52,31 @@ namespace NetCoreUtils.Database.MongoDb
             // return _collection.Find(filter).SingleOrDefault();
         }
 
-        public async Task<TEntity> GetAsync(string id)
+        public async Task<TDoc> GetAsync(string id)
         {
-            var cursor = await _collection.FindAsync<TEntity>(d => d.Id.Equals(new ObjectId(id)));
+            var cursor = await _collection.FindAsync<TDoc>(d => d.Id.Equals(new ObjectId(id)));
             return await cursor.FirstOrDefaultAsync();
         }
 
-        public async Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>> where)
+        public async Task<List<TDoc>> FindAsync(Expression<Func<TDoc, bool>> where)
         {
-            var cursor = await _collection.FindAsync<TEntity>(where);
+            var cursor = await _collection.FindAsync<TDoc>(where);
             return await cursor.ToListAsync();
         }
 
-        public List<TEntity> Find(Expression<Func<TEntity, bool>> where)
+        public List<TDoc> Find(Expression<Func<TDoc, bool>> where)
         {
-            return _collection.Find<TEntity>(where).ToList();
+            return _collection.Find<TDoc>(where).ToList();
         }
 
-        public IMongoQueryable<TEntity> Query(Expression<Func<TEntity, bool>> where)
+        public IMongoQueryable<TDoc> Query(Expression<Func<TDoc, bool>> where)
         {
-            return _collection.AsQueryable<TEntity>().Where(where);
+            return _collection.AsQueryable<TDoc>().Where(where);
         }
 
-        public IMongoQueryable<TEntity> QueryAll()
+        public IMongoQueryable<TDoc> QueryAll()
         {
-            return _collection.AsQueryable<TEntity>();
+            return _collection.AsQueryable<TDoc>();
         }
     }
 }

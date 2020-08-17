@@ -11,14 +11,32 @@ namespace NetCoreUtils.Database.MongoDb
         public string DatabaseName { get; set; }
     }
 
+    public interface IMongoDbConnection
+    {
+        public IMongoClient MongoClient { get; }
+        public IMongoDatabase MongoDatabase { get; }
+    }
+
+    public class MongoDbConnection : IMongoDbConnection
+    {
+        IMongoClient _mongoClient;
+        IMongoDatabase _mongoDatabase;
+
+        public MongoDbConnection(MongoDbSetting setting)
+        {
+            _mongoClient = new MongoClient($"mongodb://{setting.Host}:{setting.Port}");
+            _mongoDatabase = _mongoClient.GetDatabase(setting.DatabaseName);
+        }
+
+        public IMongoClient MongoClient => _mongoClient;
+        public IMongoDatabase MongoDatabase => throw new NotImplementedException();
+    }
+
     static public class Extentions
     {
         static public void AddMongoDb(this IServiceCollection services, MongoDbSetting setting)
         {
-            services.AddSingleton<IMongoDatabase>(x => {
-                var client = new MongoClient($"mongodb://{setting.Host}:{setting.Port}");
-                return client.GetDatabase(setting.DatabaseName);
-            });
+            services.AddSingleton<IMongoDbConnection>(x => new MongoDbConnection(setting));
         }
     }
 }
