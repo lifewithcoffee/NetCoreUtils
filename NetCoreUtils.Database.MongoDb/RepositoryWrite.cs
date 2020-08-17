@@ -7,6 +7,14 @@ using System.Threading.Tasks;
 
 namespace NetCoreUtils.Database.MongoDb
 {
+    /// <summary>
+    /// This class is left here just for reference. It is not recommended to
+    /// use it since it seems not to make sense to wrap a Repository class for
+    /// writing.
+    /// 
+    /// Direct injecting IMongoCollection<TDoc> should be used instead.
+    /// </summary>
+    [Obsolete("Should be refactored")]
     public class RepositoryWrite<TDoc> where TDoc : MongoDocBase
     {
         private IMongoCollection<TDoc> _collection;
