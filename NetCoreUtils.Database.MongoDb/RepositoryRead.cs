@@ -16,10 +16,10 @@ namespace NetCoreUtils.Database.MongoDb
         Task<bool> ExistAsync(Expression<Func<TDoc, bool>> where);
         List<TDoc> Find(Expression<Func<TDoc, bool>> where);
         Task<List<TDoc>> FindAsync(Expression<Func<TDoc, bool>> where);
-        TDoc Get(string id);
-        Task<TDoc> GetAsync(string id);
+        TDoc Find(string id);
+        Task<TDoc> FindAsync(string id);
         IMongoQueryable<TDoc> Query(Expression<Func<TDoc, bool>> where);
-        IMongoQueryable<TDoc> QueryAll();
+        IMongoQueryable<TDoc> Query();
     }
 
     public class RepositoryRead<TDoc> : IRepositoryRead<TDoc> where TDoc : MongoDocBase
@@ -42,17 +42,16 @@ namespace NetCoreUtils.Database.MongoDb
             return await cursor.AnyAsync();
         }
 
-        public TDoc Get(string id)
+        public TDoc Find(string id)
         {
-            var objectId = new ObjectId(id);
-            return _collection.Find(d => d.Id.Equals(objectId)).SingleOrDefault();
+            return _collection.Find(d => d.Id.Equals(new ObjectId(id))).SingleOrDefault();
 
             // or:
             // var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, objectId);
             // return _collection.Find(filter).SingleOrDefault();
         }
 
-        public async Task<TDoc> GetAsync(string id)
+        public async Task<TDoc> FindAsync(string id)
         {
             var cursor = await _collection.FindAsync<TDoc>(d => d.Id.Equals(new ObjectId(id)));
             return await cursor.FirstOrDefaultAsync();
@@ -74,7 +73,7 @@ namespace NetCoreUtils.Database.MongoDb
             return _collection.AsQueryable<TDoc>().Where(where);
         }
 
-        public IMongoQueryable<TDoc> QueryAll()
+        public IMongoQueryable<TDoc> Query()
         {
             return _collection.AsQueryable<TDoc>();
         }
