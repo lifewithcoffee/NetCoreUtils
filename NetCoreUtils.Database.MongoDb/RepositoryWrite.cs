@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NetCoreUtils.Database.MongoDb
 {
-    public interface IRepositoryWrite<TDoc> where TDoc : MongoDocBase
+    public interface IRepositoryWrite<TDoc> : IMongoRepository<TDoc> where TDoc : MongoDoc
     {
         void DeleteMany(Expression<Func<TDoc, bool>> where, IClientSessionHandle session = null);
         Task DeleteManyAsync(Expression<Func<TDoc, bool>> where, IClientSessionHandle session = null);
@@ -30,110 +30,105 @@ namespace NetCoreUtils.Database.MongoDb
     /// 
     /// Direct injecting IMongoCollection<TDoc> should be used instead.
     /// </summary>
-    public class RepositoryWrite<TDoc> : IRepositoryWrite<TDoc> where TDoc : MongoDocBase
+    public class RepositoryWrite<TDoc> : RepositoryBase<TDoc>, IRepositoryWrite<TDoc> where TDoc : MongoDoc
     {
-        private IMongoCollection<TDoc> _collection;
-
-        public RepositoryWrite(IMongoDbConnection dbconn)
-        {
-            _collection = dbconn.MongoDatabase.GetCollection<TDoc>(typeof(TDoc).Name);
-        }
+        public RepositoryWrite(IMongoDbConnection conn):base(conn) { }
 
         public void InsertOne(TDoc document, IClientSessionHandle session = null)
         {
             if (session == null)
-                _collection.InsertOne(document);
+                Collection.InsertOne(document);
             else
-                _collection.InsertOne(session, document);
+                Collection.InsertOne(session, document);
         }
 
         public async Task InsertOneAsync(TDoc document, IClientSessionHandle session = null)
         {
             if (session == null)
-                await _collection.InsertOneAsync(document);
+                await Collection.InsertOneAsync(document);
             else
-                await _collection.InsertOneAsync(session, document);
+                await Collection.InsertOneAsync(session, document);
         }
 
         public void InsertMany(ICollection<TDoc> documents, IClientSessionHandle session = null)
         {
             if (session == null)
-                _collection.InsertMany(documents);
+                Collection.InsertMany(documents);
             else
-                _collection.InsertMany(session, documents);
+                Collection.InsertMany(session, documents);
         }
 
         public async Task InsertManyAsync(ICollection<TDoc> documents, IClientSessionHandle session = null)
         {
             if (session == null)
-                await _collection.InsertManyAsync(documents);
+                await Collection.InsertManyAsync(documents);
             else
-                await _collection.InsertManyAsync(session, documents);
+                await Collection.InsertManyAsync(session, documents);
         }
 
         public void Replace(Expression<Func<TDoc, bool>> where, TDoc doc, IClientSessionHandle session = null)
         {
             if (session == null)
-                _collection.FindOneAndReplace(where, doc);
+                Collection.FindOneAndReplace(where, doc);
             else
-                _collection.FindOneAndReplace(session, where, doc);
+                Collection.FindOneAndReplace(session, where, doc);
         }
 
         public async Task ReplaceAsync(Expression<Func<TDoc, bool>> where, TDoc doc, IClientSessionHandle session = null)
         {
             if (session == null)
-                await _collection.FindOneAndReplaceAsync(where, doc);
+                await Collection.FindOneAndReplaceAsync(where, doc);
             else
-                await _collection.FindOneAndReplaceAsync(session, where, doc);
+                await Collection.FindOneAndReplaceAsync(session, where, doc);
         }
 
         public void Update(Expression<Func<TDoc, bool>> where, UpdateDefinition<TDoc> update, IClientSessionHandle session = null)
         {
             if (session == null)
-                _collection.FindOneAndUpdate(where, update);
+                Collection.FindOneAndUpdate(where, update);
             else
-                _collection.FindOneAndUpdate(session, where, update);
+                Collection.FindOneAndUpdate(session, where, update);
         }
 
         public async Task UpdateAsync(Expression<Func<TDoc, bool>> where, UpdateDefinition<TDoc> update, IClientSessionHandle session = null)
         {
             if (session == null)
-                await _collection.FindOneAndUpdateAsync(where, update);
+                await Collection.FindOneAndUpdateAsync(where, update);
             else
-                await _collection.FindOneAndUpdateAsync(session, where, update);
+                await Collection.FindOneAndUpdateAsync(session, where, update);
         }
 
         public void DeleteOne(Expression<Func<TDoc, bool>> where, IClientSessionHandle session = null)
         {
             if (session == null)
-                _collection.DeleteOne(where);
+                Collection.DeleteOne(where);
             else
-                _collection.DeleteOne(session, where);
+                Collection.DeleteOne(session, where);
 
         }
 
         public async Task DeleteOneAsync(Expression<Func<TDoc, bool>> where, IClientSessionHandle session = null)
         {
             if (session == null)
-                await _collection.DeleteOneAsync(where);
+                await Collection.DeleteOneAsync(where);
             else
-                await _collection.DeleteOneAsync(session, where);
+                await Collection.DeleteOneAsync(session, where);
         }
 
         public void DeleteMany(Expression<Func<TDoc, bool>> where, IClientSessionHandle session = null)
         {
             if (session == null)
-                _collection.DeleteMany(where);
+                Collection.DeleteMany(where);
             else
-                _collection.DeleteMany(session, where);
+                Collection.DeleteMany(session, where);
         }
 
         public async Task DeleteManyAsync(Expression<Func<TDoc, bool>> where, IClientSessionHandle session = null)
         {
             if (session == null)
-                await _collection.DeleteManyAsync(where);
+                await Collection.DeleteManyAsync(where);
             else
-                await _collection.DeleteManyAsync(session, where);
+                await Collection.DeleteManyAsync(session, where);
         }
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace NetCoreUtils.Database.MongoDb
 {
-    public interface IRepositoryRead<TDoc> where TDoc : MongoDocBase
+    public interface IRepositoryRead<TDoc> : IMongoRepository<TDoc> where TDoc : MongoDoc
     {
         bool Exist(Expression<Func<TDoc, bool>> where);
         Task<bool> ExistAsync(Expression<Func<TDoc, bool>> where);
@@ -22,60 +22,61 @@ namespace NetCoreUtils.Database.MongoDb
         IMongoQueryable<TDoc> Query();
     }
 
-    public class RepositoryRead<TDoc> : IRepositoryRead<TDoc> where TDoc : MongoDocBase
+    public class RepositoryRead<TDoc> : RepositoryBase<TDoc>, IRepositoryRead<TDoc> where TDoc : MongoDoc
     {
-        private IMongoCollection<TDoc> _collection;
-
-        public RepositoryRead(IMongoDatabase db)
-        {
-            _collection = db.GetCollection<TDoc>(typeof(TDoc).Name);
-        }
+        public RepositoryRead(IMongoDbConnection conn):base(conn) { }
 
         public bool Exist(Expression<Func<TDoc, bool>> where)
         {
-            return _collection.Find(where).Any();
+            return Collection.Find(where).Any();
         }
 
         public async Task<bool> ExistAsync(Expression<Func<TDoc, bool>> where)
         {
-            var cursor = await _collection.FindAsync(where);
+            var cursor = await Collection.FindAsync(where);
             return await cursor.AnyAsync();
         }
 
         public TDoc Find(string id)
         {
-            return _collection.Find(d => d.Id.Equals(new ObjectId(id))).SingleOrDefault();
+            return Collection.Find(d => d.Id.Equals(new ObjectId(id))).SingleOrDefault();
 
             // or:
-            // var filter = Builders<TEntity>.Filter.Eq(doc => doc.Id, objectId);
-            // return _collection.Find(filter).SingleOrDefault();
+            //return Collection.Find(d => d.Id.Equals(ObjectId.Parse(id))).SingleOrDefault();
+
+            // or:
+            //return Collection.Find(d => d.Id == id).SingleOrDefault();
+
+            // or:
+            //var filter = Builders<TDoc>.Filter.Eq("_id", id);
+            //return Collection.Find(filter).SingleOrDefault();
         }
 
         public async Task<TDoc> FindAsync(string id)
         {
-            var cursor = await _collection.FindAsync<TDoc>(d => d.Id.Equals(new ObjectId(id)));
+            var cursor = await Collection.FindAsync<TDoc>(d => d.Id.Equals(new ObjectId(id)));
             return await cursor.FirstOrDefaultAsync();
         }
 
         public async Task<List<TDoc>> FindAsync(Expression<Func<TDoc, bool>> where)
         {
-            var cursor = await _collection.FindAsync<TDoc>(where);
+            var cursor = await Collection.FindAsync<TDoc>(where);
             return await cursor.ToListAsync();
         }
 
         public List<TDoc> Find(Expression<Func<TDoc, bool>> where)
         {
-            return _collection.Find<TDoc>(where).ToList();
+            return Collection.Find<TDoc>(where).ToList();
         }
 
         public IMongoQueryable<TDoc> Query(Expression<Func<TDoc, bool>> where)
         {
-            return _collection.AsQueryable<TDoc>().Where(where);
+            return Collection.AsQueryable<TDoc>().Where(where);
         }
 
         public IMongoQueryable<TDoc> Query()
         {
-            return _collection.AsQueryable<TDoc>();
+            return Collection.AsQueryable<TDoc>();
         }
     }
 }
