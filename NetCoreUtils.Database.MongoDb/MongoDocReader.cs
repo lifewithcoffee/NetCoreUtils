@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace NetCoreUtils.Database.MongoDb
 {
-    public interface IRepositoryRead<TDoc> : IMongoRepository<TDoc> where TDoc : MongoDoc
+    public interface IMongoDocReader<TDoc> : IMongoRepository<TDoc> where TDoc : MongoDoc
     {
         bool Exist(Expression<Func<TDoc, bool>> where);
         Task<bool> ExistAsync(Expression<Func<TDoc, bool>> where);
@@ -22,9 +22,9 @@ namespace NetCoreUtils.Database.MongoDb
         IMongoQueryable<TDoc> Query();
     }
 
-    public class RepositoryRead<TDoc> : RepositoryBase<TDoc>, IRepositoryRead<TDoc> where TDoc : MongoDoc
+    public class MongoDocReader<TDoc> : RepositoryBase<TDoc>, IMongoDocReader<TDoc> where TDoc : MongoDoc
     {
-        public RepositoryRead(IMongoDbConnection conn):base(conn) { }
+        public MongoDocReader(IMongoDbConnection conn):base(conn) { }
 
         public bool Exist(Expression<Func<TDoc, bool>> where)
         {

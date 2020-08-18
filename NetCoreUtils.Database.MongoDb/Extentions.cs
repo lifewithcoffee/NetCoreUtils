@@ -37,8 +37,8 @@ namespace NetCoreUtils.Database.MongoDb
         static public void AddMongoDb(this IServiceCollection services, MongoDbSetting setting)
         {
             services.AddSingleton<IMongoDbConnection>(x => new MongoDbConnection(setting));
-            services.AddTransient(typeof(IRepositoryRead<>), typeof(RepositoryRead<>));
-            services.AddTransient(typeof(IRepositoryWrite<>), typeof(RepositoryWrite<>));
+            services.AddTransient(typeof(IMongoDocReader<>), typeof(MongoDocReader<>));
+            services.AddTransient(typeof(IMongoDocWriter<>), typeof(MongoDocWriter<>));
         }
     }
 }

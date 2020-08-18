@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NetCoreUtils.Database.MongoDb
 {
-    public interface IRepositoryWrite<TDoc> : IMongoRepository<TDoc> where TDoc : MongoDoc
+    public interface IMongoDocWriter<TDoc> : IMongoRepository<TDoc> where TDoc : MongoDoc
     {
         void DeleteMany(Expression<Func<TDoc, bool>> where, IClientSessionHandle session = null);
         Task DeleteManyAsync(Expression<Func<TDoc, bool>> where, IClientSessionHandle session = null);
@@ -30,9 +30,9 @@ namespace NetCoreUtils.Database.MongoDb
     /// 
     /// Direct injecting IMongoCollection<TDoc> should be used instead.
     /// </summary>
-    public class RepositoryWrite<TDoc> : RepositoryBase<TDoc>, IRepositoryWrite<TDoc> where TDoc : MongoDoc
+    public class MongoDocWriter<TDoc> : RepositoryBase<TDoc>, IMongoDocWriter<TDoc> where TDoc : MongoDoc
     {
-        public RepositoryWrite(IMongoDbConnection conn):base(conn) { }
+        public MongoDocWriter(IMongoDbConnection conn):base(conn) { }
 
         public void InsertOne(TDoc document, IClientSessionHandle session = null)
         {

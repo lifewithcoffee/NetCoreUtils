@@ -19,15 +19,15 @@ namespace NetCoreUtils.TestCli.Commands
 
         // note: the following members use different collection names, see the constructor for more details
         IMongoCollection<TestDoc> collection;
-        IRepositoryRead<Student> reader;
+        IMongoDocReader<Student> reader;
 
-        public Mongo2Command(IMongoDbConnection mongo, IRepositoryRead<Student> reader)
+        public Mongo2Command(IMongoDbConnection connection, IMongoDocReader<Student> reader)
         {
             this.reader = reader;
             this.reader.CollectionName = "rl_test_colle2";
 
-            this.mongo = mongo;
-            this.collection = mongo.MongoDatabase.GetCollection<TestDoc>("TestDocs");
+            this.mongo = connection;
+            this.collection = connection.MongoDatabase.GetCollection<TestDoc>("TestDocs");
         }
 
         public async Task AddDoc()
