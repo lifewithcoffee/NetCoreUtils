@@ -8,6 +8,7 @@ using System.IO;
 using Serilog;
 using Serilog.Events;
 using System.Threading.Tasks;
+using NetCoreUtils.Database.MongoDb;
 
 namespace NetCoreUtils.TestCli
 {
@@ -22,7 +23,7 @@ namespace NetCoreUtils.TestCli
                 .WriteTo.Console()
                 .CreateLogger();
 
-            await new AssemblyCommandExecutor().ExecuteAsync(args);
+            await new AssemblyCommandExecutor().ExecuteAsync(args, s => s.AddMongoDb(new MongoDbSetting { DatabaseName = "rltestdb" }) );
         }
     }
 }

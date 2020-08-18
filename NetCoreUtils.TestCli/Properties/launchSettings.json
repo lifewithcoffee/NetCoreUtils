@@ -2,7 +2,7 @@
   "profiles": {
     "NetCoreUtils.TestCli": {
       "commandName": "Project",
-      "commandLineArgs": "hosted-service",
+      "commandLineArgs": "mongo2 read-doc",
       "environmentVariables": {
         "NETCOREUTILS_ENVIRONMENT": "Development"
       }
