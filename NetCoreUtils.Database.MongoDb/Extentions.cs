@@ -29,7 +29,7 @@ namespace NetCoreUtils.Database.MongoDb
         }
 
         public IMongoClient MongoClient => _mongoClient;
-        public IMongoDatabase MongoDatabase => throw new NotImplementedException();
+        public IMongoDatabase MongoDatabase => _mongoDatabase;
     }
 
     static public class Extentions
