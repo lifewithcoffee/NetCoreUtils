@@ -23,13 +23,6 @@ namespace NetCoreUtils.Database.MongoDb
         Task UpdateAsync(Expression<Func<TDoc, bool>> where, UpdateDefinition<TDoc> update, IClientSessionHandle session = null);
     }
 
-    /// <summary>
-    /// This class is left here just for reference. It is not recommended to
-    /// use it since it seems not to make sense to wrap a Repository class for
-    /// writing.
-    /// 
-    /// Direct injecting IMongoCollection<TDoc> should be used instead.
-    /// </summary>
     public class MongoDocWriter<TDoc> : RepositoryBase<TDoc>, IMongoDocWriter<TDoc> where TDoc : MongoDoc
     {
         public MongoDocWriter(IMongoDbConnection conn):base(conn) { }
