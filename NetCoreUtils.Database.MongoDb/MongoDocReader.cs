@@ -22,9 +22,9 @@ namespace NetCoreUtils.Database.MongoDb
         IMongoQueryable<TDoc> Query();
     }
 
-    public class MongoDocReader<TDoc> : RepositoryBase<TDoc>, IMongoDocReader<TDoc> where TDoc : MongoDoc
+    public class MongoDocReader<TDoc> : MongoRepository<TDoc>, IMongoDocReader<TDoc> where TDoc : MongoDoc
     {
-        public MongoDocReader(IMongoDbConnection conn):base(conn) { }
+        public MongoDocReader(IMongoDbConnection conn) : base(conn) { }
 
         public bool Exist(Expression<Func<TDoc, bool>> where)
         {

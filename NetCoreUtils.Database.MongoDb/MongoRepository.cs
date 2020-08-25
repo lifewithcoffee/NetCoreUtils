@@ -1,9 +1,15 @@
-﻿using System;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
+using System;
 
 namespace NetCoreUtils.Database.MongoDb
 {
-    public class RepositoryBase<TDoc> : IMongoRepository<TDoc>
+    public interface IMongoRepository<TDoc>
+    {
+        string CollectionName { get; }
+        IMongoCollection<TDoc> Collection { get; }
+    }
+
+    public class MongoRepository<TDoc> : IMongoRepository<TDoc>
     {
         protected IMongoDatabase _database;
 
@@ -16,7 +22,7 @@ namespace NetCoreUtils.Database.MongoDb
             get { return _collectionName; }
         }
 
-        public RepositoryBase(IMongoDbConnection conn)
+        public MongoRepository(IMongoDbConnection conn)
         {
             _database = conn.MongoDatabase;
 
@@ -33,4 +39,5 @@ namespace NetCoreUtils.Database.MongoDb
             _collection = _database.GetCollection<TDoc>(_collectionName);
         }
     }
+
 }

@@ -23,9 +23,9 @@ namespace NetCoreUtils.Database.MongoDb
         Task UpdateAsync(Expression<Func<TDoc, bool>> where, UpdateDefinition<TDoc> update, IClientSessionHandle session = null);
     }
 
-    public class MongoDocWriter<TDoc> : RepositoryBase<TDoc>, IMongoDocWriter<TDoc> where TDoc : MongoDoc
+    public class MongoDocWriter<TDoc> : MongoRepository<TDoc>, IMongoDocWriter<TDoc> where TDoc : MongoDoc
     {
-        public MongoDocWriter(IMongoDbConnection conn):base(conn) { }
+        public MongoDocWriter(IMongoDbConnection conn) : base(conn) { }
 
         public void InsertOne(TDoc document, IClientSessionHandle session = null)
         {
