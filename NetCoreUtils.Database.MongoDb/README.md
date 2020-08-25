@@ -43,3 +43,4 @@ View data in Compass:
 ## 1.1.0
 
 - Add IMongoDbConnection.UpdateSetting() method
+- Add collection attribute and default collection name
