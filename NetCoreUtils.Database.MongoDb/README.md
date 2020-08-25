@@ -3,6 +3,7 @@
 ## Usage
 
 - Document class should inherit from `MongoDoc`
+
   ``` csharp
   public class Score
   {
@@ -17,14 +18,15 @@
       public int class_id;
   }
   ```
+
 - When inject an `IRepositoryRead<TDoc>` or `IRepositoryWrite<TDoc>`, their
   `CollectionName` must be explicitly assigned.
 
   ``` csharp
   public Mongo2Command(IRepositoryRead<Student> reader)
   {
-	  this.reader = reader;
-	  this.reader.CollectionName = "rl_test_colle2";
+    this.reader = reader;
+    this.reader.CollectionName = "rl_test_colle2";
   }
   ```
 
@@ -36,3 +38,8 @@ Start local mongodb instance:
 View data in Compass:
 > D:\Program Files\MongoDB\mongodb-compass\MongoDBCompass.exe
 
+## Release Notes
+
+## 1.1.0
+
+- Add IMongoDbConnection.UpdateSetting() method

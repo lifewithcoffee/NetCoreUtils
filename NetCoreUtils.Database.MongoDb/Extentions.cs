@@ -15,6 +15,7 @@ namespace NetCoreUtils.Database.MongoDb
     {
         public IMongoClient MongoClient { get; }
         public IMongoDatabase MongoDatabase { get; }
+        void UpdateSetting(MongoDbSetting setting);
     }
 
     public class MongoDbConnection : IMongoDbConnection
@@ -23,6 +24,11 @@ namespace NetCoreUtils.Database.MongoDb
         IMongoDatabase _mongoDatabase;
 
         public MongoDbConnection(MongoDbSetting setting)
+        {
+            UpdateSetting(setting);
+        }
+
+        public void UpdateSetting(MongoDbSetting setting)
         {
             _mongoClient = new MongoClient($"mongodb://{setting.Host}:{setting.Port}");
             _mongoDatabase = _mongoClient.GetDatabase(setting.DatabaseName);
