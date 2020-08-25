@@ -44,3 +44,4 @@ View data in Compass:
 
 - Add IMongoDbConnection.UpdateSetting() method
 - Add collection attribute and default collection name
+  > if not specified by attribute [collection("a_custom_collection_name")], the default collection name will be `<class_name>_collection`
