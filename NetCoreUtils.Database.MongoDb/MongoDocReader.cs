@@ -39,10 +39,11 @@ namespace NetCoreUtils.Database.MongoDb
 
         public TDoc Find(string id)
         {
-            return Collection.Find(d => d.Id.Equals(new ObjectId(id))).SingleOrDefault();
+            var idObject = ObjectId.Parse(id);
+            return Collection.Find(d => d._id.Equals(idObject)).SingleOrDefault();
 
             // or:
-            //return Collection.Find(d => d.Id.Equals(ObjectId.Parse(id))).SingleOrDefault();
+            //return Collection.Find(d => d.Id.Equals(new ObjectId(id))).SingleOrDefault();
 
             // or:
             //return Collection.Find(d => d.Id == id).SingleOrDefault();
@@ -54,7 +55,8 @@ namespace NetCoreUtils.Database.MongoDb
 
         public async Task<TDoc> FindAsync(string id)
         {
-            var cursor = await Collection.FindAsync<TDoc>(d => d.Id.Equals(new ObjectId(id)));
+            var idObject = ObjectId.Parse(id);
+            var cursor = await Collection.FindAsync<TDoc>(d => d._id.Equals(idObject));
             return await cursor.FirstOrDefaultAsync();
         }
 

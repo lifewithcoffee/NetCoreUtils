@@ -22,7 +22,6 @@ namespace NetCoreUtils.Database.MongoDb
     public class MongoDoc
     {
         [BsonId]
-        public ObjectId Id { get; set; }
-        public DateTime CreatedAt => Id.CreationTime;
+        public ObjectId _id { get; set; }
     }
 }

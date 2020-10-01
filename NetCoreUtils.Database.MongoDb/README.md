@@ -40,6 +40,12 @@ View data in Compass:
 
 ## Release Notes
 
+## 1.2.0
+
+- Remove MongoDoc.CreateAt since it can be get from ObjectId
+- Rename MongoDoc.Id to MongoDoc._id to keep consist with MongoDB's naming
+- Add `IMongoDocWriter<TDoc>.Delete(id)` and `IMongoDocWriter<TDoc>.DeleteAsync(id)`
+
 ## 1.1.0
 
 - Add IMongoDbConnection.UpdateSetting() method

@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -9,6 +10,8 @@ namespace NetCoreUtils.Database.MongoDb
 {
     public interface IMongoDocWriter<TDoc> : IMongoRepository<TDoc> where TDoc : MongoDoc
     {
+        void Delete(string id, IClientSessionHandle session = null);
+        Task DeleteAsync(string id, IClientSessionHandle session = null);
         void DeleteMany(Expression<Func<TDoc, bool>> where, IClientSessionHandle session = null);
         Task DeleteManyAsync(Expression<Func<TDoc, bool>> where, IClientSessionHandle session = null);
         void DeleteOne(Expression<Func<TDoc, bool>> where, IClientSessionHandle session = null);
@@ -122,6 +125,25 @@ namespace NetCoreUtils.Database.MongoDb
                 await Collection.DeleteManyAsync(where);
             else
                 await Collection.DeleteManyAsync(session, where);
+        }
+
+        public void Delete(string id, IClientSessionHandle session = null)
+        {
+            var idObject = ObjectId.Parse(id);
+            if (session == null)
+                Collection.DeleteOne(d => d._id.Equals(idObject));
+            else
+                Collection.DeleteOne(session, d => d._id.Equals(idObject));
+
+        }
+
+        public async Task DeleteAsync(string id, IClientSessionHandle session = null)
+        {
+            var idObject = ObjectId.Parse(id);
+            if (session == null)
+                await Collection.DeleteOneAsync(d => d._id.Equals(idObject));
+            else
+                await Collection.DeleteOneAsync(session, d => d._id.Equals(idObject));
         }
     }
 }
