@@ -1,6 +1,6 @@
 ﻿# NetCoreUtils.Database.MongoDb
 
-## Usage
+## Document Class
 
 - Document class should inherit from `MongoDoc`
 
@@ -19,8 +19,16 @@
   }
   ```
 
-- When inject an `IRepositoryRead<TDoc>` or `IRepositoryWrite<TDoc>`, their
-  `CollectionName` must be explicitly assigned.
+## Document Collection Name
+
+When inject an `IRepositoryRead<TDoc>` or `IRepositoryWrite<TDoc>`:
+
+- The default collection name is `[lower doc name]_collection`
+
+  For example, the above document `Student` will use `student_collection` as its default
+  collection name.
+
+- A collection name can be specified explicitly:
 
   ``` csharp
   public Mongo2Command(IRepositoryRead<Student> reader)
@@ -28,6 +36,13 @@
     this.reader = reader;
     this.reader.CollectionName = "rl_test_colle2";
   }
+  ```
+
+- A collection name can be specified via a `[Collection]` attribute:
+  
+  ``` csharp
+  [Collection("my_test_collection_name")]
+  public class Student : MongoDoc { }
   ```
 
 ## Start local MongoDB server
