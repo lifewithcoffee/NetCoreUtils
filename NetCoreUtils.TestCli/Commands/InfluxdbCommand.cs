@@ -11,16 +11,8 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace CoreCmdPlayground.Commands
+namespace NetCoreUtils.TestCli.Commands
 {
-    class NamePolicy : JsonNamingPolicy
-    {
-        public override string ConvertName(string name)
-        {
-            return name + "_rl";
-        }
-    }
-
     [Measurement("temperature")]
     class Temperature : MeasurementBase
     {
