@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreCmd", "..\CoreCmd\CoreC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{92A8A9CA-1146-4855-B25B-1503B8241328}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreUtils.Database.MongoDb", "NetCoreUtils.Database.MongoDb\NetCoreUtils.Database.MongoDb.csproj", "{C082E641-8D7F-4957-951D-224F8727C71D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreUtils.Database.MongoDb", "NetCoreUtils.Database.MongoDb\NetCoreUtils.Database.MongoDb.csproj", "{C082E641-8D7F-4957-951D-224F8727C71D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreUtils.Database.InfluxDb", "NetCoreUtils.Database.InfluxDb\NetCoreUtils.Database.InfluxDb.csproj", "{39A59734-2A01-40CA-A77D-157E8E5FF51D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{C082E641-8D7F-4957-951D-224F8727C71D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C082E641-8D7F-4957-951D-224F8727C71D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C082E641-8D7F-4957-951D-224F8727C71D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39A59734-2A01-40CA-A77D-157E8E5FF51D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39A59734-2A01-40CA-A77D-157E8E5FF51D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39A59734-2A01-40CA-A77D-157E8E5FF51D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39A59734-2A01-40CA-A77D-157E8E5FF51D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
