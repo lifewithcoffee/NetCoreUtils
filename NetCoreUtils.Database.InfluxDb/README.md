@@ -14,7 +14,7 @@ public void ConfigureServices(IServiceCollection services)
 
 ## Release Notes
 
-### v1.0.0.0 (working)
+### v1.0.0.0
 
 Initial release with the following implementation:
 
