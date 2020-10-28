@@ -14,6 +14,11 @@ public void ConfigureServices(IServiceCollection services)
 
 ## Release Notes
 
+### v1.1.0.1
+
+- Add writing by point, including point list and array
+- Add writing POCO list and array
+
 ### v1.0.0.0
 
 Initial release with the following implementation:
