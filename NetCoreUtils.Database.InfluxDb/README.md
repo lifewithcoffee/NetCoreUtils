@@ -14,6 +14,11 @@ public void ConfigureServices(IServiceCollection services)
 
 ## Release Notes
 
+### v1.2.0.2 (working)
+
+- Add PointModel class for json serialization
+- Add InfluxWrite methods for PointModel
+
 ### v1.1.0.1
 
 - Add writing by point, including point list and array
