@@ -3,6 +3,7 @@ using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Writes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace NetCoreUtils.Database.InfluxDb
@@ -15,6 +16,9 @@ namespace NetCoreUtils.Database.InfluxDb
         Task WriteAsync(PointData point);
         Task WriteAsync(List<PointData> points);
         Task WriteAsync(PointData[] points);
+        Task WriteAsync<T>(PointModel<T> point);
+        Task WriteAsync<T>(List<PointModel<T>> points);
+        Task WriteAsync<T>(PointModel<T>[] points);
     }
 
 
@@ -56,6 +60,21 @@ namespace NetCoreUtils.Database.InfluxDb
         public async Task WriteAsync(PointData[] points)
         {
             await _writeApiAsync.WritePointsAsync(_bucket, _org, points);
+        }
+
+        public async Task WriteAsync<T>(PointModel<T> point)
+        {
+            await _writeApiAsync.WritePointAsync(_bucket, _org, point.ConverToPointData());
+        }
+
+        public async Task WriteAsync<T>(List<PointModel<T>> points)
+        {
+            await _writeApiAsync.WritePointsAsync(_bucket, _org, points.Select(point => point.ConverToPointData()).ToList());
+        }
+
+        public async Task WriteAsync<T>(PointModel<T>[] points)
+        {
+            await _writeApiAsync.WritePointsAsync(_bucket, _org, points.Select(point => point.ConverToPointData()).ToArray());
         }
     }
 }
