@@ -7,7 +7,11 @@ using System.Text.Json;
 
 namespace NetCoreUtils.Database.InfluxDb
 {
-    public class JsonSerializablePoint<T>
+    /// <summary>
+    /// Point model for json serialization.
+    /// </summary>
+    /// <typeparam name="T">The field data type.</typeparam>
+    public class PointModel<T>
     {
         public string Measurement { get; set; }
         public Dictionary<string, string> Tags { get; set; } = new Dictionary<string, string>();
