@@ -2,7 +2,7 @@
   "profiles": {
     "NetCoreUtils.TestCli": {
       "commandName": "Project",
-      "commandLineArgs": "mongo2 read-doc",
+      "commandLineArgs": "influx-di write-point",
       "environmentVariables": {
         "NETCOREUTILS_ENVIRONMENT": "Development"
       }
