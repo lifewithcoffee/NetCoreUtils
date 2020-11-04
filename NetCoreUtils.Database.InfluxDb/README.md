@@ -14,6 +14,10 @@ public void ConfigureServices(IServiceCollection services)
 
 ## Release Notes
 
+### v1.3.0.3
+
+- Add non-POCO query method: `Task<PivotData> IInfluxReader.QueryAsync`
+
 ### v1.2.0.2
 
 - Add PointModel class for json serialization

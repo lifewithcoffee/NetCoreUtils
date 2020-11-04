@@ -1,5 +1,6 @@
 ﻿using CoreCmd.Attributes;
 using InfluxDB.Client.Api.Domain;
+using InfluxDB.Client.Core;
 using InfluxDB.Client.Writes;
 using MongoDB.Bson;
 using NetCoreUtils.Database.InfluxDb;
@@ -204,7 +205,7 @@ namespace NetCoreUtils.TestCli.Commands.Influx
             {
                 var value = new Random().Next(0, 100);
 
-                var point = PointData.Measurement("my-point")
+                var point = PointData.Measurement("point-list")
                     .Tag("tag1", "PointTag1")
                     .Tag("tag2", "PointTag2")
                     .Field("value", value)
@@ -225,7 +226,7 @@ namespace NetCoreUtils.TestCli.Commands.Influx
             {
                 var value = new Random().Next(0, 100);
 
-                var point = PointData.Measurement("my-point")
+                var point = PointData.Measurement("point-array")
                     .Tag("tag1", "PointTag1")
                     .Tag("tag2", "PointTag2")
                     .Field("value", value)
@@ -238,7 +239,7 @@ namespace NetCoreUtils.TestCli.Commands.Influx
             await _writer.WriteAsync(array);
         }
 
-        public async Task Read()
+        public async Task ReadPoco()
         {
             var temperature = await _reader.QueryAsync<Temperature>(new QueryRange(-7, RangeUnit.day));
             temperature.ForEach(t => { 
@@ -246,5 +247,22 @@ namespace NetCoreUtils.TestCli.Commands.Influx
                 Console.WriteLine(t.ToJson());
             });
         }
+
+        public async Task ReadPivotData(string measurementName)
+        {
+            PivotData data = await _reader.QueryAsync(measurementName, new QueryRange(-7, RangeUnit.day));
+            Console.WriteLine(data.ToJson());
+            Console.WriteLine("-----------------");
+       }
+    }
+
+    [Measurement("mmt1")]
+    class Mmt : MeasurementBase
+    {
+        [Column("tag3", IsTag = true)] public string Tag3 { get; set; }
+        [Column("tag4", IsTag = true)] public string Tag4 { get; set; }
+
+        [Column("value1")] public long Value1 { get; set; }
+        [Column("value2")] public long Value2 { get; set; }
     }
 }
