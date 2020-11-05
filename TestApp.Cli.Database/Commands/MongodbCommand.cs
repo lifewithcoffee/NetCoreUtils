@@ -6,9 +6,9 @@ using CoreCmd.Attributes;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using NetCoreUtils.Database.MongoDb;
-using NetCoreUtils.TestCli.MongoDbDemo;
+using TestApp.Cli.Database.MongoDbDemo;
 
-namespace NetCoreUtils.TestCli.Commands
+namespace TestApp.Cli.Database.Commands
 {
     [Alias("mongo")]
     public class MongodbCommand : MongodbCommandBase { }

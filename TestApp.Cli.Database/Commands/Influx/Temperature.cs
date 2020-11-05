@@ -1,7 +1,7 @@
 ﻿using InfluxDB.Client.Core;
 using NetCoreUtils.Database.InfluxDb;
 
-namespace NetCoreUtils.TestCli.Commands.Influx
+namespace TestApp.Cli.Database.Commands.Influx
 {
     [Measurement("temperature")]
     class Temperature : MeasurementBase

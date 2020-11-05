@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace NetCoreUtils.TestCli.MongoDbDemo
+namespace TestApp.Cli.Database.MongoDbDemo
 {
     public class MongodbCommandBase
     {

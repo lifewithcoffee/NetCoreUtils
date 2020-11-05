@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace NetCoreUtils.TestCli.Commands.Influx
+namespace TestApp.Cli.Database.Commands.Influx
 {
     //[Alias("influx")]
     public class InfluxSdkCommand
