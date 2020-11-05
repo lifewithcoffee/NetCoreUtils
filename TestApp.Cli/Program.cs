@@ -8,8 +8,6 @@ using System.IO;
 using Serilog;
 using Serilog.Events;
 using System.Threading.Tasks;
-using NetCoreUtils.Database.MongoDb;
-using NetCoreUtils.Database.InfluxDb;
 
 namespace NetCoreUtils.TestCli
 {
@@ -26,11 +24,6 @@ namespace NetCoreUtils.TestCli
 
             await new AssemblyCommandExecutor().ExecuteAsync(args, s =>
             {
-                s.AddMongoDb(new MongoDbSetting { DatabaseName = "rltestdb" });
-                s.AddInfluxDb(new InfluxDbSetting
-                {
-                    Token = "4R1aL7t1hZolnMQezXQxkhhMGlqYUBy7g5Ue8RQAQ9wHn_XIHJN_2EpFqaYcD9F2wv_lt-kHqP8Ym99c7Gv5pw=="
-                });
             });
         }
     }

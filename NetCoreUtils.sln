@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreUtils.Database.Influ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.Cli", "TestApp.Cli\TestApp.Cli.csproj", "{60BFC7B6-950F-4ECB-87C2-BCEFEF4B5F9C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.Cli.Database", "TestApp.Cli.Database\TestApp.Cli.Database.csproj", "{CF69680D-F7F6-4FC6-87EA-3EDD630AF5E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{60BFC7B6-950F-4ECB-87C2-BCEFEF4B5F9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60BFC7B6-950F-4ECB-87C2-BCEFEF4B5F9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60BFC7B6-950F-4ECB-87C2-BCEFEF4B5F9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF69680D-F7F6-4FC6-87EA-3EDD630AF5E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF69680D-F7F6-4FC6-87EA-3EDD630AF5E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF69680D-F7F6-4FC6-87EA-3EDD630AF5E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF69680D-F7F6-4FC6-87EA-3EDD630AF5E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +90,7 @@ Global
 		{9873F1D4-BC26-415E-885A-1DB3B7972605} = {6A2D2033-6874-4547-A09F-A357DE547B3F}
 		{C4C719E7-2C54-4CD1-8A3D-5B34831F673A} = {B745387B-AD6C-4E78-8988-A07535F0391B}
 		{60BFC7B6-950F-4ECB-87C2-BCEFEF4B5F9C} = {92A8A9CA-1146-4855-B25B-1503B8241328}
+		{CF69680D-F7F6-4FC6-87EA-3EDD630AF5E1} = {92A8A9CA-1146-4855-B25B-1503B8241328}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F9BE06A1-7DBB-4FDA-AE83-8A714E94F542}
