@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TestApp.Cli.Database": {
+      "commandName": "Project",
+      "commandLineArgs": "influx-json point-model"
+    }
+  }
+}
