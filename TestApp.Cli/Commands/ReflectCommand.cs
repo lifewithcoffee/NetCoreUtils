@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NetCoreUtils.TestCli.Commands
+namespace TestApp.Cli.Commands
 {
     public interface ISomeInterface
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 
-namespace NetCoreUtils.TestCli.JsonDemo
+namespace TestApp.Cli.JsonDemo
 {
     class JsonService
     {

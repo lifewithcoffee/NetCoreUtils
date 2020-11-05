@@ -1,10 +1,10 @@
-﻿using NetCoreUtils.TestCli.JsonDemo;
+﻿using TestApp.Cli.JsonDemo;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace NetCoreUtils.TestCli.Commands
+namespace TestApp.Cli.Commands
 {
     class JsonCommand
     {

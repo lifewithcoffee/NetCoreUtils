@@ -3,13 +3,13 @@ using DotNetty.Handlers.Logging;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
-using NetCoreUtils.TestCli.DotNettyDemo.Handlers;
+using TestApp.Cli.DotNettyDemo.Handlers;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetCoreUtils.TestCli.DotNettyDemo.Servers
+namespace TestApp.Cli.DotNettyDemo.Servers
 {
     class TcpServer : IExecutable
     {

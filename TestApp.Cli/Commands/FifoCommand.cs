@@ -1,12 +1,12 @@
 ﻿using CoreCmd.Attributes;
-using NetCoreUtils.TestCli.FifoDemo;
+using TestApp.Cli.FifoDemo;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
-namespace NetCoreUtils.TestCli.Commands
+namespace TestApp.Cli.Commands
 {
     [Help("Demo of threading channels")]
     class FifoCommand

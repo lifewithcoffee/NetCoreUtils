@@ -7,7 +7,7 @@ using System.Threading;
 using System.Reflection;
 using System.IO;
 
-namespace NetCoreUtils.TestCli.Commands
+namespace TestApp.Cli.Commands
 {
     public class ProcUtil
     {
@@ -37,7 +37,7 @@ namespace NetCoreUtils.TestCli.Commands
                 Console.WriteLine($"{logPrefix} Start {Process.GetCurrentProcess().Id}");
 
                 var info = procUtil.GetDotnetExeFullPath(); // or just use "dotnet" directly
-                //Process.Start(info,$@"{procUtil.GetDllDir()}\NetCoreUtils.TestCli.dll proc work {ms}");
+                //Process.Start(info,$@"{procUtil.GetDllDir()}\TestApp.Cli.dll proc work {ms}");
                 Process.Start(info, $@"I:\rp\git\CoreCmd\DependentConsoleApp\bin\Debug\netcoreapp3.1\DependentConsoleApp.dll demo progress-bar");
                 Console.WriteLine($"{logPrefix} Finish");
             }

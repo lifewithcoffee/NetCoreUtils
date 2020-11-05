@@ -9,7 +9,7 @@ using Serilog;
 using Serilog.Events;
 using System.Threading.Tasks;
 
-namespace NetCoreUtils.TestCli
+namespace TestApp.Cli
 {
     class Program
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetCoreUtils.TestCli.DotNettyDemo
+namespace TestApp.Cli.DotNettyDemo
 {
     public interface IExecutable
     {

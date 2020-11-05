@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
-namespace NetCoreUtils.TestCli.FifoDemo
+namespace TestApp.Cli.FifoDemo
 {
     class ThreadChannelService
     {

@@ -5,10 +5,10 @@ using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Embedded;
 using DotNetty.Transport.Channels.Sockets;
-using NetCoreUtils.TestCli.DotNettyDemo;
-using NetCoreUtils.TestCli.DotNettyDemo.Clients;
-using NetCoreUtils.TestCli.DotNettyDemo.Handlers;
-using NetCoreUtils.TestCli.DotNettyDemo.Servers;
+using TestApp.Cli.DotNettyDemo;
+using TestApp.Cli.DotNettyDemo.Clients;
+using TestApp.Cli.DotNettyDemo.Handlers;
+using TestApp.Cli.DotNettyDemo.Servers;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetCoreUtils.TestCli.Commands
+namespace TestApp.Cli.Commands
 {
     class DotNettyCommand
     {

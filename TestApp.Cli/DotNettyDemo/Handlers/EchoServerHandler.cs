@@ -1,6 +1,6 @@
 ﻿using DotNetty.Transport.Channels;
 
-namespace NetCoreUtils.TestCli.DotNettyDemo.Handlers
+namespace TestApp.Cli.DotNettyDemo.Handlers
 {
     using System;
     using System.Text;

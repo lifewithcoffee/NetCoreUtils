@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using NetCoreUtils.TestCli.Commands;
+using TestApp.Cli.Commands;
 
-namespace NetCoreUtils.TestCli.HostedServices.Demo
+namespace TestApp.Cli.HostedServices.Demo
 {
     class TimedHostedService : IHostedService, IDisposable
     {

@@ -7,5 +7,5 @@ dotnet %DEBUG_PATH%\TestApp.Console.dll %*
 :: or set the debug path to system path, then use the following statement to
 :: replace the above one:
 :: 
-:: dotnet %~dp0NetCoreUtils.TestCli.dll %*
+:: dotnet %~dp0TestApp.Cli.dll %*
 @echo on

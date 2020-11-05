@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NetCoreUtils.TestCli.DotNettyDemo.Handlers
+namespace TestApp.Cli.DotNettyDemo.Handlers
 {
     class GeneralChannelHandler : SimpleChannelInboundHandler<object>
     {

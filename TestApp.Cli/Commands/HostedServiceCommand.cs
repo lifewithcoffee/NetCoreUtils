@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NetCoreUtils.TestCli.HostedServices.Demo;
+using TestApp.Cli.HostedServices.Demo;
 using Serilog;
 using Serilog.Events;
 using System;
@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace NetCoreUtils.TestCli.Commands
+namespace TestApp.Cli.Commands
 {
     public class NetCoreUtilsOptions
     {
