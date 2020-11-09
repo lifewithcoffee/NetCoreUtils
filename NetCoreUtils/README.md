@@ -4,7 +4,11 @@
 
 ## Release Notes
 
-## v1.0.0
+## v1.1.0.6
+
+- Add MethodCall.Pipeline
+
+## v1.0.0.5
 
 *Incompatible Change*:
 
