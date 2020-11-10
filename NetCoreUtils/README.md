@@ -4,6 +4,10 @@
 
 ## Release Notes
 
+## v1.2.0.7-working
+
+- Add ExpressionUtil
+
 ## v1.1.0.6
 
 - Add MethodCall.Pipeline
