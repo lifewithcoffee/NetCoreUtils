@@ -2,7 +2,7 @@
 SET DEBUG_PATH=%CD%\bin\Debug\netcoreapp3.1
 SET NETCOREUTILS_ENVIRONMENT=Development
 
-dotnet %DEBUG_PATH%\TestApp.Console.dll %*
+dotnet %DEBUG_PATH%\TestApp.Cli.dll %*
 
 :: or set the debug path to system path, then use the following statement to
 :: replace the above one:
