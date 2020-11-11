@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NetCoreUtils.String
+namespace NetCoreUtils.Text.String
 {
     // Modified from Mads Kristensen's work: https://madskristensen.net/blog/A-shorter-and-URL-friendly-GUID
     // The encoded string is url friendly

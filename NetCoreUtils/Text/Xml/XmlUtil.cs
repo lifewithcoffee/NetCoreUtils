@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace NetCoreUtils.Xml
+namespace NetCoreUtils.Text.Xml
 {
     public class XmlUtil<T>
     {
