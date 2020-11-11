@@ -4,17 +4,21 @@
 
 ## Release Notes
 
-## v1.2.0.7-working
+### v1.2-working
 
 - Add ExpressionUtil
 - Add NetCoreUtils.Text.Table
 - Add NetCoreUtils.Text.Indent
 
-## v1.1.0.6
+*Incompatible Change*:
+
+- Move String, Xml to Text namespace
+
+### v1.1.0.6
 
 - Add MethodCall.Pipeline
 
-## v1.0.0.5
+### v1.0.0.5
 
 *Incompatible Change*:
 
