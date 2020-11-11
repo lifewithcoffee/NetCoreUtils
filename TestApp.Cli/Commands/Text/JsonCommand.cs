@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace TestApp.Cli.Commands
+namespace TestApp.Cli.Commands.Text
 {
     class JsonCommand
     {

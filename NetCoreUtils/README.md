@@ -7,6 +7,8 @@
 ## v1.2.0.7-working
 
 - Add ExpressionUtil
+- Add NetCoreUtils.Text.Table
+- Add NetCoreUtils.Text.Indent
 
 ## v1.1.0.6
 
