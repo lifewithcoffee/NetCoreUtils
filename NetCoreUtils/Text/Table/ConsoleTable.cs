@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NetCoreUtils.Text.Table
@@ -26,16 +27,18 @@ namespace NetCoreUtils.Text.Table
             int columnNumber = rows.Select(r => r.CellNumber).Max();
             int[] result = new int[columnNumber];
 
-            foreach (var row in rows)
-            {
-                int[] cellWidth = row.CalcCellWidth();
-
-                for (int idx = 0; idx < cellWidth.Length; idx++)
+            Action<int[]> updateResult = cellWidthData => { 
+                for (int idx = 0; idx < cellWidthData.Length; idx++)
                 {
-                    if (cellWidth[idx] > result[idx])
-                        result[idx] = cellWidth[idx];
+                    if (cellWidthData[idx] > result[idx])
+                        result[idx] = cellWidthData[idx];
                 }
-            }
+            };
+
+            updateResult(header.CalcCellWidth());
+
+            foreach (var row in rows)
+                updateResult(row.CalcCellWidth());
 
             return result;
         }
