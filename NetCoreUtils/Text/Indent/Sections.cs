@@ -4,9 +4,16 @@ using System.Linq;
 
 namespace NetCoreUtils.Text.Indent
 {
+    public class Section
+    {
+        public string Header { get; set; }
+        public Lines Lines { get; set; }
+    }
+
     public class Sections
     {
-        private Dictionary<string, Lines> dict = new Dictionary<string, Lines>();
+        private List<Section> sections = new List<Section>();
+
         private string generalIndentSpaces;
 
         public Sections(int indentNumber = 0)
@@ -20,24 +27,24 @@ namespace NetCoreUtils.Text.Indent
         public Lines AddSection(string name)
         {
             var lines = new Lines();
-            this.dict.Add(name, lines);
+            this.sections.Add(new Section { Header = name, Lines = lines });
             return lines;
         }
 
         public void Print()
         {
             const int spaceNumber = 3;
-            var indentNumber = dict.Keys.Select(k => k.Length).Max() + spaceNumber;
+            var indentNumber = sections.Select(k => k.Header.Length).Max() + spaceNumber;
             string indentSpaces = " ".PadLeft(indentNumber);
 
-            foreach(var section in dict)
+            foreach (var section in sections)
             {
                 int counter = 0;
-                foreach(var line in section.Value.LineList)
+                foreach (var line in section.Lines.LineList)
                 {
-                    if(counter++ == 0)
+                    if (counter++ == 0)
                     {
-                        string header = section.Key.PadRight(indentNumber);
+                        string header = section.Header.PadRight(indentNumber);
                         Console.WriteLine($"{generalIndentSpaces}{header}{line}");
                     }
                     else
