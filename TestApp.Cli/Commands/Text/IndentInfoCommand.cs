@@ -36,7 +36,7 @@ namespace TestApp.Cli.Commands.Text
                     .AddLine("bla bla bla bla bla bla bla bla bla bla bla bla bla");
         }
 
-        private void AddLinesContent(Lines lines)
+        private void AddLinesContent(SectionContent lines)
         {
             lines.AddLine("bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla")
                  .AddLine("bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla")
@@ -52,20 +52,20 @@ namespace TestApp.Cli.Commands.Text
 
             Console.WriteLine("----------------------------");
 
-            sections = new Sections(8);
+            sections = new Sections(4);
             AddSectionContent(sections);
             sections.Print();
         }
 
         public void Lines()
         {
-            Lines lines = new Lines();
+            SectionContent lines = new SectionContent();
             AddLinesContent(lines);
             lines.Print();
 
             Console.WriteLine("----------------------------");
 
-            lines = new Lines(4);
+            lines = new SectionContent(4);
             AddLinesContent(lines);
             lines.Print();
         }
