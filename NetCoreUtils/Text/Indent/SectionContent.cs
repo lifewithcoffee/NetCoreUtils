@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace NetCoreUtils.Text.Indent
 {
-    public class Lines
+    public class SectionContent
     {
         public List<string> LineList { get; } = new List<string>();
 
         private string generalIndentSpaces;
 
-        public Lines(int indentNumber = 0)
+        public SectionContent(int indentNumber = 0)
         {
             if (indentNumber != 0)
                 generalIndentSpaces = " ".PadLeft(indentNumber);
@@ -17,7 +17,7 @@ namespace NetCoreUtils.Text.Indent
                 generalIndentSpaces = "";
         }
 
-        public Lines AddLine(string line)
+        public SectionContent AddLine(string line)
         {
             LineList.Add(line);
             return this;
@@ -25,7 +25,7 @@ namespace NetCoreUtils.Text.Indent
 
         public void Print()
         {
-            foreach(var line in LineList)
+            foreach (var line in LineList)
             {
                 Console.WriteLine($"{generalIndentSpaces}{line}");
             }

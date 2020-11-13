@@ -7,7 +7,7 @@ namespace NetCoreUtils.Text.Indent
     public class Section
     {
         public string Header { get; set; }
-        public Lines Lines { get; set; }
+        public SectionContent Content { get; set; }
     }
 
     public class Sections
@@ -24,10 +24,10 @@ namespace NetCoreUtils.Text.Indent
                 generalIndentSpaces = "";
         }
 
-        public Lines AddSection(string name)
+        public SectionContent AddSection(string name)
         {
-            var lines = new Lines();
-            this.sections.Add(new Section { Header = name, Lines = lines });
+            var lines = new SectionContent();
+            this.sections.Add(new Section { Header = name, Content = lines });
             return lines;
         }
 
@@ -40,7 +40,7 @@ namespace NetCoreUtils.Text.Indent
             foreach (var section in sections)
             {
                 int counter = 0;
-                foreach (var line in section.Lines.LineList)
+                foreach (var line in section.Content.LineList)
                 {
                     if (counter++ == 0)
                     {
