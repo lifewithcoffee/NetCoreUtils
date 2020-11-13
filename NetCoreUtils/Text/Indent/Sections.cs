@@ -7,7 +7,29 @@ namespace NetCoreUtils.Text.Indent
     public class Section
     {
         public string Header { get; set; }
-        public SectionContent Content { get; set; }
+        public SectionContent Content { get; set; } = new SectionContent();
+
+        public Section(string header)
+        {
+            this.Header = header;
+        }
+
+        public void Print(int indentNumber, string generalIndentSpaces, string indentSpaces)
+        {
+            int counter = 0;
+            foreach (var line in Content.LineList)
+            {
+                if (counter++ == 0)
+                {
+                    string header = Header.PadRight(indentNumber);
+                    Console.WriteLine($"{generalIndentSpaces}{header}{line}");
+                }
+                else
+                {
+                    Console.WriteLine($"{generalIndentSpaces}{indentSpaces}{line}");
+                }
+            }
+        }
     }
 
     public class Sections
@@ -26,9 +48,9 @@ namespace NetCoreUtils.Text.Indent
 
         public SectionContent AddSection(string name)
         {
-            var lines = new SectionContent();
-            this.sections.Add(new Section { Header = name, Content = lines });
-            return lines;
+            var section = new Section(name);
+            this.sections.Add(section);
+            return section.Content;
         }
 
         public void Print()
@@ -39,19 +61,7 @@ namespace NetCoreUtils.Text.Indent
 
             foreach (var section in sections)
             {
-                int counter = 0;
-                foreach (var line in section.Content.LineList)
-                {
-                    if (counter++ == 0)
-                    {
-                        string header = section.Header.PadRight(indentNumber);
-                        Console.WriteLine($"{generalIndentSpaces}{header}{line}");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"{generalIndentSpaces}{indentSpaces}{line}");
-                    }
-                }
+                section.Print(indentNumber, generalIndentSpaces, indentSpaces);
             }
         }
     }
