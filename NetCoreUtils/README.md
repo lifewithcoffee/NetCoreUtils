@@ -1,10 +1,12 @@
 # NetCoreUtils
 
-## About
+## NuGet
+
+https://www.nuget.org/packages/NetCoreUtils/
 
 ## Release Notes
 
-### v1.2-working
+### v1.2.0
 
 - Add ExpressionUtil
 - Add NetCoreUtils.Text.Table
