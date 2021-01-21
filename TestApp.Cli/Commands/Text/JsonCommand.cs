@@ -23,10 +23,10 @@ namespace TestApp.Cli.Commands.Text
             }
         }
 
-        public void PrintVivaldiBookmark(int maxLevel)
+        public void PrintVivaldiBookmark(int maxLevel, string keywords)
         {
             const string vivaldi_bookmark_path = @"C:\Users\Ron\appdata\local\Vivaldi\User Data\Default\Bookmarks";
-            _svc.PrintVivaldiBookmarkJson(File.ReadAllText(vivaldi_bookmark_path), maxLevel);
+            _svc.PrintVivaldiBookmarkJson(File.ReadAllText(vivaldi_bookmark_path), maxLevel, keywords);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -19,7 +20,7 @@ namespace TestApp.Cli.JsonDemo
             return sb.ToString();
         }
 
-        private int PrintChildNodes(JsonElement element, int currentLevel, int maxLevel)
+        private int PrintChildNodes(JsonElement element, int currentLevel, int maxLevel, LinkedList<string> dirStack, string[] keywords)
         {
             int bookmark_count = 0;
 
@@ -28,27 +29,52 @@ namespace TestApp.Cli.JsonDemo
 
             if(element.TryGetProperty("children", out JsonElement childElement))
             {
+
                 foreach (var child in childElement.EnumerateArray())
                 {
                     var name = child.GetProperty("name").GetString();
                     if(child.GetProperty("type").GetString() == "folder")
                     {
-                        Console.WriteLine($"{PrintIndentSpaces(currentLevel)}[{name}]");
+                        if(dirStack != null)
+                        {
+                            dirStack?.AddLast(name);
+                        }
+
+                        //Console.WriteLine($"{PrintIndentSpaces(currentLevel)}[{name}]");
+                        bookmark_count += PrintChildNodes(child, currentLevel + 1, maxLevel, dirStack, keywords);
+
+                        if (dirStack != null && dirStack.Count > 0)
+                        {
+                            dirStack.RemoveLast();
+                        }
                     }
                     else
                     {
-                        //Console.WriteLine($"{PrintIndentSpaces(currentLevel)}{name}");
+                        StringBuilder pathStringBuilder = new();
+                        if(dirStack != null)
+                        {
+                            foreach (string dirName in dirStack)
+                            {
+                                pathStringBuilder.Append(dirName);
+                                pathStringBuilder.Append("/");
+                            }
+                        }
+
+                        if (keywords.All(k => name.ToLowerInvariant().Contains(k.ToLowerInvariant())))
+                        {
+                            //Console.WriteLine($"{PrintIndentSpaces(currentLevel)}{name} .......... {pathStringBuilder.ToString()}");
+                            //Console.WriteLine($"{pathStringBuilder.ToString()}{name}");
+                            Console.WriteLine($"{name} .......... {pathStringBuilder.ToString()}");
+                        }
                         bookmark_count++;
                     }
-
-                    bookmark_count += PrintChildNodes(child, currentLevel+1, maxLevel);
                 }
             }
 
             return bookmark_count;
         }
 
-        public void PrintVivaldiBookmarkJson(string jsonString, int maxLevel)
+        public void PrintVivaldiBookmarkJson(string jsonString, int maxLevel, string keywords)
         {
             try
             {
@@ -57,10 +83,10 @@ namespace TestApp.Cli.JsonDemo
                 var root = document.RootElement;
 
                 Console.WriteLine($"checksum: {root.GetProperty("checksum").GetString()}");
-                //var children = root.GetProperty("roots/bookmark_bar/children");
 
+                //var children = root.GetProperty("roots/bookmark_bar/children");
                 var children = root.GetProperty("roots").GetProperty("bookmark_bar");//.GetProperty("children");
-                var count = PrintChildNodes(children, 0, maxLevel);
+                var count = PrintChildNodes(children, 0, maxLevel, new LinkedList<string>(), keywords.Split(' ','\t'));
                 Console.WriteLine($"Bookmark number = {count}");
             }
             catch(Exception ex)
