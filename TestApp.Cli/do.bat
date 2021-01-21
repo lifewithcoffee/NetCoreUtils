@@ -1,5 +1,5 @@
 @echo off
-SET DEBUG_PATH=%CD%\bin\Debug\netcoreapp3.1
+SET DEBUG_PATH=%CD%\bin\Debug\net5.0
 SET NETCOREUTILS_ENVIRONMENT=Development
 
 dotnet %DEBUG_PATH%\TestApp.Cli.dll %*
