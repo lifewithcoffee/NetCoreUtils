@@ -10,16 +10,22 @@ namespace TestApp.Cli.Commands.Text
     {
         JsonService _svc = new JsonService();
 
-        //const string vivaldi_bookmark_path = @"C:\Users\Ron\appdata\local\Vivaldi\User Data\Default\Bookmarks";
-        const string vivaldi_bookmark_path = @"C:\_temp\Bookmarks";
-
-        public void PrintAll()
+        public void PrintAll(string jsonFilePath)
         {
-            _svc.PrintJsonByTokenType(File.ReadAllBytes(vivaldi_bookmark_path).AsSpan());
+            try
+            {
+                _svc.PrintJsonByTokenType(File.ReadAllBytes(jsonFilePath).AsSpan());
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.InnerException?.Message);
+            }
         }
 
         public void PrintVivaldiBookmark(int maxLevel)
         {
+            const string vivaldi_bookmark_path = @"C:\Users\Ron\appdata\local\Vivaldi\User Data\Default\Bookmarks";
             _svc.PrintVivaldiBookmarkJson(File.ReadAllText(vivaldi_bookmark_path), maxLevel);
         }
     }
