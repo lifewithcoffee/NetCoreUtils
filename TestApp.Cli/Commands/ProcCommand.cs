@@ -6,11 +6,13 @@ using NetCoreUtils.MethodCall;
 using System.Threading;
 using System.Reflection;
 using System.IO;
+using CoreCmd.Attributes;
 
 namespace TestApp.Cli.Commands
 {
     public class ProcUtil
     {
+        // return the "dotnet.exe" path
         public string GetDotnetExeFullPath()
         {
             return Process.GetCurrentProcess().MainModule.FileName;
@@ -20,25 +22,41 @@ namespace TestApp.Cli.Commands
         {
             return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         }
+
+        public string GetDllFullPath()
+        {
+            return Assembly.GetAssembly(this.GetType()).Location;
+        }
     }
 
     class ProcCommand
     {
-        /// <summary>
-        /// Test creating new process
-        /// </summary>
-        public void Test(int ms)
+        [Help("Spawn a new process")]
+        public void Spawn(int ms)
         {
             try
             {
                 const string logPrefix = "Test :>";
                 var procUtil = new ProcUtil();
-
                 Console.WriteLine($"{logPrefix} Start {Process.GetCurrentProcess().Id}");
 
                 var info = procUtil.GetDotnetExeFullPath(); // or just use "dotnet" directly
-                //Process.Start(info,$@"{procUtil.GetDllDir()}\TestApp.Cli.dll proc work {ms}");
-                Process.Start(info, $@"I:\rp\git\CoreCmd\DependentConsoleApp\bin\Debug\netcoreapp3.1\DependentConsoleApp.dll demo progress-bar");
+
+                // start self
+                // ==========
+                var proc = Process.Start(info, $@"{procUtil.GetDllFullPath()} proc work {ms}");
+                //var proc = Process.Start(info,$@"{procUtil.GetDllFullPath()} proc dll")
+
+                // start a different dll
+                // =====================
+                //var proc = Process.Start(info, $@"I:\rp\git\CoreCmd\DependentConsoleApp\bin\Debug\netcoreapp3.1\DependentConsoleApp.dll demo progress-bar");
+
+                /** NOTE
+                 * If not call WaitForExit(), when the program will:
+                 * - execute asynchronously
+                 * - wait for console input to quit when the spawned process finishes ---> don't know why
+                 */
+                proc.WaitForExit();
                 Console.WriteLine($"{logPrefix} Finish");
             }
             catch(Exception ex)
@@ -47,9 +65,12 @@ namespace TestApp.Cli.Commands
             }
         }
 
-        public void Test2()
+        [Help("Print current process's assembly info")]
+        public void Dll()
         {
             Console.WriteLine(new ProcUtil().GetDllDir());
+            Console.WriteLine(new ProcUtil().GetDllFullPath());
+            Console.WriteLine(new ProcUtil().GetDotnetExeFullPath());
         }
 
         public void Work(int ms)
@@ -78,9 +99,7 @@ namespace TestApp.Cli.Commands
             this.Work(1000);
         }
 
-        /// <summary>
-        /// Get process by ID
-        /// </summary>
+        [Help("Get process by ID")]
         public void Get(int id)
         {
             try
@@ -93,9 +112,7 @@ namespace TestApp.Cli.Commands
             }
         }
 
-        /// <summary>
-        /// Use the OS's default browser to open a https URL
-        /// </summary>
+        [Help("Use the OS's default browser to open a https URL")]
         public void Https(string address)
         {
             try
