@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
@@ -7,25 +8,72 @@ using System.Threading;
 using System.Reflection;
 using System.IO;
 using CoreCmd.Attributes;
+using System.Runtime.InteropServices;
 
 namespace TestApp.Cli.Commands
 {
-    public class ProcUtil
+    static public class ProcUtil
     {
-        // return the "dotnet.exe" path
-        public string GetDotnetExeFullPath()
+        /// <returns>The path of currently executing "dotnet.exe".</returns>
+        static public string GetDotnetExeFullPath()
         {
             return Process.GetCurrentProcess().MainModule.FileName;
         }
 
-        public string GetDllDir()
+        /// <returns>The path of the currently executing DLL.</returns>
+        static public string GetDllDir()
         {
             return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         }
 
-        public string GetDllFullPath()
+        /// <returns>The path of the specified type's DLL file.</returns>
+        static public string GetDllFullPath(Type type)
         {
-            return Assembly.GetAssembly(this.GetType()).Location;
+            return Assembly.GetAssembly(type).Location;
+        }
+
+        /// <returns>Determine if the specified terminal commnad exists.</returns>
+        static public bool Exists(string command)
+        {
+            try
+            {
+                string systemCommand = "where";
+                char separator = '\\';
+                if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    systemCommand = "which";
+                    separator = '/';
+                }
+
+                var proc = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = systemCommand,
+                        Arguments = command,
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        CreateNoWindow = true
+                    }
+                };
+
+                proc.Start();
+
+                while (!proc.StandardOutput.EndOfStream)
+                {
+                    string line = proc.StandardOutput.ReadLine();
+                    if(line.Split(separator).Last().StartsWith(command))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return false;
         }
     }
 
@@ -37,14 +85,13 @@ namespace TestApp.Cli.Commands
             try
             {
                 const string logPrefix = "Test :>";
-                var procUtil = new ProcUtil();
                 Console.WriteLine($"{logPrefix} Start {Process.GetCurrentProcess().Id}");
 
-                var info = procUtil.GetDotnetExeFullPath(); // or just use "dotnet" directly
+                var info = ProcUtil.GetDotnetExeFullPath(); // or just use "dotnet" directly
 
                 // start self
                 // ==========
-                var proc = Process.Start(info, $@"{procUtil.GetDllFullPath()} proc work {ms}");
+                var proc = Process.Start(info, $@"{ProcUtil.GetDllFullPath(this.GetType())} proc work {ms}");
                 //var proc = Process.Start(info,$@"{procUtil.GetDllFullPath()} proc dll")
 
                 // start a different dll
@@ -68,11 +115,12 @@ namespace TestApp.Cli.Commands
         [Help("Print current process's assembly info")]
         public void Dll()
         {
-            Console.WriteLine(new ProcUtil().GetDllDir());
-            Console.WriteLine(new ProcUtil().GetDllFullPath());
-            Console.WriteLine(new ProcUtil().GetDotnetExeFullPath());
+            Console.WriteLine(ProcUtil.GetDllDir());
+            Console.WriteLine(ProcUtil.GetDllFullPath(this.GetType()));
+            Console.WriteLine(ProcUtil.GetDotnetExeFullPath());
         }
 
+        [Help("Simulate a job processing by printing some info every specified ms")]
         public void Work(int ms)
         {
             try
@@ -93,6 +141,7 @@ namespace TestApp.Cli.Commands
             };
         }
 
+        [Help("Print the current process's ID")]
         public void Id()
         {
             Console.WriteLine(Process.GetCurrentProcess().Id);
@@ -127,6 +176,15 @@ namespace TestApp.Cli.Commands
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        [Help("Determine if the specified command exists")]
+        public void Exist(string command)
+        {
+            if (ProcUtil.Exists(command))
+                Console.WriteLine($"{command} exists");
+            else
+                Console.WriteLine($"{command} does not exists");
         }
     }
 }
