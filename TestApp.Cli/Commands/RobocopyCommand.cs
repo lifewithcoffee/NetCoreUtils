@@ -39,11 +39,15 @@ namespace TestApp.Cli.Commands
             var config = JsonConfigOperator<RobocopyConfig>.LoadCreate(fullConfigFilePath);
 
             string trimmedGroupName = groupName.Trim(); 
+
+            // find the group with the specified name
             foreach(var group in config.BackupItemGroups)
             {
                 if(group.Name == trimmedGroupName)
                 {
                     bool foundTargetItem = false;
+
+                    // find the item with the same target
                     foreach(var item in group.BackupItems)
                     {
                         if(item.Target == target)
