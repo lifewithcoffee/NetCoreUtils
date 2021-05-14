@@ -46,7 +46,8 @@ Two reasons:
 
 ### v1.2 (working)
 
-- Upgrade to .net core 3.0
+- Upgrade to .net5
+- Upgrade EF Core dependency from v2.1 to v5.0.1
 
 ## v1.1
 
