@@ -32,6 +32,9 @@ namespace TestApp.Cli.Commands
             return Assembly.GetAssembly(type).Location;
         }
 
+        /// <summary>
+        /// NOTE: works in Windows 10, not tested in linux
+        /// </summary>
         /// <returns>Determine if the specified terminal commnad exists.</returns>
         static public bool Exists(string command)
         {
