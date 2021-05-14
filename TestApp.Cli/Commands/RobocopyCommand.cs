@@ -7,22 +7,18 @@ using TestApp.Cli.Robocopy;
 
 namespace TestApp.Cli.Commands
 {
-
-                        //new BackupItem { Source = "s1", Target = "t1" },
-                        //new BackupItem { Source = "s2", Target = "t2" },
-                        //new BackupItem { Source = "s3", Target = "t3" },
     class RobocopyCommand
     {
+        string fullConfigFilePath = @$"d:\_temp\{RobocopyConfigParameters.ConfigFileName}";
+
         public void AddGroup(string groupName)
         {
             try
             {
                 Console.WriteLine($"{nameof(RobocopyCommand)}.{nameof(AddGroup)}() called");
 
-                string fullConfigFilePath = @$"d:\_temp\{RobocopyConfigParameters.ConfigFileName}";
-
                 var config = JsonConfigOperator<RobocopyConfig>.LoadCreate(fullConfigFilePath);
-                config.BackupItemGroups.Add( new BackupItemGroup { Name = groupName  });
+                config.BackupItemGroups.Add( new BackupItemGroup { Name = groupName.Trim()  });
                 JsonConfigOperator<RobocopyConfig>.Save(fullConfigFilePath, config);
             }catch(Exception ex)
             {
@@ -31,6 +27,40 @@ namespace TestApp.Cli.Commands
                     Console.WriteLine(ex.InnerException.Message);
                 Console.WriteLine(ex.StackTrace);
             }
+        }
+
+        // TODO:
+        // - multiple sources shouldn't point to the same target
+        // - group name should be unique
+        public void UpdateGroup(string groupName, string source, string target)
+        {
+            Console.WriteLine($"{nameof(RobocopyCommand)}.{nameof(UpdateGroup)}() called");
+
+            var config = JsonConfigOperator<RobocopyConfig>.LoadCreate(fullConfigFilePath);
+
+            string trimmedGroupName = groupName.Trim(); 
+            foreach(var group in config.BackupItemGroups)
+            {
+                if(group.Name == trimmedGroupName)
+                {
+                    bool foundTargetItem = false;
+                    foreach(var item in group.BackupItems)
+                    {
+                        if(item.Target == target)
+                        {
+                            item.Source = source;
+                            foundTargetItem = true;
+                        }
+                    }
+
+                    if (!foundTargetItem)
+                    {
+                        group.BackupItems.Add(new BackupItem { Source = source, Target = target });
+                    }
+                }
+            }
+
+            JsonConfigOperator<RobocopyConfig>.Save(fullConfigFilePath, config);
         }
     }
 }
