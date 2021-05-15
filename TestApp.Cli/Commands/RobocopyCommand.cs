@@ -32,8 +32,9 @@ namespace TestApp.Cli.Commands
 
         /// <summary>
         /// TODO:
-        /// - group name should be unique
-        /// - names in a group should be unique
+        /// - group name shall be unique
+        /// - names in a group shall be unique
+        /// - update-group shall work even if the group doesn't exist
         ///
         /// Done:
         /// - multiple sources shouldn't point to the same target
