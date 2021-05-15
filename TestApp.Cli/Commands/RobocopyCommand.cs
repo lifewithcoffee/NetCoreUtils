@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NetCoreUtils.Shell;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -89,6 +90,25 @@ namespace TestApp.Cli.Commands
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+        }
+
+        public void ExecuteBackup(string groupName)
+        {
+            var config = JsonConfigOperator<RobocopyConfig>.LoadCreate(fullConfigFilePath);
+            var shellExecutor = new ShellExecutor();
+
+            foreach (var group in config.BackupGroups)
+            {
+                if(group.GroupName == groupName)
+                {
+                    foreach(var backup in group.Backups)
+                    {
+                        Console.Write(shellExecutor.Batch($"echo name = {backup.BackupName}").Item1);
+                        Console.Write(shellExecutor.Batch($"echo source = {backup.Source}").Item1);
+                        Console.Write(shellExecutor.Batch($"echo target = {backup.Target}").Item1);
+                    }
+                }
             }
         }
     }
