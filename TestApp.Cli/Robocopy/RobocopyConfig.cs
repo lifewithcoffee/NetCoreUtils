@@ -9,6 +9,6 @@ namespace TestApp.Cli.Robocopy
 {
     public class RobocopyConfig
     {
-        public List<BackupItemGroup> BackupItemGroups { get; set; } = new List<BackupItemGroup>();
+        public List<BackupItemGroup> BackupGroups { get; set; } = new List<BackupItemGroup>();
     }
 }

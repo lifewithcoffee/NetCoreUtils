@@ -18,7 +18,7 @@ namespace TestApp.Cli.Commands
                 Console.WriteLine($"{nameof(RobocopyCommand)}.{nameof(AddGroup)}() called");
 
                 var config = JsonConfigOperator<RobocopyConfig>.LoadCreate(fullConfigFilePath);
-                config.BackupItemGroups.Add( new BackupItemGroup { Name = groupName.Trim()  });
+                config.BackupGroups.Add( new BackupItemGroup { GroupName = groupName.Trim()  });
                 JsonConfigOperator<RobocopyConfig>.Save(fullConfigFilePath, config);
             }catch(Exception ex)
             {
@@ -29,42 +29,66 @@ namespace TestApp.Cli.Commands
             }
         }
 
-        // TODO:
-        // - multiple sources shouldn't point to the same target
-        // - group name should be unique
-        public void UpdateGroup(string groupName, string source, string target)
+
+        /// <summary>
+        /// TODO:
+        /// - group name should be unique
+        /// - names in a group should be unique
+        ///
+        /// Done:
+        /// - multiple sources shouldn't point to the same target
+        /// </summary>
+        /// <param name="fullBackupItemName">Backup item name with group prefix, e.g. SomeGroupName.SomeBackupName</param>
+        /// <param name="source">Backup source</param>
+        /// <param name="target">Backup target</param>
+        public void UpdateGroup(string fullBackupItemName, string source, string target)
         {
-            Console.WriteLine($"{nameof(RobocopyCommand)}.{nameof(UpdateGroup)}() called");
-
-            var config = JsonConfigOperator<RobocopyConfig>.LoadCreate(fullConfigFilePath);
-
-            string trimmedGroupName = groupName.Trim(); 
-
-            // find the group with the specified name
-            foreach(var group in config.BackupItemGroups)
+            try
             {
-                if(group.Name == trimmedGroupName)
-                {
-                    bool foundTargetItem = false;
+                Console.WriteLine($"{nameof(RobocopyCommand)}.{nameof(UpdateGroup)}() called");
 
-                    // find the item with the same target
-                    foreach(var item in group.BackupItems)
+                var config = JsonConfigOperator<RobocopyConfig>.LoadCreate(fullConfigFilePath);
+
+                string trimmedGroupName = fullBackupItemName.Trim();
+                var names = trimmedGroupName.Split('.');
+                if(names.Length > 2)
+                {
+                    throw new Exception($"Invalid full backup item name: {fullBackupItemName}");
+                }
+                string groupName = names[0];
+                string backupItemName = names[1];
+
+                // find the group with the specified name
+                foreach(var group in config.BackupGroups)
+                {
+                    if(group.GroupName == groupName)
                     {
-                        if(item.Target == target)
+                        bool foundTargetItem = false;
+
+                        // find the item with the same target
+                        foreach(var item in group.Backups)
                         {
-                            item.Source = source;
-                            foundTargetItem = true;
+                            if(item.Target == target)
+                            {
+                                item.BackupName = backupItemName;
+                                item.Source = source;
+                                foundTargetItem = true;
+                            }
+                        }
+
+                        if (!foundTargetItem)
+                        {
+                            group.Backups.Add(new BackupItem { BackupName = backupItemName, Source = source, Target = target });
                         }
                     }
-
-                    if (!foundTargetItem)
-                    {
-                        group.BackupItems.Add(new BackupItem { Source = source, Target = target });
-                    }
                 }
-            }
 
-            JsonConfigOperator<RobocopyConfig>.Save(fullConfigFilePath, config);
+                JsonConfigOperator<RobocopyConfig>.Save(fullConfigFilePath, config);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
