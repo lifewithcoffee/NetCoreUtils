@@ -13,9 +13,4 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\NetCoreUtils.Database\NetCoreUtils.Database.csproj" />
-    <!--<ProjectReference Include="..\NetCoreUtils\NetCoreUtils.csproj" />-->
-  </ItemGroup>
-
 </Project>
