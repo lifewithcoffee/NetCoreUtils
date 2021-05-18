@@ -5,4 +5,9 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>core</ToolCommandName>
+  </PropertyGroup>
+  
 </Project>
