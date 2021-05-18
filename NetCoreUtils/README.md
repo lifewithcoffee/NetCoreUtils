@@ -8,16 +8,24 @@ https://www.nuget.org/packages/NetCoreUtils/
 
 ### v1.3.0 (working)
 
+*Enhancement*:
+
 - Add JsonConfigOperator
 - Add ProcUtil
 
+*Breaking Change*:
+
+- Rename ShellExecutor to TerminalUtil
+
 ### v1.2.0
+
+*Enhancement*:
 
 - Add ExpressionUtil
 - Add NetCoreUtils.Text.Table
 - Add NetCoreUtils.Text.Indent
 
-*Incompatible Change*:
+*Breaking Change*:
 
 - Move String, Xml to Text namespace
 
@@ -27,29 +35,29 @@ https://www.nuget.org/packages/NetCoreUtils/
 
 ### v1.0.0.5
 
-*Incompatible Change*:
+*Breaking Change*:
 
 - Upgrade to .net core 3.1
 - Add ReflectUtil
 
 ### v0.3.0.4
 
-*Incompatible Change*:
-
-- Upgrade to .net core 2.2
-- Rename namespace "Misc" to "MethodCall"
-
 *Enhancement*:
 
 - Add PipeForwardExt
 
+*Breaking Change*:
+
+- Upgrade to .net core 2.2
+- Rename namespace "Misc" to "MethodCall"
+
 ### v0.2.0.3
-
-*Incompatible Change*:
-
-- Rename namespace "Diagnose" to "Diagnosis"
 
 *Enhancement*:
 
 - Add Logger
 - Add SafeCaller
+
+*Breaking Change*:
+
+- Rename namespace "Diagnose" to "Diagnosis"
