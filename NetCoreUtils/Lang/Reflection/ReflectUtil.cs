@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace NetCoreUtils.Reflection
+namespace NetCoreUtils.Lang.Reflection
 {
     /// <summary>
     /// Methods in this class can be used to implemnt an DI auto-injector

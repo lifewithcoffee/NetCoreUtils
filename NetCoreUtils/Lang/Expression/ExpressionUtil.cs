@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace NetCoreUtils.Expression
+namespace NetCoreUtils.Lang.Expression
 {
     static public class ExpressionUtil
     {

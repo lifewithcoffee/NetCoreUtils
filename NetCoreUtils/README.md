@@ -16,6 +16,7 @@ https://www.nuget.org/packages/NetCoreUtils/
 *Breaking Change*:
 
 - Rename ShellExecutor to TerminalUtil
+- Move namespaces Expression and Reflection to Lang
 
 ### v1.2.0
 

@@ -1,4 +1,4 @@
-﻿using NetCoreUtils.Reflection;
+﻿using NetCoreUtils.Lang.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Text;
