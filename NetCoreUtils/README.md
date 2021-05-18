@@ -6,6 +6,11 @@ https://www.nuget.org/packages/NetCoreUtils/
 
 ## Release Notes
 
+### v1.3.0 (working)
+
+- Add JsonConfigOperator
+- Add ProcUtil
+
 ### v1.2.0
 
 - Add ExpressionUtil

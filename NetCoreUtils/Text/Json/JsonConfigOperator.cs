@@ -2,9 +2,9 @@
 using System.IO;
 using System;
 
-namespace TestApp.Cli.Robocopy
+namespace NetCoreUtils.Text.Json
 {
-    public class JsonConfigOperator<T> where T: new()
+    public class JsonConfigOperator<T> where T : new()
     {
         public static void Save(string fullPath, T config)
         {
