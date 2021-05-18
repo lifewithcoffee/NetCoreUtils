@@ -1,4 +1,4 @@
-﻿namespace TestApp.Cli.Robocopy
+﻿namespace RobocopyConfigManager.Misc
 {
     public static class RobocopyConfigParameters
     {

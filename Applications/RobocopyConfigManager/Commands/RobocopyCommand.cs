@@ -1,11 +1,11 @@
 ﻿using NetCoreUtils.ProcessUtils;
 using NetCoreUtils.Text.Json;
+using RobocopyConfigManager.Misc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestApp.Cli.Robocopy;
 
 namespace TestApp.Cli.Commands
 {

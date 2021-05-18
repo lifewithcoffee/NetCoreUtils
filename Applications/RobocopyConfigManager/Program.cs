@@ -1,12 +1,16 @@
-﻿using System;
+﻿using CoreCmd.CommandExecution;
+using System;
 
 namespace RobocopyConfigManager
 {
     class Program
     {
-        static void Main(string[] args)
+        static async System.Threading.Tasks.Task Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            await new AssemblyCommandExecutor().ExecuteAsync(args, s =>
+            {
+            });
+
         }
     }
 }

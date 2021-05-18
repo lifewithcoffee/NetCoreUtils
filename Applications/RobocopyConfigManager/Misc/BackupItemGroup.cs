@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TestApp.Cli.Robocopy
+namespace RobocopyConfigManager.Misc
 {
     public class BackupItemGroup
     {
