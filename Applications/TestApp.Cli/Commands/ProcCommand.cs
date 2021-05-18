@@ -5,7 +5,7 @@ using System.Diagnostics;
 using NetCoreUtils.MethodCall;
 using System.Threading;
 using CoreCmd.Attributes;
-using NetCoreUtils.Proc;
+using NetCoreUtils.ProcessUtils;
 
 namespace TestApp.Cli.Commands
 {

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace NetCoreUtils.Shell
+namespace NetCoreUtils.ProcessUtils
 {
-    public class ShellExecutor
+    public class TerminalUtil
     {
-        public (string,string,int) Batch(string cmd)
+        public (string, string, int) Batch(string cmd)
         {
             return ExecuteTerminalCommand("cmd", "/c", cmd);
         }
@@ -70,10 +70,10 @@ namespace NetCoreUtils.Shell
 
             process.Start();
 
-            process.OutputDataReceived += (object sender, DataReceivedEventArgs e) => sb_output.AppendLine(e.Data);
+            process.OutputDataReceived += (sender, e) => sb_output.AppendLine(e.Data);
             process.BeginOutputReadLine();
 
-            process.ErrorDataReceived += (object sender, DataReceivedEventArgs e) => sb_error.AppendLine(e.Data);
+            process.ErrorDataReceived += (sender, e) => sb_error.AppendLine(e.Data);
             process.BeginErrorReadLine();
 
             process.WaitForExit();

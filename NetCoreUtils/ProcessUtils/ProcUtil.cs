@@ -5,7 +5,7 @@ using System.Reflection;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace NetCoreUtils.Proc
+namespace NetCoreUtils.ProcessUtils
 {
     static public class ProcUtil
     {

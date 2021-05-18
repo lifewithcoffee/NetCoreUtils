@@ -1,4 +1,4 @@
-﻿using NetCoreUtils.Shell;
+﻿using NetCoreUtils.ProcessUtils;
 using NetCoreUtils.Text.Json;
 using System;
 using System.Collections.Generic;
@@ -97,7 +97,7 @@ namespace TestApp.Cli.Commands
         public void ExecuteBackup(string groupName)
         {
             var config = JsonConfigOperator<RobocopyConfig>.LoadCreate(fullConfigFilePath);
-            var shellExecutor = new ShellExecutor();
+            var shellExecutor = new TerminalUtil();
 
             foreach (var group in config.BackupGroups)
             {
