@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp.Cli", "Applications
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp.Cli.Database", "Applications\TestApp.Cli.Database\TestApp.Cli.Database.csproj", "{C20B3136-879B-4884-B5E1-FAACDA293B20}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RobocopyConfigManager", "Applications\RobocopyConfigManager\RobocopyConfigManager.csproj", "{22AD8A7D-8942-4477-B389-66B46522977B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{C20B3136-879B-4884-B5E1-FAACDA293B20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C20B3136-879B-4884-B5E1-FAACDA293B20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C20B3136-879B-4884-B5E1-FAACDA293B20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22AD8A7D-8942-4477-B389-66B46522977B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22AD8A7D-8942-4477-B389-66B46522977B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22AD8A7D-8942-4477-B389-66B46522977B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22AD8A7D-8942-4477-B389-66B46522977B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +93,7 @@ Global
 		{928F0129-8E02-4648-979B-2246678F9497} = {C460FCB3-6E39-4208-ACBF-45D7F62F7491}
 		{172DA2C9-FEF7-4A08-90F6-3A0735256D09} = {92A8A9CA-1146-4855-B25B-1503B8241328}
 		{C20B3136-879B-4884-B5E1-FAACDA293B20} = {92A8A9CA-1146-4855-B25B-1503B8241328}
+		{22AD8A7D-8942-4477-B389-66B46522977B} = {92A8A9CA-1146-4855-B25B-1503B8241328}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F9BE06A1-7DBB-4FDA-AE83-8A714E94F542}
