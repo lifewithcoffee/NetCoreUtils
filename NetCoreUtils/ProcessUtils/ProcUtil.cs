@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.IO;
 using System.Runtime.InteropServices;
+using NetCoreUtils.MethodCall;
 
 namespace NetCoreUtils.ProcessUtils
 {
@@ -37,10 +38,12 @@ namespace NetCoreUtils.ProcessUtils
             {
                 string systemCommand = "where";
                 char separator = '\\';
+                bool caseSensitive = false;
                 if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
                     systemCommand = "which";
                     separator = '/';
+                    caseSensitive = true;
                 }
 
                 var proc = new Process
@@ -60,10 +63,21 @@ namespace NetCoreUtils.ProcessUtils
                 while (!proc.StandardOutput.EndOfStream)
                 {
                     string line = proc.StandardOutput.ReadLine();
-                    if (line.Split(separator).Last().StartsWith(command))
+                    //Console.WriteLine($"DEBUG: {line} | {separator} | {line.Split(separator).Last()}");
+
+                    string commandFound = line.Split(separator).Last();
+
+                    bool result = false;
+                    if(caseSensitive)
                     {
-                        return true;
+                        result = commandFound.StartsWith(command.Trim()); ;
                     }
+                    else
+                    {
+                        result = commandFound.ToLower().StartsWith(command.ToLower().Trim());
+                    }
+
+                    return result;
                 }
             }
             catch (Exception ex)
@@ -72,6 +86,38 @@ namespace NetCoreUtils.ProcessUtils
             }
 
             return false;
+        }
+
+        static public void Run(string command, string arguments="")
+        {
+            SafeCall.Execute(() => {
+                var proc = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = command,
+                        Arguments = arguments,
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        CreateNoWindow = true
+                    }
+                };
+
+                proc.Start();
+
+                while (!proc.StandardOutput.EndOfStream)
+                {
+                    string line = proc.StandardOutput.ReadLine();
+                    Console.WriteLine(line);
+                }
+
+                while (!proc.StandardError.EndOfStream)
+                {
+                    string line = proc.StandardError.ReadLine();
+                    Console.Error.WriteLine(line);
+                }
+            });
         }
     }
 }

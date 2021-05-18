@@ -96,21 +96,35 @@ namespace TestApp.Cli.Commands
 
         public void ExecuteBackup(string groupName)
         {
+            const string robocopy = "robocopy";
+            if (!ProcUtil.Exists(robocopy))
+            {
+                Console.Error.WriteLine($"Cannot find {robocopy}, program terminated");
+                return;
+            }
+
             var config = JsonConfigOperator<RobocopyConfig>.LoadCreate(fullConfigFilePath);
-            var shellExecutor = new TerminalUtil();
 
             foreach (var group in config.BackupGroups)
             {
                 if(group.GroupName == groupName)
                 {
+                    string flags = $"/MT:16 /R:1 /W:3 /MIR /FFT /TEE /NP /LOG+:recover_{groupName}-{new Random().Next(0,99999)}.log";
                     foreach(var backup in group.Backups)
                     {
-                        Console.Write(shellExecutor.Batch($"echo name = {backup.BackupName}").Item1);
-                        Console.Write(shellExecutor.Batch($"echo source = {backup.Source}").Item1);
-                        Console.Write(shellExecutor.Batch($"echo target = {backup.Target}").Item1);
+                        string arguments = $"{backup.Source} {backup.Target} {flags}";
+                        Console.WriteLine($"Executing: {robocopy} {arguments}");
+                        //ProcUtil.Run(robocopy, arguments);
                     }
                 }
             }
+        }
+
+        public void Test2(string command, string arguments)
+        {
+            Console.WriteLine(">>>");
+            ProcUtil.Run(command, arguments);
+            Console.WriteLine("<<<");
         }
     }
 }
