@@ -109,12 +109,19 @@ namespace TestApp.Cli.Commands
             {
                 if(group.GroupName == groupName)
                 {
-                    string flags = $"/MT:16 /R:1 /W:3 /MIR /FFT /TEE /NP /LOG+:recover_{groupName}-{new Random().Next(0,99999)}.log";
+                    string flags = $"/MT:16 /R:1 /W:3 /MIR /FFT /NP /LOG+:recover_{groupName}-{new Random().Next(0,99999)}.log";
+
+                    bool firstItem = true;
                     foreach(var backup in group.Backups)
                     {
-                        string arguments = $"{backup.Source} {backup.Target} {flags}";
+                        if(!firstItem)
+                        {
+                            Console.WriteLine("-----------------------------------------------");
+                        }
+                        string arguments = $"\"{backup.Source}\" \"{backup.Target}\" {flags}";
                         Console.WriteLine($"Executing: {robocopy} {arguments}");
-                        //ProcUtil.Run(robocopy, arguments);
+                        ProcUtil.Run(robocopy, arguments);
+                        firstItem = false;
                     }
                 }
             }
