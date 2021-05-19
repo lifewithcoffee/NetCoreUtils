@@ -12,6 +12,7 @@ https://www.nuget.org/packages/NetCoreUtils/
 
 - Add JsonConfigOperator
 - Add ProcUtil
+- Add SystemUtil
 
 *Breaking Change*:
 
