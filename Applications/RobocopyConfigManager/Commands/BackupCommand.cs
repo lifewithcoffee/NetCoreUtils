@@ -7,7 +7,7 @@ namespace RobocopyConfigManager.Commands
     class BackupCommand
     {
         /// <summary>
-        /// TODO:
+        /// TODO: backup update
         /// - group name shall be unique
         /// - names in a group shall be unique
         /// - update-group shall work even if the group doesn't exist

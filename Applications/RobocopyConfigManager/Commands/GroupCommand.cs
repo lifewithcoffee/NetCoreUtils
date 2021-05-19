@@ -30,21 +30,37 @@ namespace RobocopyConfigManager.Commands
             }
         }
 
-        // TODO
+        // TODO: group show
+        [Help("Show backup items in the specified backup group")]
+        public void Show(string groupName)
+        {
+
+        }
+
+        // TODO: group list
         [Help("List available backup groups")]
         public void List()
         {
 
         }
 
+        // TODO: group remove
         [Help("Remove a backup group")]
         public void Remove(string groupName)
         {
 
         }
 
+        // TODO: group copy
         [Help("Create a new backup group by copying from an existing one")]
         public void Copy(string sourceGroupName, string targetGroupName)
+        {
+
+        }
+
+        // TODO: group rename
+        [Help("Rename a backup group")]
+        public void Rename(string groupName)
         {
 
         }
