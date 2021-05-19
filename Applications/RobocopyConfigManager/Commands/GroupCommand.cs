@@ -52,11 +52,13 @@ namespace RobocopyConfigManager.Commands
             });
         }
 
-        // TODO: group remove
         [Help("Remove a backup group")]
         public void Remove(string groupName)
         {
-
+            SafeCall.Execute(() => {
+                config.RemoveGroup(groupName);
+                JsonConfigOperator<RobocopyConfig>.Save(RobocopyConfigParameters.fullConfigFilePath, config);
+            });
         }
 
         // TODO: group copy

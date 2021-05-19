@@ -24,6 +24,11 @@ namespace RobocopyConfigManager.Misc
             return null;
         }
 
+        public void RemoveGroup(string groupName)
+        {
+            BackupGroups.Remove(this.GetGroup(groupName));
+        }
+
         public BackupItem GetItem(string fullBackupItemName)
         {
             var names = fullBackupItemName.Split('.');
