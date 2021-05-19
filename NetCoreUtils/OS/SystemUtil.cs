@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NetCoreUtils.System
+namespace NetCoreUtils.OS
 {
     static public class SystemUtil
     {

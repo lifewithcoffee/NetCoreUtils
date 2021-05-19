@@ -1,4 +1,4 @@
-﻿using NetCoreUtils.System;
+﻿using NetCoreUtils.OS;
 
 namespace RobocopyConfigManager.Misc
 {
