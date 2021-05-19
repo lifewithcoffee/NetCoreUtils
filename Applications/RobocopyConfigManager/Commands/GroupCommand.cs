@@ -67,11 +67,13 @@ namespace RobocopyConfigManager.Commands
         //{
         //}
 
-        // TODO: group rename
         [Help("Rename a backup group")]
-        public void Rename(string groupName)
+        public void Rename(string targetGroupName, string newName)
         {
-
+            SafeCall.Execute(() => {
+                config.RenameGroup(targetGroupName, newName);
+                JsonConfigOperator<RobocopyConfig>.Save(RobocopyConfigParameters.fullConfigFilePath, config);
+            });
         }
     }
 }

@@ -24,6 +24,15 @@ namespace RobocopyConfigManager.Misc
             return null;
         }
 
+        public void RenameGroup(string targetGroupName, string newName)
+        {
+            var group = this.GetGroup(targetGroupName);
+            if (group != null)
+                group.GroupName = newName;
+            else
+                Console.WriteLine($"Cannot find group: {targetGroupName}");
+        }
+
         public void RemoveGroup(string groupName)
         {
             BackupGroups.Remove(this.GetGroup(groupName));
