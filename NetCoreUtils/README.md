@@ -13,6 +13,7 @@ https://www.nuget.org/packages/NetCoreUtils/
 - Add JsonConfigOperator
 - Add ProcUtil
 - Add SystemUtil
+- Update SafeCall.Execute() to use Console.Error.WriteLine()
 
 *Breaking Change*:
 

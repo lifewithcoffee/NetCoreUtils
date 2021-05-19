@@ -9,7 +9,7 @@ namespace NetCoreUtils.MethodCall
 {
     public class SafeCall
     {
-        static public void Execute(Action fn, Action<Exception> exceptionHandler = null, Action finalHandler = null)
+        static public void Execute(Action fn, Action<Exception> overwrittenExceptionHandler = null, Action finalHandler = null)
         {
             try
             {
@@ -17,10 +17,17 @@ namespace NetCoreUtils.MethodCall
             }
             catch (Exception ex)
             {
-                if (exceptionHandler == null)
-                    Trace.WriteLine(ex.StackTrace);
+                if (overwrittenExceptionHandler == null)
+                {
+                    Console.Error.WriteLine(ex.Message);
+
+                    if (ex.InnerException != null)
+                        Console.Error.WriteLine(ex.InnerException.Message);
+
+                    Console.Error.WriteLine(ex.StackTrace);
+                }
                 else
-                    exceptionHandler(ex);
+                    overwrittenExceptionHandler(ex);
             }
             finally
             {
