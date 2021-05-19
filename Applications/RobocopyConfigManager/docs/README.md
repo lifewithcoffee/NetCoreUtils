@@ -9,6 +9,7 @@ RCM stands for Robocopy Configuration Manager
 ### Waiting
 
 - Need a "simulating" flag in the config file. When this flag is on, the actual robocopy command won't be executed.
+- Support alias for source/target pathes
 - Need a validation method to validate the configuration file
 
 ### More Thoughts
