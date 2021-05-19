@@ -1,1 +1,1 @@
-dotnet pack -c Release -o i:\rp\local-nuget-packages
+dotnet pack -c Release -o d:\rp\local-nuget-packages
