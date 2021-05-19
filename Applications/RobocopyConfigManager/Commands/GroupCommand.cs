@@ -1,4 +1,5 @@
 ﻿using CoreCmd.Attributes;
+using NetCoreUtils.MethodCall;
 using NetCoreUtils.Text.Json;
 using RobocopyConfigManager.Misc;
 using System;
@@ -13,35 +14,42 @@ namespace RobocopyConfigManager.Commands
     {
         RobocopyConfig config = JsonConfigOperator<RobocopyConfig>.LoadCreate(RobocopyConfigParameters.fullConfigFilePath);
 
-        [Help("Create a new backup group")]
-        public void Create(string groupName)
+        [Help("Add a new backup group")]
+        public void Add(string groupName)
         {
-            try
-            {
+            SafeCall.Execute(() => {
                 config.BackupGroups.Add(new BackupItemGroup { GroupName = groupName.Trim() });
                 JsonConfigOperator<RobocopyConfig>.Save(RobocopyConfigParameters.fullConfigFilePath, config);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                if (ex.InnerException != null)
-                    Console.WriteLine(ex.InnerException.Message);
-                Console.WriteLine(ex.StackTrace);
-            }
+            });
         }
 
-        // TODO: group show
-        [Help("Show backup items in the specified backup group")]
-        public void Show(string groupName)
-        {
-
-        }
-
-        // TODO: group list
         [Help("List available backup groups")]
         public void List()
         {
+            SafeCall.Execute(() => {
+                foreach(var group in config.BackupGroups)
+                {
+                    Console.WriteLine(group.GroupName);
+                }
+            });
+        }
 
+        [Help("List backup items in the specified backup group")]
+        public void List(string groupName)
+        {
+            SafeCall.Execute(() => {
+                var group = config.GetGroup(groupName);
+                if(group != null)
+                {
+                    foreach(var item in group.Backups)
+                    {
+                        Console.WriteLine($"Name: {item.BackupName}");
+                        Console.WriteLine($"Source: {item.Source}");
+                        Console.WriteLine($"Backup: {item.Target}");
+                        Console.WriteLine("");
+                    }
+                }
+            });
         }
 
         // TODO: group remove
@@ -52,11 +60,10 @@ namespace RobocopyConfigManager.Commands
         }
 
         // TODO: group copy
-        [Help("Create a new backup group by copying from an existing one")]
-        public void Copy(string sourceGroupName, string targetGroupName)
-        {
-
-        }
+        //[Help("Create a new backup group by copying from an existing one")]
+        //public void Copy(string sourceGroupName, string targetGroupName)
+        //{
+        //}
 
         // TODO: group rename
         [Help("Rename a backup group")]

@@ -22,6 +22,7 @@ namespace RobocopyConfigManager.Commands
         {
             try
             {
+                // TODO: to be refactored using RobocopyConfig.GetGroup/GetItem
                 var config = JsonConfigOperator<RobocopyConfig>.LoadCreate(RobocopyConfigParameters.fullConfigFilePath);
 
                 string trimmedGroupName = fullBackupItemName.Trim();
