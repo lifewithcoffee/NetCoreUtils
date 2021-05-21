@@ -16,6 +16,7 @@ RCM stands for Robocopy Configuration Manager
 ### More Thoughts
 
 - Need a RestoreCommand, which uses the same backup config but sync from the target to the source
+- Group copy?
 
 ## Done
 

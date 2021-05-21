@@ -61,12 +61,6 @@ namespace RobocopyConfigManager.Commands
             });
         }
 
-        // TODO: group copy
-        //[Help("Create a new backup group by copying from an existing one")]
-        //public void Copy(string sourceGroupName, string targetGroupName)
-        //{
-        //}
-
         [Help("Rename a backup group")]
         public void Rename(string targetGroupName, string newName)
         {
