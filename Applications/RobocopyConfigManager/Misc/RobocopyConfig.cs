@@ -9,6 +9,7 @@ namespace RobocopyConfigManager.Misc
 {
     public class RobocopyConfig
     {
+        public List<PathAlias> Pathes { get; set; }
         public List<BackupItemGroup> BackupGroups { get; set; } = new List<BackupItemGroup>();
 
         public BackupItemGroup GetGroup(string groupName)
