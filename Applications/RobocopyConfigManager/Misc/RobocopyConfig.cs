@@ -38,7 +38,7 @@ namespace RobocopyConfigManager.Misc
             BackupGroups.Remove(this.GetGroup(groupName));
         }
 
-        public BackupItem GetItem(string fullBackupItemName)
+        public (BackupItemGroup, BackupItem) ConvertToGroupAndItem(string fullBackupItemName)
         {
             var names = fullBackupItemName.Split('.');
             if (names.Length > 2)
@@ -49,18 +49,22 @@ namespace RobocopyConfigManager.Misc
             string backupItemName = names[1];
 
             var group = this.GetGroup(groupName);
-            if(group != null)
+            if (group != null)
             {
-                foreach(var item in group.Backups)
+                foreach (var item in group.Backups)
                 {
-                    if(item.BackupName == backupItemName)
+                    if (item.BackupName == backupItemName)
                     {
-                        return item;
+                        return (group, item);
                     }
                 }
-            }
 
-            return null;
+                return (group, null);
+            }
+            else
+            {
+                return (null, null);
+            }
         }
     }
 }

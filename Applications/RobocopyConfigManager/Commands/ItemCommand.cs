@@ -6,6 +6,8 @@ namespace RobocopyConfigManager.Commands
 {
     class ItemCommand
     {
+        RobocopyConfig config = JsonConfigOperator<RobocopyConfig>.LoadCreate(RobocopyConfigParameters.fullConfigFilePath);
+
         /// <summary>
         /// TODO: backup update
         /// - group name shall be unique
@@ -23,7 +25,6 @@ namespace RobocopyConfigManager.Commands
             try
             {
                 // TODO: to be refactored using RobocopyConfig.GetGroup/GetItem
-                var config = JsonConfigOperator<RobocopyConfig>.LoadCreate(RobocopyConfigParameters.fullConfigFilePath);
 
                 string trimmedGroupName = fullBackupItemName.Trim();
                 var names = trimmedGroupName.Split('.');
@@ -65,6 +66,18 @@ namespace RobocopyConfigManager.Commands
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        public void Remove(string fullBackupItemName)
+        {
+            var (group, item) = config.ConvertToGroupAndItem(fullBackupItemName);
+
+            if(group != null)
+            {
+                group.Backups.Remove(item);
+            }
+
+            JsonConfigOperator<RobocopyConfig>.Save(RobocopyConfigParameters.fullConfigFilePath, config);
         }
     }
 }
