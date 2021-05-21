@@ -41,7 +41,7 @@ namespace TestApp.Cli.Commands
                     string flags = $"/MT:16 /R:1 /W:3 /MIR /FFT /NP /LOG+:recover_{groupName}-{new Random().Next(0,99999)}.log";
 
                     bool firstItem = true;
-                    foreach(var backup in group.Backups)
+                    foreach(var backup in group.BackupItems)
                     {
                         if(!firstItem)
                         {

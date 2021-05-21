@@ -41,7 +41,7 @@ namespace RobocopyConfigManager.Commands
                 var group = config.GetGroup(groupName);
                 if(group != null)
                 {
-                    foreach(var item in group.Backups)
+                    foreach(var item in group.BackupItems)
                     {
                         Console.WriteLine($"Name: {item.BackupName}");
                         Console.WriteLine($"Source: {item.Source}");

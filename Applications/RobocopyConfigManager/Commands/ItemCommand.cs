@@ -43,7 +43,7 @@ namespace RobocopyConfigManager.Commands
                         bool foundTargetItem = false;
 
                         // find the item with the same target
-                        foreach (var item in group.Backups)
+                        foreach (var item in group.BackupItems)
                         {
                             if (item.Target == target)
                             {
@@ -55,7 +55,7 @@ namespace RobocopyConfigManager.Commands
 
                         if (!foundTargetItem)
                         {
-                            group.Backups.Add(new BackupItem { BackupName = backupItemName, Source = source, Target = target });
+                            group.BackupItems.Add(new BackupItem { BackupName = backupItemName, Source = source, Target = target });
                         }
                     }
                 }
@@ -74,7 +74,7 @@ namespace RobocopyConfigManager.Commands
 
             if(group != null)
             {
-                group.Backups.Remove(item);
+                group.BackupItems.Remove(item);
             }
 
             JsonConfigOperator<RobocopyConfig>.Save(RobocopyConfigParameters.fullConfigFilePath, config);

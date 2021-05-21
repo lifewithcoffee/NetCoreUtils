@@ -9,8 +9,27 @@ namespace RobocopyConfigManager.Misc
 {
     public class RobocopyConfig
     {
-        public List<PathAlias> Pathes { get; set; }
+        //public List<PathAlias> Pathes { get; set; } = new List<PathAlias>();
         public List<BackupItemGroup> BackupGroups { get; set; } = new List<BackupItemGroup>();
+
+        //public PathAlias GetAlias(string name)
+        //{
+        //    foreach(var alias in Pathes)
+        //    {
+        //        if(alias.Name == name)
+        //        {
+        //            return alias;
+        //        }
+        //    }
+
+        //    return null;
+        //}
+
+        //public void RemoveAlias(string name)
+        //{
+        //    Pathes.Remove(GetAlias(name));
+        //}
+
 
         public BackupItemGroup GetGroup(string groupName)
         {
@@ -52,7 +71,7 @@ namespace RobocopyConfigManager.Misc
             var group = this.GetGroup(groupName);
             if (group != null)
             {
-                foreach (var item in group.Backups)
+                foreach (var item in group.BackupItems)
                 {
                     if (item.BackupName == backupItemName)
                     {
