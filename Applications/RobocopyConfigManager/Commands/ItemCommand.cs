@@ -55,7 +55,7 @@ namespace RobocopyConfigManager.Commands
             }
             else
             {
-                Console.WriteLine("The specified group does not exist.");
+                Console.WriteLine($"The specified group '{groupName}' does not exist.");
             }
 
             JsonConfigOperator<RobocopyConfig>.Save(RobocopyConfigParameters.fullConfigFilePath, config);
@@ -68,6 +68,46 @@ namespace RobocopyConfigManager.Commands
             if(group != null)
             {
                 group.BackupItems.Remove(group.GetItem(itemName));
+            }
+            else
+            {
+                Console.WriteLine($"The specified group '{groupName}' does not exist.");
+            }
+
+            JsonConfigOperator<RobocopyConfig>.Save(RobocopyConfigParameters.fullConfigFilePath, config);
+        }
+
+        public void Rename(string groupName, string currentItemName, string newItemName)
+        {
+            var group = config.GetGroup(groupName);
+
+            if(group != null)
+            {
+                // check if an backup item with the same new name has existed
+                foreach(var backupItem in group.BackupItems)
+                {
+                    if (backupItem.BackupName == newItemName)
+                    {
+                        Console.WriteLine($"An backup item with the same new name has existed.");
+                        return;
+                    }
+                }
+
+                // do renaming
+                var item = group.GetItem(currentItemName);
+                if(item != null)
+                {
+                    item.BackupName = newItemName;
+                }
+                else
+                {
+                    Console.WriteLine($"Cannot find the specified backup item '{currentItemName}'");
+                    return;
+                }
+            }
+            else
+            {
+                Console.WriteLine($"The specified group '{groupName}' does not exist.");
             }
 
             JsonConfigOperator<RobocopyConfig>.Save(RobocopyConfigParameters.fullConfigFilePath, config);
