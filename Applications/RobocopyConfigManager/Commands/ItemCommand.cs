@@ -9,72 +9,65 @@ namespace RobocopyConfigManager.Commands
         RobocopyConfig config = JsonConfigOperator<RobocopyConfig>.LoadCreate(RobocopyConfigParameters.fullConfigFilePath);
 
         /// <summary>
+        /// If the specified item does not exist in the specified group, a new item will be created.
+        /// 
+        /// Multiple sources cannot point to the same target.
+        ///
         /// TODO: backup update
         /// - group name shall be unique
         /// - names in a group shall be unique
-        /// - update-group shall work even if the group doesn't exist
-        ///
-        /// Done:
-        /// - multiple sources shouldn't point to the same target
         /// </summary>
         /// <param name="fullBackupItemName">Backup item name with group prefix, e.g. SomeGroupName.SomeBackupName</param>
         /// <param name="source">Backup source</param>
         /// <param name="target">Backup target</param>
-        public void Update(string fullBackupItemName, string source, string target)
+        public void Update(string groupName, string itemName, string source, string target)
         {
-            try
+            var group = config.GetGroup(groupName);
+            if (group != null)
             {
-                // TODO: to be refactored using RobocopyConfig.GetGroup/GetItem
-
-                string trimmedGroupName = fullBackupItemName.Trim();
-                var names = trimmedGroupName.Split('.');
-                if (names.Length > 2)
+                // validate to make sure there is not any existing backup configured with the same target
+                string lowerTarget = target.ToLower();
+                foreach(var backupItem in group.BackupItems)
                 {
-                    throw new Exception($"Invalid full backup item name: {fullBackupItemName}");
-                }
-                string groupName = names[0];
-                string backupItemName = names[1];
-
-                // find the group with the specified name
-                foreach (var group in config.BackupGroups)
-                {
-                    if (group.GroupName == groupName)
+                    // skip over the specified item, only apply validation to other items
+                    if(backupItem.BackupName != itemName)
                     {
-                        bool foundTargetItem = false;
-
-                        // find the item with the same target
-                        foreach (var item in group.BackupItems)
+                        if (backupItem.Target.ToLower() == lowerTarget)
                         {
-                            if (item.Target == target)
-                            {
-                                item.BackupName = backupItemName;
-                                item.Source = source;
-                                foundTargetItem = true;
-                            }
-                        }
-
-                        if (!foundTargetItem)
-                        {
-                            group.BackupItems.Add(new BackupItem { BackupName = backupItemName, Source = source, Target = target });
+                            Console.WriteLine("A backup item with the same target has already existed.");
+                            return;
                         }
                     }
                 }
 
-                JsonConfigOperator<RobocopyConfig>.Save(RobocopyConfigParameters.fullConfigFilePath, config);
+                // do update
+                var item = group.GetItem(itemName);
+                if(item != null)
+                {
+                    item.Source = source;
+                    item.Target = lowerTarget;
+                }
+                else
+                {
+                    Console.WriteLine($"The specified backup item '{itemName}' does not exist. A new backup item is created.");
+                    group.BackupItems.Add(new BackupItem { BackupName = itemName, Source = source, Target = target });
+                }
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("The specified group does not exist.");
             }
+
+            JsonConfigOperator<RobocopyConfig>.Save(RobocopyConfigParameters.fullConfigFilePath, config);
         }
 
-        public void Remove(string fullBackupItemName)
+        public void Remove(string groupName, string itemName)
         {
-            var (group, item) = config.ConvertToGroupAndItem(fullBackupItemName);
+            var group = config.GetGroup(groupName);
 
             if(group != null)
             {
-                group.BackupItems.Remove(item);
+                group.BackupItems.Remove(group.GetItem(itemName));
             }
 
             JsonConfigOperator<RobocopyConfig>.Save(RobocopyConfigParameters.fullConfigFilePath, config);

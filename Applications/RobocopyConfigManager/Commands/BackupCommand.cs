@@ -55,10 +55,5 @@ namespace TestApp.Cli.Commands
                 }
             }
         }
-
-        //public void Test()
-        //{
-        //    Console.WriteLine("test");
-        //}
     }
 }
