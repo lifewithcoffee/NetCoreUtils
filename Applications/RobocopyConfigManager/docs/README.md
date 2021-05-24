@@ -22,4 +22,18 @@ RCM stands for Robocopy Configuration Manager
 
 ## Done
 
+## Releases
 
+## v1.0.0
+
+Implement the following commands:
+
+- add `group-name`
+- list
+- list `group-name`
+- remove `group-name`
+- remove `group-name` `item-name`
+- rename `group-name`
+- rename `group-name` `item-name`
+- backup `group-name`
+- update `group-name` `item-name` `source-path` `target-path`
