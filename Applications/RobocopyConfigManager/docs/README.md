@@ -20,11 +20,11 @@ RCM stands for Robocopy Configuration Manager
 - Support alias for source/target pathes
   - Use path alias to update backup items
 
-## Done
+### Done
 
 ## Releases
 
-## v1.0.0
+### v1.0.0
 
 Implement the following commands:
 
