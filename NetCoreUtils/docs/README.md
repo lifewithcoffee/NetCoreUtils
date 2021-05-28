@@ -1,5 +1,29 @@
 # NetCoreUtils
 
+%%{init: {'theme': 'base', 'themeVariables': { 'textColor': 'white'}}}%%
+```mermaid
+pie
+    title Key elements in Product X
+    "Calcium" : 42.96
+    "Potassium" : 50.05
+    "Magnesium" : 10.01
+    "Iron" :  5
+```
+
+%%{init: {'theme': 'base', 'themeVariables': { 'textColor': 'white'}}}%%
+
+```mermaid
+sequenceDiagram
+    Alice ->> Bob: Hello Bob, how are you?
+    Bob-->>John: How about you John?
+    Bob--x Alice: I am good thanks!
+    Bob-x John: I am good thanks!
+    Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
+
+    Bob-->Alice: Checking with John...
+    Alice->John: Yes... John, how are you?
+```
+
 ## NuGet
 
 https://www.nuget.org/packages/NetCoreUtils/
@@ -8,27 +32,27 @@ https://www.nuget.org/packages/NetCoreUtils/
 
 ### v1.3.0 (working)
 
-*Enhancement*:
+**Enhancement**:
 
 - Add JsonConfigOperator
 - Add ProcUtil
 - Add SystemUtil
 - Update SafeCall.Execute() to use Console.Error.WriteLine()
 
-*Breaking Change*:
+**Breaking Change**:
 
 - Rename ShellExecutor to TerminalUtil
 - Move namespaces Expression and Reflection to Lang
 
 ### v1.2.0
 
-*Enhancement*:
+**Enhancement**:
 
 - Add ExpressionUtil
 - Add NetCoreUtils.Text.Table
 - Add NetCoreUtils.Text.Indent
 
-*Breaking Change*:
+**Breaking Change**:
 
 - Move String, Xml to Text namespace
 
