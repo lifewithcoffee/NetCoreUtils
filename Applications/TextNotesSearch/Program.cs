@@ -1,12 +1,16 @@
-﻿using System;
+﻿using CoreCmd.CommandExecution;
+using System;
+using System.Threading.Tasks;
 
 namespace TextNotesSearch
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            await new AssemblyCommandExecutor().ExecuteAsync(args, s =>
+            {
+            });
         }
     }
 }
