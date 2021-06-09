@@ -23,29 +23,30 @@ namespace TestApp.Cli.Commands
     [Alias("fs")]
     class FileSearchCommand
     {
+        string baseDir = @"C:\__dell_sync_c\mcn\sync\";
         FileSearcher _svc = new FileSearcher();
 
         /// <param name="keywords">Multiple keywords separated by ',' or ';'</param>
+        [Help("Search by name")]
         public void Name(string keywords)
         {
-            var files = _svc.Find(@"i:\rp\mcn\sync\", "mcn", keywords.Split(',',';'));
+            var files = _svc.Find(baseDir, "mcn", keywords.Split(',',';'));
             foreach(var file in files)
             {
                 Console.WriteLine(file);
             }
         }
 
+        [Help("Search by content")]
         public void Content(string keywords)
         {
-            string baseDir = @"i:\rp\mcn\sync\";
             string extensionName = "mcn";
             string[] keywordArray = keywords.Split(',', ';');
 
             var filesWithAllKeywords = new DirectoryInfo(baseDir).EnumerateFiles($"*.{extensionName}", SearchOption.AllDirectories)
-                                  .AsParallel()     // RL: it does increase the performance
-                                  .Select(f => (f.FullName, File.ReadAllText(f.FullName)))
-                                  .Where(t => keywordArray.All(k => t.Item2.ToLowerInvariant().Contains(k.ToLowerInvariant())));
-
+                                                                 .AsParallel()     // RL: it does increase the performance
+                                                                 .Select(f => (f.FullName, File.ReadAllText(f.FullName)))
+                                                                 .Where(t => keywordArray.All(k => t.Item2.ToLowerInvariant().Contains(k.ToLowerInvariant())));
 
             Dictionary<string, List<string>> fileLineDicts = new Dictionary<string, List<string>>();
 
@@ -55,14 +56,10 @@ namespace TestApp.Cli.Commands
                 fileLineDicts[filePath.FullName] = new List<string>();
             }
 
-
-
-
             //IEnumerable<string> linesWithAnyKeywords = filesWithAllKeywords
-            var linesWithAnyKeywords = filesWithAllKeywords
-                                                       .SelectMany(f => File.ReadLines(f.FullName).Select(line => (f.FullName, line))
-                                                       .Where(t => keywordArray.Any(k => t.line.ToLowerInvariant().Contains(k.ToLowerInvariant()))))
-                                                       .GroupBy(t => t.FullName);
+            var linesWithAnyKeywords = filesWithAllKeywords.SelectMany(f => File.ReadLines(f.FullName).Select(line => (f.FullName, line))
+                                                           .Where(t => keywordArray.Any(k => t.line.ToLowerInvariant().Contains(k.ToLowerInvariant()))))
+                                                           .GroupBy(t => t.FullName);
 
             int count = 1;
             int foundFileNumber = linesWithAnyKeywords.Count();
@@ -100,15 +97,20 @@ namespace TestApp.Cli.Commands
                     }
                     else
                     {
-                        Process.Start(new ProcessStartInfo(files[select - 1])
+                        // use gvim to open the file and jump the to the corresponding line
+                        var startInfo = new ProcessStartInfo
                         {
-                            UseShellExecute = true  // UseShellExecute is false by default on .NET Core.
-                        });
+                            FileName = @"D:\apps_dell\Vim\vim82\gvim.exe",
+                            Arguments = $"--remote-tab-silent +5 \"{files[select - 1]}\"",
+                            UseShellExecute = true,  // UseShellExecute is false by default on .NET Core.
+                        };
+
+                        Process.Start(startInfo);
                     }
                 }
                 catch(Exception ex)
                 {
-                    Console.WriteLine("Invalid input.");
+                    Console.WriteLine($"Invalid input: {ex.Message}");
                 }
                 Console.Write("Please input the selection number to open a file (input 'q' to quit):");
                 readline = Console.ReadLine();
