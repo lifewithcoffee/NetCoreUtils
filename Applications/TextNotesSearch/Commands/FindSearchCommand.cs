@@ -7,21 +7,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace TestApp.Cli.Commands
+namespace TextNotesSearch
 {
-    class FileLineDict
-    {
-        Dictionary<string, List<string>> fileLineDicts = new Dictionary<string, List<string>>();
 
-        public void AddLine(string fileFullPath, string line)
-        {
-            fileLineDicts[fileFullPath].Add(line);
-        }
-    }
-
-    [Help("Search file")]
-    [Alias("fs")]
-    class FileSearchCommand
+    partial class DefaultCommand
     {
         string baseDir = @"C:\__dell_sync_c\mcn\sync\";
         FileSearcher _svc = new FileSearcher();
@@ -35,13 +24,6 @@ namespace TestApp.Cli.Commands
             {
                 Console.WriteLine(file);
             }
-        }
-        
-        class LineInfo
-        {
-            public string FileFullName { get; set; }
-            public int LineNumber { get; set; }
-            public string LineText { get; set; }
         }
 
         [Help("Search by content")]
