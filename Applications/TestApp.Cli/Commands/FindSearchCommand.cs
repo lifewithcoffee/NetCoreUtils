@@ -69,10 +69,8 @@ namespace TestApp.Cli.Commands
                 {
                     int lineCount = 1;
 
-                    return File.ReadLines(f.FullName).Select(line => //(f.FullName, line)
-                    {
-                        return new LineInfo { FileFullName = f.FullName, LineNumber = lineCount++, LineText = line };
-                    });
+                    return File.ReadLines(f.FullName)
+                               .Select(line => new LineInfo{ FileFullName = f.FullName, LineNumber = lineCount++, LineText = line });
                 })
                 .Where(t => keywordArray.Any(k => t.LineText.ToLowerInvariant().Contains(k.ToLowerInvariant())))
                 .GroupBy(t => t.FileFullName);

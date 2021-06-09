@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp.Cli.Database", "App
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RobocopyConfigManager", "Applications\RobocopyConfigManager\RobocopyConfigManager.csproj", "{22AD8A7D-8942-4477-B389-66B46522977B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextNotesSearch", "Applications\TextNotesSearch\TextNotesSearch.csproj", "{76682E0D-9541-4962-A667-499BA860D6C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{22AD8A7D-8942-4477-B389-66B46522977B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22AD8A7D-8942-4477-B389-66B46522977B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22AD8A7D-8942-4477-B389-66B46522977B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76682E0D-9541-4962-A667-499BA860D6C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76682E0D-9541-4962-A667-499BA860D6C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76682E0D-9541-4962-A667-499BA860D6C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76682E0D-9541-4962-A667-499BA860D6C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +100,7 @@ Global
 		{172DA2C9-FEF7-4A08-90F6-3A0735256D09} = {92A8A9CA-1146-4855-B25B-1503B8241328}
 		{C20B3136-879B-4884-B5E1-FAACDA293B20} = {92A8A9CA-1146-4855-B25B-1503B8241328}
 		{22AD8A7D-8942-4477-B389-66B46522977B} = {92A8A9CA-1146-4855-B25B-1503B8241328}
+		{76682E0D-9541-4962-A667-499BA860D6C2} = {92A8A9CA-1146-4855-B25B-1503B8241328}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F9BE06A1-7DBB-4FDA-AE83-8A714E94F542}
