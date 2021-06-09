@@ -36,6 +36,13 @@ namespace TestApp.Cli.Commands
                 Console.WriteLine(file);
             }
         }
+        
+        class LineInfo
+        {
+            public string FileFullName { get; set; }
+            public int LineNumber { get; set; }
+            public string LineText { get; set; }
+        }
 
         [Help("Search by content")]
         public void Content(string keywords)
@@ -57,9 +64,18 @@ namespace TestApp.Cli.Commands
             }
 
             //IEnumerable<string> linesWithAnyKeywords = filesWithAllKeywords
-            var linesWithAnyKeywords = filesWithAllKeywords.SelectMany(f => File.ReadLines(f.FullName).Select(line => (f.FullName, line))
-                                                           .Where(t => keywordArray.Any(k => t.line.ToLowerInvariant().Contains(k.ToLowerInvariant()))))
-                                                           .GroupBy(t => t.FullName);
+            var linesWithAnyKeywords = filesWithAllKeywords
+                .SelectMany(f =>
+                {
+                    int lineCount = 1;
+
+                    return File.ReadLines(f.FullName).Select(line => //(f.FullName, line)
+                    {
+                        return new LineInfo { FileFullName = f.FullName, LineNumber = lineCount++, LineText = line };
+                    });
+                })
+                .Where(t => keywordArray.Any(k => t.LineText.ToLowerInvariant().Contains(k.ToLowerInvariant())))
+                .GroupBy(t => t.FileFullName);
 
             int count = 1;
             int foundFileNumber = linesWithAnyKeywords.Count();
@@ -76,7 +92,7 @@ namespace TestApp.Cli.Commands
                 var lineEnumerator = lines.ToList();
                 foreach (var line in lineEnumerator)
                 {
-                    Console.WriteLine($"{count}|{line.line.Trim()}");
+                    Console.WriteLine($"{count}|({line.LineNumber}) {line.LineText.Trim()}");
                 }
                 count++;
                 Console.WriteLine();
@@ -89,9 +105,16 @@ namespace TestApp.Cli.Commands
             {
                 try
                 {
-                    int select = Convert.ToInt32(readline);
+                    string[] splittedReadLine = readline.Split("/");
+                    if(splittedReadLine.Length != 2)
+                    {
+                        throw new Exception("Invalid selection");
+                    }
 
-                    if (select < 1 || select > foundFileNumber)
+                    int selectFile = Convert.ToInt32(splittedReadLine[0]);
+                    int lineNumber = Convert.ToInt32(splittedReadLine[1]);
+
+                    if (selectFile < 1 || selectFile > foundFileNumber)
                     {
                         Console.WriteLine("Invalid input.");
                     }
@@ -101,7 +124,7 @@ namespace TestApp.Cli.Commands
                         var startInfo = new ProcessStartInfo
                         {
                             FileName = @"D:\apps_dell\Vim\vim82\gvim.exe",
-                            Arguments = $"--remote-tab-silent +5 \"{files[select - 1]}\"",
+                            Arguments = $"--remote-tab-silent +{lineNumber} \"{files[selectFile - 1]}\"",
                             UseShellExecute = true,  // UseShellExecute is false by default on .NET Core.
                         };
 
