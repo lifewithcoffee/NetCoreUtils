@@ -2,21 +2,18 @@
 
 TNS stands for Text Notes Search
 
-## ToDo
-
-### Current
-
-
-
-### Waiting
-
-
-### More Thoughts
-
-
-### Done
-
 ## Releases
+
+### Next (v1.1.0)
+
+Working:
+
+- Use single number to select result (instead of using {file_number}/{line_number} pair)
+- Support shell mode, allow user to do another search without restarting the program
+
+Done: 
+
+- Add alias for "content" and "name" subcommands
 
 ### v1.0.0
 
