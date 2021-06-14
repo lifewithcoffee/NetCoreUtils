@@ -15,6 +15,12 @@ namespace TextNotesSearch
         string baseDir = @"C:\__dell_sync_c\mcn\sync\";
         FileSearcher _svc = new FileSearcher();
 
+        [Help("Alias of 'name' command")]
+        public void N(string keywords)
+        {
+            Name(keywords);
+        }
+
         /// <param name="keywords">Multiple keywords separated by ',' or ';'</param>
         [Help("Search by name")]
         public void Name(string keywords)
@@ -24,6 +30,12 @@ namespace TextNotesSearch
             {
                 Console.WriteLine(file);
             }
+        }
+
+        [Help("Alias of 'content' command")]
+        public void C(string keywords)
+        {
+            Content(keywords);
         }
 
         [Help("Search by content")]
