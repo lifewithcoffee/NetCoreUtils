@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Xunit;
+using DatabaseLibTests;
 
 namespace TestUtils
 {
@@ -51,6 +52,8 @@ namespace TestUtils
             serviceCollection.AddLogging(c => c.AddDebug()); // or use moq mock: serviceCollection.AddTransient<ILogger>(f => new Mock<ILogger>().Object);
             serviceCollection.AddSingleton<IConfiguration>(configuration);
             serviceCollection.AddTransient<IConfigTest, ConfigTest>();
+            serviceCollection.AddDbContext<TestDbContext>();
+            serviceCollection.AddRepositories();
 
             this._serviceProvider = serviceCollection.BuildServiceProvider();
         }
