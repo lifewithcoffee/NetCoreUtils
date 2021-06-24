@@ -19,8 +19,7 @@ namespace NetCoreUtils.Database
      *   { }
      * }
      */
-    public interface IRepositoryRead<TEntity>
-        where TEntity : class
+    public interface IRepositoryRead<TEntity> where TEntity : class
     {
         TEntity Get(int? id);
         Task<TEntity> GetAsync(int? id);
@@ -32,26 +31,13 @@ namespace NetCoreUtils.Database
         bool Exist(Expression<Func<TEntity, bool>> predicate);
         Task<bool> ExistAsync(Expression<Func<TEntity, bool>> predicate);
     }
-    
-   /**
-    * For DI registration:
-    * services.AddScoped(typeof(IRepositoryRead<,>), typeof(RepositoryRead<,>));
-    */
-    public interface IRepositoryRead<TEntity, TDbContext>
-        : IRepositoryRead<TEntity>
-        where TEntity : class
-        where TDbContext : DbContext
-    { }
 
-    public class RepositoryRead<TEntity, TDbContext>
-        : IRepositoryRead<TEntity, TDbContext>
-        where TEntity : class
-        where TDbContext : DbContext
+    public class RepositoryRead<TEntity> : IRepositoryRead<TEntity> where TEntity : class
     {
-        private IUnitOfWork<TDbContext> _unitOfWork;
+        private IUnitOfWork _unitOfWork;
         private DbSet<TEntity> dbSet;
 
-        public RepositoryRead(IUnitOfWork<TDbContext> unitOfWork)
+        public RepositoryRead(IUnitOfWork unitOfWork)
         {
             this._unitOfWork = unitOfWork;
             this.dbSet = unitOfWork.Context.Set<TEntity>();

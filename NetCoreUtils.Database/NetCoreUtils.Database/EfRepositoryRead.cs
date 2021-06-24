@@ -22,7 +22,7 @@ namespace NetCoreUtils.Database
 
     public interface IEfRepositoryRead<TEntity, TDbContext>
         : IEfRepositoryRead<TEntity>
-        , IRepositoryRead<TEntity, TDbContext>
+        , IRepositoryRead<TEntity>
         where TEntity : class
         where TDbContext : DbContext
     { }
@@ -32,11 +32,11 @@ namespace NetCoreUtils.Database
         where TEntity : class
         where TDbContext : DbContext
     {
-        private IUnitOfWork<TDbContext> _unitOfWork;
+        private IUnitOfWork _unitOfWork;
         private DbSet<TEntity> dbSet;
-        private IRepositoryRead<TEntity, TDbContext> _repoReader;
+        private IRepositoryRead<TEntity> _repoReader;
 
-        public EfRepositoryRead(IUnitOfWork<TDbContext> unitOfWork, IRepositoryRead<TEntity, TDbContext> repoReader)
+        public EfRepositoryRead(IUnitOfWork unitOfWork, IRepositoryRead<TEntity> repoReader)
         {
             this._unitOfWork = unitOfWork;
             this.dbSet = unitOfWork.Context.Set<TEntity>();

@@ -14,25 +14,14 @@ namespace NetCoreUtils.Database
         where TEntity : class
     { }
 
-    public interface IEfRepository<TEntity, TDbContext>
-        : IEfRepository<TEntity>
-        , IRepository<TEntity, TDbContext>
-        where TEntity : class
-        where TDbContext : DbContext
-    { }
-
-    public class EfRepository<TEntity, TDbContext>
-        : Repository<TEntity, TDbContext>
-        , IEfRepository<TEntity, TDbContext>
-        where TEntity : class 
-        where TDbContext : DbContext
+    public class EfRepository<TEntity> : Repository<TEntity> , IEfRepository<TEntity> where TEntity : class 
     {
-        private IEfRepositoryRead<TEntity, TDbContext> _efRepoRead;
+        private IEfRepositoryRead<TEntity> _efRepoRead;
 
         public EfRepository(
-            IRepositoryRead<TEntity, TDbContext> repoReader,
-            IRepositoryWrite<TEntity, TDbContext> repoWriter,
-            IEfRepositoryRead<TEntity, TDbContext> efRepoRead
+            IRepositoryRead<TEntity> repoReader,
+            IRepositoryWrite<TEntity> repoWriter,
+            IEfRepositoryRead<TEntity> efRepoRead
             ):base(repoReader,repoWriter)
         {
             _efRepoRead = efRepoRead;

@@ -23,9 +23,7 @@ namespace NetCoreUtils.Database
     *       { }
     *     }
     */
-    public interface IRepositoryWrite<TEntity>
-        : ICommittable
-        where TEntity : class
+    public interface IRepositoryWrite<TEntity> : ICommittable where TEntity : class
     {
         TEntity Add(TEntity entity);
         void AddRange(IEnumerable<TEntity> entities);
@@ -38,25 +36,12 @@ namespace NetCoreUtils.Database
         void RemoveRange(IEnumerable<TEntity> entities);
     }
 
-   /**
-    * For DI registration:
-    * services.AddScoped(typeof(IRepositoryWrite<,>), typeof(RepositoryWrite<,>));
-    */
-    public interface IRepositoryWrite<TEntity, TDbContext>
-        : IRepositoryWrite<TEntity>
-        where TEntity : class
-        where TDbContext : DbContext
-    { }
-
-    public class RepositoryWrite<TEntity, TDbContext>
-        : IRepositoryWrite<TEntity, TDbContext>
-        where TEntity : class
-        where TDbContext : DbContext
+    public class RepositoryWrite<TEntity> : IRepositoryWrite<TEntity> where TEntity : class
     {
-        private IUnitOfWork<TDbContext> _unitOfWork;
+        private IUnitOfWork _unitOfWork;
         private DbSet<TEntity> dbSet;
 
-        public RepositoryWrite(IUnitOfWork<TDbContext> unitOfWork)
+        public RepositoryWrite(IUnitOfWork unitOfWork)
         {
             this._unitOfWork = unitOfWork;
             this.dbSet = unitOfWork.Context.Set<TEntity>();

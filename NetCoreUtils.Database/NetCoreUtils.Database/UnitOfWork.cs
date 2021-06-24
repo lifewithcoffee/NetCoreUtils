@@ -15,21 +15,21 @@ namespace NetCoreUtils.Database
         Task<bool> CommitAsync();
     }
 
-    public interface IUnitOfWork<TDbContext>: ICommittable where TDbContext : DbContext
+    public interface IUnitOfWork: ICommittable
     {
-        TDbContext Context { get; }
+        DbContext Context { get; }
         void EnableQueryTracking(bool enabled);
         void RejectAllChanges();
     }
 
-    public class UnitOfWork<TDbContext> : IUnitOfWork<TDbContext> where TDbContext : DbContext
+    public class UnitOfWork : IUnitOfWork
     {
-        private TDbContext _context;
+        private DbContext _context;
         private readonly ILogger _logger;
 
-        public TDbContext Context { get { return _context; } }
+        public DbContext Context { get { return _context; } }
 
-        public UnitOfWork(TDbContext context, ILogger<UnitOfWork<TDbContext>> logger)
+        public UnitOfWork(DbContext context, ILogger<UnitOfWork> logger)
         {
             _context = context;
             _logger = logger;

@@ -8,21 +8,6 @@ using System.Threading.Tasks;
 
 namespace NetCoreUtils.Database
 {
-    /**
-     * Need to declare an impl in the application project:
-     *
-     *  public class RepositoryBase<TEntity>
-     *      : RepositoryBase<TEntity, ApplicationDbContext>
-     *      where TEntity : class
-     *  {
-     *      public RepositoryBase(
-     *          IUnitOfWork<ApplicationDbContext> unitOfWork,
-     *          IRepositoryRead<TEntity, ApplicationDbContext> repoReader,
-     *          IRepositoryWrite<TEntity, ApplicationDbContext> repoWriter
-     *      ) : base(unitOfWork, repoReader, repoWriter)
-     *      { }
-     *  }
-     */
     public interface IRepository<TEntity>
         : ICommittable
         , IRepositoryRead<TEntity>
@@ -30,33 +15,19 @@ namespace NetCoreUtils.Database
         where TEntity : class
     { }
 
-    /**
-     * For DI registration:
-     * services.AddScoped(typeof(IRepositoryBase<,>), typeof(RepositoryBase<,>));
-     */
-    public interface IRepository<TEntity, TDbContext>
-        : IRepository<TEntity>
-        where TEntity : class
-        where TDbContext : DbContext
-    {
-    }
-
     /// <summary>
     /// originated from (but changed quite a lot):
     /// http://www.asp.net/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application
     /// https://github.com/MarlabsInc/webapi-angularjs-spa/blob/28bea19b3267aeed1768920b0d77be329b0278a5/source/ResourceMetadata/ResourceMetadata.Data/Infrastructure/RepositoryBase.cs
     /// </summary>
-    public class Repository<TEntity, TDbContext>
-        : IRepository<TEntity, TDbContext>
-        where TEntity : class 
-        where TDbContext : DbContext
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class 
     {
-        private readonly IRepositoryRead<TEntity, TDbContext> _repoReader;
-        private readonly IRepositoryWrite<TEntity, TDbContext> _repoWriter;
+        private readonly IRepositoryRead<TEntity> _repoReader;
+        private readonly IRepositoryWrite<TEntity> _repoWriter;
 
         public Repository(
-            IRepositoryRead<TEntity, TDbContext> repoReader,
-            IRepositoryWrite<TEntity, TDbContext> repoWriter
+            IRepositoryRead<TEntity> repoReader,
+            IRepositoryWrite<TEntity> repoWriter
         ){
 
             _repoReader = repoReader;

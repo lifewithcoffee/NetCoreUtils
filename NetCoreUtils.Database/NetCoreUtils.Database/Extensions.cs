@@ -89,15 +89,16 @@ namespace NetCoreUtils.Database
          *          { }
          *      }
          */
-        static public void AddRepositories(this IServiceCollection services)
+        static public void AddRepositories<TDbContext>(this IServiceCollection services)
+            where TDbContext : DbContext
         {
-            services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+            services.AddTransient(typeof(DbContext), sp => sp.GetService<TDbContext>());
+            services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+            services.AddScoped(typeof(IRepositoryRead<>), typeof(RepositoryRead<>));
+            services.AddScoped(typeof(IRepositoryWrite<>), typeof(RepositoryWrite<>));
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-            services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-            services.AddScoped(typeof(IRepositoryRead<,>), typeof(RepositoryRead<,>));
-            services.AddScoped(typeof(IRepositoryWrite<,>), typeof(RepositoryWrite<,>));
-
-            services.AddScoped(typeof(IEfRepository<,>), typeof(EfRepository<,>));
+            services.AddScoped(typeof(IEfRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(IEfRepositoryRead<,>), typeof(EfRepositoryRead<,>));
         }
     }
