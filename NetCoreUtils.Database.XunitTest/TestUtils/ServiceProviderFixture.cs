@@ -2,13 +2,14 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NetCoreUtils.Database;
+using BasicTests;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Xunit;
 
-namespace NetCoreUtils.Database.XunitTest.TestEnv
+namespace TestUtils
 {
     public class ServiceProviderFixture : IDisposable
     {
@@ -55,32 +56,6 @@ namespace NetCoreUtils.Database.XunitTest.TestEnv
         }
 
         public void Dispose() { }
-    }
-
-    interface IConfigTest
-    {
-        bool GetBoolValue(string key);
-        string GetConnectionString(string name);
-    }
-
-    class ConfigTest : IConfigTest
-    {
-        private readonly IConfiguration _configuration;
-
-        public ConfigTest(IConfiguration Configuration)
-        {
-            _configuration = Configuration;
-        }
-
-        public bool GetBoolValue(string key)
-        {
-            return _configuration.GetValue<bool>(key);
-        }
-
-        public string GetConnectionString(string name)
-        {
-            return _configuration.GetConnectionString(name);
-        }
     }
 
     /**
