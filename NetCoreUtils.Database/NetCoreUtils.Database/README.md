@@ -5,6 +5,14 @@
 - Every entity's repository is committable.
 - All repositories and UnitOfWork are injected as Scoped (using .net core build-in DI API "AddScoped").
 
+## TODOs
+
+- Merge EfRepository into Repository, and remove EfRepository
+  
+  Decide to give up adding support for MongoDB as the MongoDB API is too different from that of Entity Framework's.
+
+  Therefore library NetCoreUtils.Database is only used for relational database.
+
 ## Design Thoughts
 
 ### Reason of wrapping extra repositories for dbSets
@@ -43,53 +51,8 @@ See [release notes](./release-notes.md)
 
 ## Usage
 
-### Remarks
-
-- If one job involes multiple repositories, the last repository shall be responsible for
-  committing the unit of work for all. 
-
-### Add local `Repository<TEntity>` implementatiion
-
-``` csharp
-public class RepositoryReader<TEntity>
-    : RepositoryRead<TEntity, ApplicationDbContext>
-    where TEntity : class
-{
-    public RepositoryReader(IUnitOfWork<ApplicationDbContext> unitOfWork)
-        : base(unitOfWork)
-    { }
-}
-
-public class RepositoryWriter<TEntity>
-    : RepositoryWrite<TEntity, ApplicationDbContext>
-    where TEntity : class
-{
-    public RepositoryWriter(IUnitOfWork<ApplicationDbContext> unitOfWork)
-        : base(unitOfWork)
-    { }
-}
-
-public class Repository<TEntity>
-    : Repository<TEntity, ApplicationDbContext>
-    where TEntity : class
-{
-    public Repository(
-        IRepositoryRead<TEntity, ApplicationDbContext> repoReader,
-        IRepositoryWrite<TEntity, ApplicationDbContext> repoWriter
-    ) : base(unitOfWork, repoReader, repoWriter)
-    { }
-}
-```
-
-### Register Dependencies
-
-``` csharp
-services.AddRepositories();
-services.AddScoped(typeof(IRepositoryRead<>), typeof(RepositoryReader<>));
-services.AddScoped(typeof(IRepositoryWrite<>), typeof(RepositoryWriter<>));
-services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-```
-
-Remarks:
-
-Extension method `services.AddRepositories()` is implemented in `Extensions.cs`.
+- If one job involes multiple repositories, the last repository shall be
+  responsible for committing the unit of work for all. 
+- Call `services.AddRepositories<ApplicationDbContext>()` to register
+  dependencies. This method is implemented in `Extensions.cs`.
+- A `services.AddDbContext<ApplicationDbContext>()` must be called

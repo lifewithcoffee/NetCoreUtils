@@ -1,11 +1,24 @@
 # Release Notes
 
-## v1.2 (working)
+## v2.0.0 (working)
+
+**Major Enhancement:**
+
+- Remove TDbContext generic type parameter, so RepositoryReader<TEntity>,
+  RepositoryWrite<TEntity> and Repository<TEntity> are not needed to be defined
+  externally
+- Merge IEfRepositoryRead<> into IRepositoryRead<>, and delete IEfRepositoryRead<> and IEfRepository<>
+
+**Other Enhancement:**
 
 - Upgrade to .net5
-- Upgrade EF Core dependency from v2.1 to v5.0.1
+- Upgrade EF Core dependency from v2.1 to v5.0.7
+- Upgrade NetCoreUtils from 0.3.0.4 to 1.2.0
+- Add package dependency `Microsoft.EntityFrameworkCore.InMemory`
+- Add package dependency `Microsoft.EntityFrameworkCore.Relational` to enable
+  `DbContext.Database.MigrateAsync()` method
 
-## v1.1
+## v1.1.0
 
 - Stop exposing DbContext from IRepository<>
 - Remove useless unitOfWork and dbSet members from Repository<,> implementation
