@@ -9,6 +9,7 @@ using System.IO;
 using System.Text;
 using Xunit;
 using DatabaseLibTests;
+using Microsoft.EntityFrameworkCore;
 
 namespace TestUtils
 {
@@ -52,8 +53,8 @@ namespace TestUtils
             serviceCollection.AddLogging(c => c.AddDebug()); // or use moq mock: serviceCollection.AddTransient<ILogger>(f => new Mock<ILogger>().Object);
             serviceCollection.AddSingleton<IConfiguration>(configuration);
             serviceCollection.AddTransient<IConfigTest, ConfigTest>();
-            serviceCollection.AddDbContext<TestDbContext>();
-            serviceCollection.AddRepositories();
+            serviceCollection.AddDbContext<TestDbContext>(options => options.UseInMemoryDatabase("xUnit"));
+            serviceCollection.AddRepositories<TestDbContext>();
 
             this._serviceProvider = serviceCollection.BuildServiceProvider();
         }
