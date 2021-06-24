@@ -39,7 +39,7 @@ Two reasons:
 
 ## Release Notes
 
-see [Release Notes](./release-notes.md)
+See [release notes](./release-notes.md)
 
 ## Usage
 
@@ -69,12 +69,11 @@ public class RepositoryWriter<TEntity>
     { }
 }
 
-public class RepositoryBase<TEntity>
-    : RepositoryBase<TEntity, ApplicationDbContext>
+public class Repository<TEntity>
+    : Repository<TEntity, ApplicationDbContext>
     where TEntity : class
 {
-    public RepositoryBase(
-        IUnitOfWork<ApplicationDbContext> unitOfWork,
+    public Repository(
         IRepositoryRead<TEntity, ApplicationDbContext> repoReader,
         IRepositoryWrite<TEntity, ApplicationDbContext> repoWriter
     ) : base(unitOfWork, repoReader, repoWriter)
@@ -86,9 +85,9 @@ public class RepositoryBase<TEntity>
 
 ``` csharp
 services.AddRepositories();
-services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 services.AddScoped(typeof(IRepositoryRead<>), typeof(RepositoryReader<>));
 services.AddScoped(typeof(IRepositoryWrite<>), typeof(RepositoryWriter<>));
+services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 ```
 
 Remarks:
