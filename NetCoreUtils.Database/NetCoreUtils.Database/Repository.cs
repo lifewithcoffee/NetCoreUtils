@@ -108,5 +108,30 @@ namespace NetCoreUtils.Database
         {
             return await _repoWriter.CommitAsync();
         }
+
+        public TEntity GetByIdNoTracking(int? id)
+        {
+            return _repoReader.GetByIdNoTracking(id);
+        }
+
+        public async Task<TEntity> GetByIdNoTrackingAsync(int? id)
+        {
+            return await _repoReader.GetByIdNoTrackingAsync(id);
+        }
+
+        public IQueryable<TEntity> GetAllNoTracking()
+        {
+            return _repoReader.GetAllNoTracking();
+        }
+
+        public IQueryable<TEntity> GetManyNoTracking(Expression<Func<TEntity, bool>> where)
+        {
+            return _repoReader.GetManyNoTracking(where);
+        }
+
+        public IQueryable<TEntity> GetManyLocalFirst(Expression<Func<TEntity, bool>> where)
+        {
+            return _repoReader.GetManyLocalFirst(where);
+        }
     }
 }

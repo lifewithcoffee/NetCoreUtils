@@ -97,9 +97,6 @@ namespace NetCoreUtils.Database
             services.AddScoped(typeof(IRepositoryRead<>), typeof(RepositoryRead<>));
             services.AddScoped(typeof(IRepositoryWrite<>), typeof(RepositoryWrite<>));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-
-            services.AddScoped(typeof(IEfRepository<>), typeof(EfRepository<>));
-            services.AddScoped(typeof(IEfRepositoryRead<,>), typeof(EfRepositoryRead<,>));
         }
     }
 }
