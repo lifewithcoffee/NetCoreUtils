@@ -12,15 +12,22 @@ namespace NetCoreUtils.Database.XunitTest.TestEnv
 {
     public class ServiceProviderFixture : IDisposable
     {
-        public IServiceProvider ServiceProvider { get; private set; }
+        string _jsonSetting = "appsettings.json";
+
+        IServiceProvider _serviceProvider;
+
+        public T GetServiceExistingScope<T>()
+        {
+            return this._serviceProvider.GetService<T>();
+        }
 
         /// <summary>
         /// This method will update ServiceProvide as well.
         /// </summary>
         public T GetServiceNewScope<T>()
         {
-            this.ServiceProvider = this.ServiceProvider.CreateScope().ServiceProvider;
-            return this.ServiceProvider.GetService<T>();
+            this._serviceProvider = this._serviceProvider.CreateScope().ServiceProvider;
+            return this._serviceProvider.GetService<T>();
         }
 
         public ServiceProviderFixture()
@@ -30,16 +37,15 @@ namespace NetCoreUtils.Database.XunitTest.TestEnv
 
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 //.SetBasePath(sharpMemberDir)
-                .AddJsonFile(TestGlobalSettings.JsonSetting, optional: true, reloadOnChange: true)
-                .AddJsonFile(TestGlobalSettings.JsonSettingForUnitTest, optional: true, reloadOnChange: true)
+                .AddJsonFile(_jsonSetting, optional: true, reloadOnChange: true)        // allowed to call this method multiple times to add more json files
                 //.AddUserSecrets(userSecretsId: "aspnet-SharpMember-4C3332C6-4145-4408-BDD4-63A97039ED0D")
                 .Build();
 
             IServiceCollection serviceCollection = new ServiceCollection();
-            serviceCollection.AddLogging(c => c.AddDebug()); // or use mock: serviceCollection.AddTransient<ILogger>(f => new Mock<ILogger>().Object);
+            serviceCollection.AddLogging(c => c.AddDebug()); // or use moq mock: serviceCollection.AddTransient<ILogger>(f => new Mock<ILogger>().Object);
             //serviceCollection.AddTransient<ICommunityTestDataProvider, CommunityTestDataProvider>();
 
-            this.ServiceProvider = serviceCollection.BuildServiceProvider();
+            this._serviceProvider = serviceCollection.BuildServiceProvider();
         }
 
         public void Dispose() { }

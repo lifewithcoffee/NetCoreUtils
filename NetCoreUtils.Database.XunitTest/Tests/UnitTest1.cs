@@ -2,7 +2,7 @@ using NetCoreUtils.Database.XunitTest.TestEnv;
 using System;
 using Xunit;
 
-namespace NetCoreUtils.Database.XunitTest
+namespace NetCoreUtils.Database.XunitTest.Tests
 {
     public class UnitTest1 : IClassFixture<ServiceProviderFixture>
     {
