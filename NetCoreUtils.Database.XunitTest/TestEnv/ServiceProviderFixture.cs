@@ -32,23 +32,55 @@ namespace NetCoreUtils.Database.XunitTest.TestEnv
 
         public ServiceProviderFixture()
         {
-            //string projectDir = AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"));
-            //string sharpMemberDir = Path.Combine(projectDir, "../SharpMember");
+            string projectDir = AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"));
+            string settingFileDir = Path.Combine(projectDir, ".");
 
+            /**
+             * - If need to add more json files, call .AddJsonFile() multiple times
+             * - If need to apply secrets, apply .AddUserSecrets(userSecretsId: "<secret-id>") before .Build()
+             */
             IConfigurationRoot configuration = new ConfigurationBuilder()
-                //.SetBasePath(sharpMemberDir)
-                .AddJsonFile(_jsonSetting, optional: true, reloadOnChange: true)        // allowed to call this method multiple times to add more json files
-                //.AddUserSecrets(userSecretsId: "aspnet-SharpMember-4C3332C6-4145-4408-BDD4-63A97039ED0D")
+                .SetBasePath(settingFileDir)
+                .AddJsonFile(_jsonSetting, optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables()
                 .Build();
 
             IServiceCollection serviceCollection = new ServiceCollection();
+
             serviceCollection.AddLogging(c => c.AddDebug()); // or use moq mock: serviceCollection.AddTransient<ILogger>(f => new Mock<ILogger>().Object);
-            //serviceCollection.AddTransient<ICommunityTestDataProvider, CommunityTestDataProvider>();
+            serviceCollection.AddSingleton<IConfiguration>(configuration);
+            serviceCollection.AddTransient<IConfigTest, ConfigTest>();
 
             this._serviceProvider = serviceCollection.BuildServiceProvider();
         }
 
         public void Dispose() { }
+    }
+
+    interface IConfigTest
+    {
+        bool GetBoolValue(string key);
+        string GetConnectionString(string name);
+    }
+
+    class ConfigTest : IConfigTest
+    {
+        private readonly IConfiguration _configuration;
+
+        public ConfigTest(IConfiguration Configuration)
+        {
+            _configuration = Configuration;
+        }
+
+        public bool GetBoolValue(string key)
+        {
+            return _configuration.GetValue<bool>(key);
+        }
+
+        public string GetConnectionString(string name)
+        {
+            return _configuration.GetConnectionString(name);
+        }
     }
 
     /**
