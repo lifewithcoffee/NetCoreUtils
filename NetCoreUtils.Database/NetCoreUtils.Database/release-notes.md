@@ -1,6 +1,12 @@
 # Release Notes
 
-## v2.0.0 (working)
+## v2.0.1 (working)
+
+- Add package dependency `Npgsql.EntityFrameworkCore.PostgreSQL`
+- Add package dependency `Microsoft.EntityFrameworkCore.SqlServer`
+- Add package dependency `Microsoft.EntityFrameworkCore.Sqlite.Core`
+
+## v2.0.0
 
 **Major Enhancement:**
 
