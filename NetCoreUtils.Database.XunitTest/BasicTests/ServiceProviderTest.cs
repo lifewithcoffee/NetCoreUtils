@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Configuration;
-using TestUtils;
+using NetCoreUtils.Database.XunitTest;
 using System;
 using Xunit;
 

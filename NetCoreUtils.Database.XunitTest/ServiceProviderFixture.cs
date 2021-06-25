@@ -11,7 +11,7 @@ using Xunit;
 using DatabaseLibTests;
 using Microsoft.EntityFrameworkCore;
 
-namespace TestUtils
+namespace NetCoreUtils.Database.XunitTest
 {
     public class ServiceProviderFixture : IDisposable
     {
@@ -53,11 +53,14 @@ namespace TestUtils
             serviceCollection.AddLogging(c => c.AddDebug()); // or use moq mock: serviceCollection.AddTransient<ILogger>(f => new Mock<ILogger>().Object);
             serviceCollection.AddSingleton<IConfiguration>(configuration);
             serviceCollection.AddTransient<IConfigTest, ConfigTest>();
+            //serviceCollection.AddDbContext<TestDbContext>(options => options.UseInMemoryDatabase("xUnit"));
             serviceCollection.AddDbContext<TestDbContext>(options => options.UseInMemoryDatabase("xUnit"));
             serviceCollection.AddRepositories<TestDbContext>();
 
             this._serviceProvider = serviceCollection.BuildServiceProvider();
         }
+
+
 
         public void Dispose() { }
     }
