@@ -42,7 +42,10 @@ namespace DatabaseLibTests
             writer.Commit();
 
             // assert
-            var reader = _provider.GetServiceNewScope<IRepositoryRead<Project>>();
+
+            // If use sqlite non-shared in-memory db, need to call _provider.GetServiceExistingScope<>() instead;
+            var reader = _provider.GetServiceNewScope<IRepositoryRead<Project>>();    
+
             var all = reader.QueryAll().ToList();
             Assert.Equal(2, all.Count);
             Assert.Equal("project1", all[0].Name);

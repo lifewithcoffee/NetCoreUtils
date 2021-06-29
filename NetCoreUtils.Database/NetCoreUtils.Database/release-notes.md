@@ -4,7 +4,7 @@
 
 - Add package dependency `Npgsql.EntityFrameworkCore.PostgreSQL`
 - Add package dependency `Microsoft.EntityFrameworkCore.SqlServer`
-- Add package dependency `Microsoft.EntityFrameworkCore.Sqlite.Core`
+- Add package dependency `Microsoft.EntityFrameworkCore.Sqlite`
 
 ## v2.0.0
 

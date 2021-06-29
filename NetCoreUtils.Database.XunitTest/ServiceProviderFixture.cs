@@ -10,6 +10,8 @@ using System.Text;
 using Xunit;
 using DatabaseLibTests;
 using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
+using Microsoft.Data.Sqlite;
 
 namespace NetCoreUtils.Database.XunitTest
 {
@@ -53,14 +55,31 @@ namespace NetCoreUtils.Database.XunitTest
             serviceCollection.AddLogging(c => c.AddDebug()); // or use moq mock: serviceCollection.AddTransient<ILogger>(f => new Mock<ILogger>().Object);
             serviceCollection.AddSingleton<IConfiguration>(configuration);
             serviceCollection.AddTransient<IConfigTest, ConfigTest>();
-            //serviceCollection.AddDbContext<TestDbContext>(options => options.UseInMemoryDatabase("xUnit"));
-            serviceCollection.AddDbContext<TestDbContext>(options => options.UseInMemoryDatabase("xUnit"));
+
+            /**
+             * Or use EF InMemory DB:
+             * serviceCollection.AddDbContext<TestDbContext>(options => options.UseInMemoryDatabase("xUnit"));
+             */
+            serviceCollection.AddDbContext<TestDbContext>(options => options.UseSqlite(CreateSqliteInMemoryDatabase()));
+
             serviceCollection.AddRepositories<TestDbContext>();
 
             this._serviceProvider = serviceCollection.BuildServiceProvider();
         }
 
+        private DbConnection CreateSqliteInMemoryDatabase()
+        {
+            // non-shared in-memory db, a new scope DbContext opens a different
+            // connection:
+            // var connection = new SqliteConnection("Filename=:memory:"); 
 
+            // shared in-memory db, a new scope DbContext reuse the same
+            // connection if the previous connection hasn't broken
+            var connection = new SqliteConnection("DataSource=myshareddb;mode=memory;cache=shared");
+
+            connection.Open();  // EF core will close it when DbContext disposes
+            return connection;
+        }
 
         public void Dispose() { }
     }

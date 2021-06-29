@@ -18,7 +18,10 @@ namespace DatabaseLibTests
 
     public class TestDbContext : DbContext
     {
-        public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) { }
+        public TestDbContext(DbContextOptions<TestDbContext> options) : base(options)
+        {
+            Database.EnsureCreated();
+        }
 
         public DbSet<Project> Projects { get; set; }
         public DbSet<TaskItem> TaskItems { get; set; }
