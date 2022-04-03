@@ -88,10 +88,19 @@ namespace NetCoreUtils.Database
          *          ) : base(unitOfWork, repoReader, repoWriter)
          *          { }
          *      }
+         *  
+         *  TODO: method name "AddREpositories" needs to be changed
          */
-        static public void AddRepositories<TDbContext>(this IServiceCollection services)
+        static public void AddRepositories<TDbContext>(this IServiceCollection services, ITenantProvider tenantProvider = null)
             where TDbContext : DbContext
         {
+            services.AddTransient(typeof(ITenantProvider), sp =>
+            {
+                if (tenantProvider is null)
+                    return new EmptyTenantProvider();
+                else
+                    return tenantProvider;
+            });
             services.AddTransient(typeof(DbContext), sp => sp.GetService<TDbContext>());
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
             services.AddScoped(typeof(IRepositoryRead<>), typeof(RepositoryRead<>));
