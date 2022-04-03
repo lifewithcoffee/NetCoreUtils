@@ -1,6 +1,6 @@
 # Release Notes
 
-## v2.1.0 (working)
+## v2.1.0
 
 Major Enhancement:
 
