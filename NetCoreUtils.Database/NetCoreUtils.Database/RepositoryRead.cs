@@ -55,7 +55,7 @@ namespace NetCoreUtils.Database
 
         public virtual TEntity Get(int? id)
         {
-            if(id == null)
+            if (id == null)
                 return null;
             else
                 return dbSet.Find(id);
@@ -63,7 +63,7 @@ namespace NetCoreUtils.Database
 
         public virtual async Task<TEntity> GetAsync(int? id)
         {
-            if(id == null)
+            if (id == null)
                 return null;
             else
                 return await dbSet.FindAsync(id);
@@ -86,7 +86,7 @@ namespace NetCoreUtils.Database
         public virtual TEntity GetByIdNoTracking(int? id)
         {
             var entity = this.Get(id);
-            if(entity != null)
+            if (entity != null)
                 _unitOfWork.Context.Entry(entity).State = EntityState.Detached;
             return entity;
         }
@@ -94,7 +94,7 @@ namespace NetCoreUtils.Database
         public virtual async Task<TEntity> GetByIdNoTrackingAsync(int? id)
         {
             var entity = await this.GetAsync(id);
-            if(entity != null)
+            if (entity != null)
                 _unitOfWork.Context.Entry(entity).State = EntityState.Detached;
             return entity;
         }
