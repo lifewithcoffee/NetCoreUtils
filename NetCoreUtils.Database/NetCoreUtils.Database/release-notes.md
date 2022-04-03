@@ -1,6 +1,12 @@
 # Release Notes
 
-## v2.0.1 (working)
+## v2.1.0 (working)
+
+Major Enhancement:
+
+- Add multi-tenant support (mainly for UnitOfWork)
+
+Other Enhancement:
 
 - Add package dependency `Npgsql.EntityFrameworkCore.PostgreSQL`
 - Add package dependency `Microsoft.EntityFrameworkCore.SqlServer`
@@ -8,14 +14,14 @@
 
 ## v2.0.0
 
-**Major Enhancement:**
+Major Enhancement:
 
 - Remove TDbContext generic type parameter, so RepositoryReader<TEntity>,
   RepositoryWrite<TEntity> and Repository<TEntity> are not needed to be defined
   externally
 - Merge IEfRepositoryRead<> into IRepositoryRead<>, and delete IEfRepositoryRead<> and IEfRepository<>
 
-**Other Enhancement:**
+Other Enhancement:
 
 - Upgrade to .net5
 - Upgrade EF Core dependency from v2.1 to v5.0.7
@@ -41,7 +47,7 @@
 
 ## v0.4.0.9
 
-*Enhancement:*
+Enhancement:
 
 - Upgrade to .net core 2.2
 - Add interfaces with the same generic template parameter number for easy DI registration like:
@@ -49,7 +55,7 @@
   services.AddScoped(typeof(IRepositoryWrite<,>), typeof(RepositoryWrite<,>));
   services.AddScoped(typeof(IRepositoryRead<,>), typeof(RepositoryRead<,>));
 
-*Incompatible changes:*
+Incompatible changes:
 
 - Rename RepositoryBase to Repository
 
@@ -59,7 +65,7 @@
 - Declare all methods in the implementation classes as "virtual"
 - Remove "abstract" from RepositoryBase<> definition
 
-*Incompatible changes:*
+Incompatible changes:
 
 - Remove IDisposable from Committable since EF DbContext can manage itself and an DI framework
   can help to dispose an injected DbContext as well
