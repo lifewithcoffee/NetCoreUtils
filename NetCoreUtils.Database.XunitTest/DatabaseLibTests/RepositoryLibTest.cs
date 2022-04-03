@@ -19,7 +19,7 @@ namespace DatabaseLibTests
         }
 
         [Fact]
-        public void DI_Shall_Work()
+        public void DI_should_work()
         {
             var uow = _provider.GetServiceNewScope<IUnitOfWork>();
             Assert.NotNull(uow);
@@ -29,7 +29,7 @@ namespace DatabaseLibTests
         }
 
         [Fact]
-        public void CRUD_Shall_Work()
+        public void MultiTenant_CRUD_should_work()
         {
             // arrange
             var before = _provider.GetServiceNewScope<IRepositoryRead<Project>>();
@@ -43,13 +43,17 @@ namespace DatabaseLibTests
 
             // assert
 
-            // If use sqlite non-shared in-memory db, need to call _provider.GetServiceExistingScope<>() instead;
+            // If use sqlite non-shared in-memory db, need to call
+            // _provider.GetServiceExistingScope<>() instead;
             var reader = _provider.GetServiceNewScope<IRepositoryRead<Project>>();    
 
             var all = reader.QueryAll().ToList();
             Assert.Equal(2, all.Count);
             Assert.Equal("project1", all[0].Name);
             Assert.Equal("project2", all[1].Name);
+
+            Assert.Equal("tenant1", all[0].TenantId);
+            Assert.Equal("tenant1", all[1].TenantId);
         }
     }
 }

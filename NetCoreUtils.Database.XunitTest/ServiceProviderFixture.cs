@@ -62,7 +62,7 @@ namespace NetCoreUtils.Database.XunitTest
              */
             serviceCollection.AddDbContext<TestDbContext>(options => options.UseSqlite(CreateSqliteInMemoryDatabase()));
 
-            serviceCollection.AddRepositories<TestDbContext>();
+            serviceCollection.AddRepositories<TestDbContext>(new TenantProvider());
 
             this._serviceProvider = serviceCollection.BuildServiceProvider();
         }
