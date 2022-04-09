@@ -1,6 +1,7 @@
 ﻿namespace McnLib
 {
-    public class SectionRecognizer
+
+    public class BlockParser
     {
 
     }
