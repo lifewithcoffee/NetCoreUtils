@@ -2,7 +2,8 @@
 {
     public class TextFileReader
     {
-        // TODO: handle UnauthorizedAccessException & PathTooLongException, see: https://docs.microsoft.com/en-us/dotnet/api/system.io.file.readlines?redirectedfrom=MSDN&view=net-6.0#overloads
+        // TODO: handle UnauthorizedAccessException & PathTooLongException
+        //       see https://docs.microsoft.com/en-us/dotnet/api/system.io.file.readlines?redirectedfrom=MSDN&view=net-6.0#overloads
         public List<FileLine> ReadFile(string filePath)
         {
             var result = new List<FileLine>();
