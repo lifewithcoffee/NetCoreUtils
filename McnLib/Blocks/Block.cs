@@ -1,4 +1,6 @@
-﻿namespace McnLib
+﻿using McnLib.FileReader;
+
+namespace McnLib.Blocks
 {
     public class Block
     {
@@ -12,5 +14,6 @@
         public DateTime? UpdateTime { get; set; }
         public string? Content { get; set; }
         public List<BlockSection> BlockSections { get; set; } = new List<BlockSection>();
+        public List<FileLine> FileLines { get; set; } = new List<FileLine>();
     }
 }

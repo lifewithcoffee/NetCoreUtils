@@ -1,4 +1,4 @@
-﻿namespace McnLib
+﻿namespace McnLib.Blocks
 {
     public class BlockSection
     {
