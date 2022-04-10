@@ -4,6 +4,6 @@ namespace McnLib
 {
     public interface ILineParser
     {
-        void ProcessLine(FileLine line);
+        bool ProcessLine(FileLine line);
     }
 }
