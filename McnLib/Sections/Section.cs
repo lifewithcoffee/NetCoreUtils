@@ -1,4 +1,4 @@
-﻿namespace McnLib
+﻿namespace McnLib.Sections
 {
     public class Section
     {

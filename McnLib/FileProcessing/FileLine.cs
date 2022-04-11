@@ -1,4 +1,4 @@
-﻿namespace McnLib.FileReader
+﻿namespace McnLib.FileProcessing
 {
     public class FileLine
     {
