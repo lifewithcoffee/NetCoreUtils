@@ -1,6 +1,6 @@
 ﻿namespace McnLib.Blocks
 {
-    public class FileSectionFormat
+    public class FileSectionParser
     {
 
     }

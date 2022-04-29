@@ -11,10 +11,18 @@ namespace McnLib.FileProcessing
     public class TextFileParser
     {
         TextFileReader fileReader = new TextFileReader();
-        ILineParser[] parsers = { new SectionParser(), new BlockParser() };
-        public void Parse(string filePath)
+        FileLineParser lineParser = new FileLineParser();
+        public void ParseFile(string filePath)
         {
-            var lines = fileReader.ReadFile(filePath);
+            lineParser.ParseLines(fileReader.ReadFile(filePath));
+        }
+    }
+
+    public class FileLineParser
+    {
+        ILineParser[] parsers = { new SectionParser(), new BlockParser() };
+        public void ParseLines(List<FileLine> lines)
+        {
             foreach(var line in lines)
             {
                 foreach(var parser in parsers)
@@ -27,7 +35,8 @@ namespace McnLib.FileProcessing
 
         public List<Block> GetBlocks()
         {
-            return ((BlockParser)parsers[1]).Blocks;
+            var blockParser = parsers.Where(parser => parser is BlockParser).First();
+            return ((BlockParser)blockParser).Blocks;
         }
     }
 }
