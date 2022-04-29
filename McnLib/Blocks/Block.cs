@@ -2,6 +2,9 @@
 
 namespace McnLib.Blocks
 {
+    /// <summary>
+    /// A block is a piece of notes wrapped by line "[=..." and line "..._]"
+    /// </summary>
     public class Block
     {
         public string? Title { get; set; }
