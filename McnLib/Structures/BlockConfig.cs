@@ -1,4 +1,4 @@
-﻿namespace McnLib.Blocks
+﻿namespace McnLib.Structures
 {
     public static class BlockConfig
     {

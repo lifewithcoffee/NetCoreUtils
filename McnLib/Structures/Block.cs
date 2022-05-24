@@ -1,6 +1,6 @@
 ﻿using McnLib.FileProcessing;
 
-namespace McnLib.Blocks
+namespace McnLib.Structures
 {
     /// <summary>
     /// A block is a piece of notes wrapped by line "[=..." and line "..._]"

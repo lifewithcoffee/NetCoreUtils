@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace McnLib.Blocks
+namespace McnLib.Structures
 {
     /// <summary>
     /// A file section is a header section in a file.

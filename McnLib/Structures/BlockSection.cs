@@ -1,4 +1,4 @@
-﻿namespace McnLib.Blocks
+﻿namespace McnLib.Structures
 {
     /// <summary>
     /// A block section is header sections inside a block

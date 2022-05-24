@@ -1,6 +1,6 @@
 ﻿using McnLib.FileProcessing;
 
-namespace McnLib
+namespace McnLib.Parsers
 {
     public interface ILineParser
     {

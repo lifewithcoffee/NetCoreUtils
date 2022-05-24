@@ -1,6 +1,8 @@
-﻿using McnLib.FileProcessing;
+﻿using McnLib.Blocks;
+using McnLib.FileProcessing;
+using McnLib.Structures;
 
-namespace McnLib.Blocks
+namespace McnLib.Parsers
 {
     public class BlockParser : ILineParser
     {

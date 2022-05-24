@@ -1,6 +1,6 @@
 ﻿using McnLib.FileProcessing;
 
-namespace McnLib.Sections
+namespace McnLib.Parsers
 {
     public class SectionParser : ILineParser
     {
