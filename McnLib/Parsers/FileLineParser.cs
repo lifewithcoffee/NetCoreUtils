@@ -5,23 +5,53 @@ namespace McnLib.Parsers
 {
     public class FileLineParser
     {
-        ILineParser[] parsers = { new SectionParser(), new BlockParser() };
+        ParsingState state = new ParsingState ();
+        public NoteStructureTree NST { get; set; } = new NoteStructureTree();
+
         public void ParseLines(List<FileLine> lines)
         {
+            if (state.CurrentFile == null)
+                throw new Exception("Invalid current file");
+
             foreach (var line in lines)
             {
-                foreach (var parser in parsers)
+
+                var trimmedText = line.Text.Trim();
+
+                if (trimmedText.StartsWith(BlockConfig.Begin))
                 {
-                    if (parser.ProcessLine(line))
-                        continue;
+                    if (state.CurrentBlock != null && !state.CurrentBlock.IsBare)
+                    {
+                        // TODO: the previous block doesn't close, raise parser warning
+                        state.CurrentFile.Blocks.Add(state.CurrentBlock);
+                    }
+
+                    state.CurrentBlock = new Block();
+                    state.CurrentBlock.FileLines.Add(line);
+                }
+                else if (trimmedText.EndsWith(BlockConfig.End))
+                {
+                    if (state.CurrentBlock != null && !state.CurrentBlock.IsBare)
+                    {
+                        state.CurrentBlock.FileLines.Add(line);
+                        state.CurrentFile.Blocks.Add(state.CurrentBlock);
+                        state.CurrentBlock = null;
+                    }
+                    // TODO: else raise parser warning
+                }
+                else
+                {
+                    /**
+                     * TODO: parse for sections, section/block meta data
+                     */
+
+                    if (state.CurrentBlock == null)
+                    {
+                        state.CurrentBlock = new Block { IsBare = true };
+                    }
+                    state.CurrentBlock.FileLines.Add(line);
                 }
             }
-        }
-
-        public List<Block> GetBlocks()
-        {
-            var blockParser = parsers.Where(parser => parser is BlockParser).First();
-            return ((BlockParser)blockParser).Blocks;
         }
     }
 }
