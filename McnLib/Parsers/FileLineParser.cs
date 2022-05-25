@@ -1,4 +1,4 @@
-﻿using McnLib.FileProcessing;
+﻿using McnLib.States;
 using McnLib.Structures;
 
 namespace McnLib.Parsers
@@ -6,7 +6,11 @@ namespace McnLib.Parsers
     public class FileLineParser
     {
         ParsingState state = new ParsingState ();
-        public NoteStructureTree NST { get; set; } = new NoteStructureTree();
+
+        public void ResetState(NoteFile currentFile)
+        {
+            state = new ParsingState { CurrentFile = currentFile };
+        }
 
         public void ParseLines(List<FileLine> lines)
         {
@@ -15,7 +19,6 @@ namespace McnLib.Parsers
 
             foreach (var line in lines)
             {
-
                 var trimmedText = line.Text.Trim();
 
                 if (trimmedText.StartsWith(BlockConfig.Begin))

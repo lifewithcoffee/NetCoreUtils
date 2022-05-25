@@ -1,6 +1,8 @@
-﻿namespace McnLib.FileProcessing
+﻿using McnLib.States;
+
+namespace McnLib.Parsers
 {
-    public class TextFileReader
+    public class FileLineReader
     {
         // TODO: handle UnauthorizedAccessException & PathTooLongException
         //       see https://docs.microsoft.com/en-us/dotnet/api/system.io.file.readlines?redirectedfrom=MSDN&view=net-6.0#overloads

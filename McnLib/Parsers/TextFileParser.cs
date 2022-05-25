@@ -1,5 +1,4 @@
-﻿using McnLib.Blocks;
-using McnLib.FileProcessing;
+﻿using McnLib.States;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +9,24 @@ namespace McnLib.Parsers
 {
     public class TextFileParser
     {
-        TextFileReader fileReader = new TextFileReader();
+        FileLineReader fileReader = new FileLineReader();
         FileLineParser lineParser = new FileLineParser();
-        public void ParseFile(string filePath)
+        public NoteStructureTree NST { get; set; } = new NoteStructureTree();
+
+        private void ParseFile(string filePath)
         {
+            NoteFile currentFile = new NoteFile { FullPath = filePath };
+            NST.NoteFiles.Add(currentFile);
+
             var lines = fileReader.ReadFile(filePath);
-            lineParser.ParseLines(lines);       // TODO: (working) need to input an AST object
+
+            lineParser.ResetState(currentFile);
+            lineParser.ParseLines(lines);
+        }
+
+        public void ParseFolder(string folderPath)
+        {
+            // TODO: parse folder
         }
     }
 }

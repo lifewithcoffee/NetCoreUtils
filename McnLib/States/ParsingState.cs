@@ -1,6 +1,6 @@
 ﻿using McnLib.Structures;
 
-namespace McnLib.Parsers
+namespace McnLib.States
 {
     public class ParsingState
     {
