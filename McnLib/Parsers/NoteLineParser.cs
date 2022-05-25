@@ -3,7 +3,7 @@ using McnLib.Structures;
 
 namespace McnLib.Parsers
 {
-    public class FileLineParser
+    public class NoteLineParser
     {
         ParsingState state = new ParsingState ();
 
@@ -12,7 +12,7 @@ namespace McnLib.Parsers
             state = new ParsingState { CurrentFile = currentFile };
         }
 
-        public void ParseLines(List<FileLine> lines)
+        public void ParseLines(List<NoteLine> lines)
         {
             if (state.CurrentFile == null)
                 throw new Exception("Invalid current file");

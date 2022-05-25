@@ -26,7 +26,7 @@ namespace McnLib.Structures
         /// [design decision notes] decide to remove parsing block section, since it's not used as a search structure and unnecessary to display a block's structure
         /// </summary>
         //public List<BlockSection> BlockSections { get; set; } = new List<BlockSection>();
-        public List<FileLine> FileLines { get; set; } = new List<FileLine>();
+        public List<NoteLine> FileLines { get; set; } = new List<NoteLine>();
 
         /// <summary>
         /// A bare block is several lines (next to each other) that do not belong to any delcared block

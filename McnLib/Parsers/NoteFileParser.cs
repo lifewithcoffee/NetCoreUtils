@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace McnLib.Parsers
 {
-    public class TextFileParser
+    public class NoteFileParser
     {
-        FileLineReader fileReader = new FileLineReader();
-        FileLineParser lineParser = new FileLineParser();
+        NoteLineReader fileReader = new NoteLineReader();
+        NoteLineParser lineParser = new NoteLineParser();
         public NoteStructureTree NST { get; set; } = new NoteStructureTree();
 
         private void ParseFile(string filePath)

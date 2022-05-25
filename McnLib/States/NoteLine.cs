@@ -1,6 +1,6 @@
 ﻿namespace McnLib.States
 {
-    public class FileLine
+    public class NoteLine
     {
         public int LineNumber { get; set; }
         public string Text { get; set; } = string.Empty;
