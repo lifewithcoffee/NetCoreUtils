@@ -3,16 +3,27 @@ using Xunit;
 
 namespace McnLib.xUnit
 {
-    public class UnitTest1
+    public class NoteFileParserTests
     {
         [Fact]
-        public void NoteLineReader_should_work()
+        public void Test_ParseFolder()
         {
-            var reader = new NoteLineReader();
-            var lines = reader.ReadFile("TestData/Testnote1.txt");
-            Assert.NotEmpty(lines);
-            Assert.Equal(1, lines[0].LineNumber);
-            Assert.True(lines[1].LineNumber > 1);
+            var parser = new NoteFileParser();
+            parser.ParseFolder("TestData");
+            //parser.ParseFolder(@"C:\__dell_sync_c\mcn\sync", "mcn");
+            Assert.Equal(2, parser.NST.NoteFiles!.Count);
+            Assert.Equal(10, parser.NST.GetAllNotes().Count);
+        }
+
+        [Fact]
+        public void Test_ParseFile()
+        {
+            var parser = new NoteFileParser();
+            var noteFile = parser.ParseFile("TestData/TestNote1.txt");
+            Assert.Equal(9, noteFile.Notes.Count);
+
+            noteFile = parser.ParseFile("TestData/TestNote2.txt");
+            Assert.Equal(1, noteFile.Notes.Count);
         }
     }
 }
