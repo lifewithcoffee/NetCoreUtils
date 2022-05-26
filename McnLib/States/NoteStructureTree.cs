@@ -6,9 +6,9 @@ namespace McnLib.States
     {
         public List<NoteFile> NoteFiles { get; set; } = new List<NoteFile>();
 
-        public List<Block> GetAllBlocks()
+        public List<Note> GetAllNotes()
         {
-            return NoteFiles.SelectMany(f => f.Blocks).ToList();
+            return NoteFiles.SelectMany(f => f.Notes).ToList();
         }
     }
 }

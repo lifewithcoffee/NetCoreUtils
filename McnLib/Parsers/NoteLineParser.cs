@@ -21,38 +21,38 @@ namespace McnLib.Parsers
             {
                 var trimmedText = line.Text.Trim();
 
-                if (trimmedText.StartsWith(BlockConfig.Begin))
+                if (trimmedText.StartsWith(Configs.NoteBegin))
                 {
-                    if (state.CurrentBlock != null && !state.CurrentBlock.IsBare)
+                    if (state.CurrentNote != null && !state.CurrentNote.IsBare)
                     {
-                        // TODO: the previous block doesn't close, raise parser warning
-                        state.CurrentFile.Blocks.Add(state.CurrentBlock);
+                        // TODO: the previous note doesn't close, raise parser warning
+                        state.CurrentFile.Notes.Add(state.CurrentNote);
                     }
 
-                    state.CurrentBlock = new Block();
-                    state.CurrentBlock.FileLines.Add(line);
+                    state.CurrentNote = new Note();
+                    state.CurrentNote.FileLines.Add(line);
                 }
-                else if (trimmedText.EndsWith(BlockConfig.End))
+                else if (trimmedText.EndsWith(Configs.NoteEnd))
                 {
-                    if (state.CurrentBlock != null && !state.CurrentBlock.IsBare)
+                    if (state.CurrentNote != null && !state.CurrentNote.IsBare)
                     {
-                        state.CurrentBlock.FileLines.Add(line);
-                        state.CurrentFile.Blocks.Add(state.CurrentBlock);
-                        state.CurrentBlock = null;
+                        state.CurrentNote.FileLines.Add(line);
+                        state.CurrentFile.Notes.Add(state.CurrentNote);
+                        state.CurrentNote = null;
                     }
                     // TODO: else raise parser warning
                 }
                 else
                 {
                     /**
-                     * TODO: parse for sections, section/block meta data
+                     * TODO: parse for sections, section/note meta data
                      */
 
-                    if (state.CurrentBlock == null)
+                    if (state.CurrentNote == null)
                     {
-                        state.CurrentBlock = new Block { IsBare = true };
+                        state.CurrentNote = new Note { IsBare = true };
                     }
-                    state.CurrentBlock.FileLines.Add(line);
+                    state.CurrentNote.FileLines.Add(line);
                 }
             }
         }

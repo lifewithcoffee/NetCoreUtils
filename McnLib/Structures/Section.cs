@@ -1,5 +1,10 @@
 ﻿namespace McnLib.Structures
 {
+
+    /// <summary>
+    /// A section is a header section in a file.
+    /// Header format partially follows restructuredText's rules.
+    /// </summary>
     public class Section
     {
         public string Title { get; set; } = "NewSection";

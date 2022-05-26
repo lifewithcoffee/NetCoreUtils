@@ -7,9 +7,9 @@ namespace McnLib.States
         public string FullPath { get; set; } = "";
 
         /// <summary>
-        /// All blocks of this file.
+        /// All notes of this file.
         /// </summary>
-        public List<Block> Blocks { get; set; } = new List<Block>();
+        public List<Note> Notes { get; set; } = new List<Note>();
 
         public List<Section> Sections { get; set; } = new List<Section>();
     }
