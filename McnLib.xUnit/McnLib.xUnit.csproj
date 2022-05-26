@@ -24,4 +24,13 @@
     <ProjectReference Include="..\McnLib\McnLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestData\TestNote2_Headers.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\TestNote1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

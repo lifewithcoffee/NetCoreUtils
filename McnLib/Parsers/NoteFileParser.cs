@@ -27,6 +27,7 @@ namespace McnLib.Parsers
         public void ParseFolder(string folderPath)
         {
             // TODO: parse folder
+            throw new NotImplementedException();
         }
     }
 }
