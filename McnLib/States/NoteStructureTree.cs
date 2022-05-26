@@ -4,11 +4,11 @@ namespace McnLib.States
 {
     public class NoteStructureTree
     {
-        public List<NoteFile> NoteFiles { get; set; } = new List<NoteFile>();
+        public List<NoteFile>? NoteFiles { get; set; }
 
         public List<Note> GetAllNotes()
         {
-            return NoteFiles.SelectMany(f => f.Notes).ToList();
+            return NoteFiles!.SelectMany(f => f.Notes).ToList();
         }
     }
 }

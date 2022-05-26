@@ -6,6 +6,8 @@ namespace McnLib.States
     {
         public string FullPath { get; set; } = "";
 
+        public string[] Content { get; set; }
+
         /// <summary>
         /// All notes of this file.
         /// </summary>

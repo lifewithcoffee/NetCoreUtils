@@ -9,25 +9,25 @@ namespace McnLib.Parsers
 {
     public class NoteFileParser
     {
-        NoteLineReader fileReader = new NoteLineReader();
         NoteLineParser lineParser = new NoteLineParser();
         public NoteStructureTree NST { get; set; } = new NoteStructureTree();
 
-        private void ParseFile(string filePath)
+        public NoteFile ParseFile(string fullPath)
         {
-            NoteFile currentFile = new NoteFile { FullPath = filePath };
-            NST.NoteFiles.Add(currentFile);
-
-            var lines = fileReader.ReadFile(filePath);
-
-            lineParser.ResetState(currentFile);
-            lineParser.ParseLines(lines);
+            return lineParser.ParseLines(new NoteFile { FullPath = fullPath, Content = File.ReadAllLines(fullPath) });
         }
 
-        public void ParseFolder(string folderPath)
+        // TODO: need to handle UnauthorizedAccessException & PathTooLongException?
+        //       see https://docs.microsoft.com/en-us/dotnet/api/system.io.file.readlines?redirectedfrom=MSDN&view=net-6.0#overloads
+        public void ParseFolder(string folderPath, string extensionName = "*")
         {
-            // TODO: parse folder
-            throw new NotImplementedException();
+            NST.NoteFiles = new DirectoryInfo(folderPath)
+                .EnumerateFiles($"*.{extensionName}", SearchOption.AllDirectories)
+                .AsParallel()
+                .Select(f => new NoteFile { FullPath = f.FullName, Content = File.ReadAllLines(f.FullName) })
+                .ToList();
+                
+            NST.NoteFiles.ForEach(f => f = lineParser.ParseLines(f));
         }
     }
 }
