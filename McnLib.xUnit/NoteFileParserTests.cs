@@ -15,15 +15,14 @@ namespace McnLib.xUnit
             Assert.Equal(10, parser.NST.GetAllNotes().Count);
         }
 
-        [Fact]
-        public void Test_ParseFile()
+        [Theory]
+        [InlineData(9, "TestData/TestNote1.txt")]
+        [InlineData(1, "TestData/TestNote2.txt")]
+        public void Test_ParseFile(int notesCount, string file)
         {
             var parser = new NoteFileParser();
-            var noteFile = parser.ParseFile("TestData/TestNote1.txt");
-            Assert.Equal(9, noteFile.Notes.Count);
-
-            noteFile = parser.ParseFile("TestData/TestNote2.txt");
-            Assert.Equal(1, noteFile.Notes.Count);
+            var noteFile = parser.ParseFile(file);
+            Assert.Equal(notesCount, noteFile.Notes.Count);
         }
     }
 }
