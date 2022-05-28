@@ -9,8 +9,11 @@ namespace McnLib.Parsers
 {
     public class ParsingUtil
     {
-        public bool IsHeaderLine(string line)
+        public bool IsHeaderLine(string? line)
         {
+            if (line == null)
+                return false;
+
             string pattern1 = @"^-+ *$";
             string pattern2 = @"^=+ *$";
 
@@ -42,21 +45,21 @@ namespace McnLib.Parsers
             // the current line must be a blank line
             if (string.IsNullOrWhiteSpace(line0))
             {
-                // the next 2nd (possible header title) and 3rd must not be blank lines
-                if (string.IsNullOrWhiteSpace(line2) || string.IsNullOrWhiteSpace(line3))
-                    return false;
-
-                // the next 3rd line must be a header line
-                if (!IsHeaderLine(line3))
-                    return false;
-
-                // if the next 1st line is a blank line
-                if (string.IsNullOrWhiteSpace(line1))
+                // if the next 2nd line is a header line and the next 1st line is a header title, which must not blank
+                if(IsHeaderLine(line2) && !string.IsNullOrWhiteSpace(line1))
                     return true;
 
-                // if the next 1st line is a header line
-                if (IsHeaderLine(line1) && line3 == line1)
-                    return true;
+                // if the next 3rd line is a header line and the next 2nd line is a header title, which must not blank
+                if (IsHeaderLine(line3) && !string.IsNullOrWhiteSpace(line2))
+                {
+                    // if the next 1st line is a blank line
+                    if (string.IsNullOrWhiteSpace(line1))
+                        return true;
+
+                    // if the next 1st line is a header line, its length must be equal to the next 3rd line
+                    if (IsHeaderLine(line1) && line3 == line1)
+                        return true;
+                }
             }
 
             return false;
