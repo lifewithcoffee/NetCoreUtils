@@ -25,24 +25,5 @@ namespace McnLib.xUnit
             var noteFile = parser.ParseFile(file);
             Assert.Equal(notesCount, noteFile.Notes.Count);
         }
-
-        [Fact]
-        public void Temp()
-        {
-            var util = new ParsingUtil();
-            Assert.True(util.IsHeaderLine("-"));
-            Assert.True(util.IsHeaderLine("----------         "));
-            Assert.True(util.IsHeaderLine("-------------------"));
-
-            Assert.True(util.IsHeaderLine("="));
-            Assert.True(util.IsHeaderLine("==========         "));
-            Assert.True(util.IsHeaderLine("==================="));
-
-            Assert.False(util.IsHeaderLine("------ x  "));
-            Assert.False(util.IsHeaderLine("- -"));
-            Assert.False(util.IsHeaderLine("--==="));
-            Assert.False(util.IsHeaderLine("===abc"));
-            Assert.False(util.IsHeaderLine("---abc"));
-        }
     }
 }

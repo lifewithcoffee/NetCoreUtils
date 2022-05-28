@@ -6,6 +6,7 @@ namespace McnLib.Parsers
     public class NoteLineParser
     {
         ParsingState state = new ParsingState ();
+        ParsingUtil util = new ParsingUtil ();
 
         private List<NoteLine> ReadFile(string[] fileContent)
         {
@@ -45,23 +46,27 @@ namespace McnLib.Parsers
                 }
                 else
                 {
-                    var next1stLine = (i <= lines.Count - 2 ? lines[i + 1] : null);
-                    var next2ndLine = (i <= lines.Count - 3 ? lines[i + 2] : null);
+                    int skipOverLines = 3;
+                    string? line0 = line.Text;
+                    string? line1 = i <= lines.Count - 2 ? lines[i + 1].Text : null;
+                    string? line2 = i <= lines.Count - 3 ? lines[i + 2].Text : null;
+                    string? line3 = i <= lines.Count - 4 ? lines[i + 3].Text : null;
 
-                    if(next1stLine == null)
+                    // special adjustment for the 1st line of the file
+                    if(i == 0)
                     {
-                       if(IsSectionHeader(line, next1stLine, next2ndLine))
-                        {
-                            state.CurrentNote = null;
+                        skipOverLines = 2;
+                        line3 = line2;
+                        line2 = line1;
+                        line1 = line0;
+                        line0 = null;
+                    }
 
-                            // skip over the section header lines
-                            if (next2ndLine != null)
-                                i += 2;
-                            else
-                                i += 1;
-
-                            continue;
-                        }
+                    if(util.IsSectionHeader(line0, line1, line2, line3))
+                    {
+                        state.CurrentNote = null;
+                        i += skipOverLines;
+                        continue;
                     }
 
                     /**
@@ -76,11 +81,6 @@ namespace McnLib.Parsers
                 }
             }
             return currentFile;
-        }
-
-        private bool IsSectionHeader(NoteLine current, NoteLine next1st, NoteLine next2nd)
-        {
-            return false;
         }
     }
 }
