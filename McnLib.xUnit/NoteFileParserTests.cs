@@ -1,4 +1,5 @@
 using McnLib.Parsers;
+using System.Text.RegularExpressions;
 using Xunit;
 
 namespace McnLib.xUnit
@@ -16,13 +17,32 @@ namespace McnLib.xUnit
         }
 
         [Theory]
-        [InlineData(9, "TestData/TestNote1.txt")]
-        [InlineData(1, "TestData/TestNote2.txt")]
+        [InlineData(6, "TestData/TestNote1.txt")]
+        [InlineData(0, "TestData/TestNote2.txt")]
         public void Test_ParseFile(int notesCount, string file)
         {
             var parser = new NoteFileParser();
             var noteFile = parser.ParseFile(file);
             Assert.Equal(notesCount, noteFile.Notes.Count);
+        }
+
+        [Fact]
+        public void Temp()
+        {
+            var util = new ParsingUtil();
+            Assert.True(util.IsHeaderLine("-"));
+            Assert.True(util.IsHeaderLine("----------         "));
+            Assert.True(util.IsHeaderLine("-------------------"));
+
+            Assert.True(util.IsHeaderLine("="));
+            Assert.True(util.IsHeaderLine("==========         "));
+            Assert.True(util.IsHeaderLine("==================="));
+
+            Assert.False(util.IsHeaderLine("------ x  "));
+            Assert.False(util.IsHeaderLine("- -"));
+            Assert.False(util.IsHeaderLine("--==="));
+            Assert.False(util.IsHeaderLine("===abc"));
+            Assert.False(util.IsHeaderLine("---abc"));
         }
     }
 }
