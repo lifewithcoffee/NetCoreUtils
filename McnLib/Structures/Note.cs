@@ -28,5 +28,10 @@ namespace McnLib.Structures
         /// A bare note is several lines (next to each other) that do not belong to any delcared note
         /// </summary>
         public bool IsBare { get; set; } = false;
+
+        public List<NoteLine> FindLines(string[] keywords)
+        {
+            return FileLines.FindAll(f => keywords.All(k => f.Text.ToLowerInvariant().Contains(k.ToLowerInvariant()))).ToList();
+        }
     }
 }
