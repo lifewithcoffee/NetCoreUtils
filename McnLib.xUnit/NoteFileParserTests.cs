@@ -25,6 +25,8 @@ namespace McnLib.xUnit
         [InlineData(4, "TestData/TestNote5.txt")]
         [InlineData(2, "TestData/TestNote6.txt")]
         [InlineData(2, "TestData/TestNote7.txt")]
+        [InlineData(1, "TestData/TestNote8.txt")]
+        [InlineData(1, "TestData/TestNote9.txt")]
         public void Test_ParseFile(int notesCount, string file)
         {
             var noteFile = new NoteFileParser().ParseFile(file);
