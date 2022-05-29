@@ -30,56 +30,66 @@ namespace McnLib.Parsers
 
             List<NoteLine> lines = ReadFile(state.CurrentFile.Content);
 
-            for(int i = 0; i < lines.Count; i++)
+            NoteLine? line = null;
+            string? trimmedText = null;
+            for(int i = -1; i < lines.Count; i++)
             {
-                var line = lines[i];
-                var trimmedText = line.Text.Trim();
+                // parsing the first line
+                if(i >= 0)
+                {
+                    line = lines[i];
+                    trimmedText = line.Text.Trim();
+                }
 
-                if (trimmedText.StartsWith(Configs.NoteBegin))
+                if (trimmedText != null && trimmedText.StartsWith(Configs.NoteBegin))
                 {
                     state.CurrentNote = new Note();
                     state.CurrentFile.Notes.Add(state.CurrentNote);
                 }
-                else if (trimmedText.EndsWith(Configs.NoteEnd))
+                else if (trimmedText != null && trimmedText.EndsWith(Configs.NoteEnd))
                 {
-                    state.CurrentNote = null;
+                    state.CurrentNote = new Note { IsBare = true };
+                    state.CurrentFile.Notes.Add(state.CurrentNote);
                 }
                 else
                 {
-                    int skipOverLines = 3;
-                    string? line0 = line.Text;
+                    const int skipOverLines = 3;
+                    string? line0 = line != null ? line.Text : null;
                     string? line1 = i <= lines.Count - 2 ? lines[i + 1].Text : null;
                     string? line2 = i <= lines.Count - 3 ? lines[i + 2].Text : null;
                     string? line3 = i <= lines.Count - 4 ? lines[i + 3].Text : null;
 
-                    // special adjustment for the 1st line of the file
-                    if(i == 0)
-                    {
-                        skipOverLines = 2;
-                        line3 = line2;
-                        line2 = line1;
-                        line1 = line0;
-                        line0 = null;
-                    }
-
+                    // parse header sections and skip over the header lines
                     if(util.IsSectionHeader(line0, line1, line2, line3))
                     {
-                        state.CurrentNote = null;
+                        state.CurrentNote = new Note { IsBare = true };
+                        state.CurrentFile.Notes.Add(state.CurrentNote);
                         i += skipOverLines;
                         continue;
                     }
 
-                    /**
-                     * TODO: parse for sections, section/note meta data
-                     */
-                    if (state.CurrentNote == null)
+                    if(state.CurrentNote == null)
                     {
                         state.CurrentNote = new Note { IsBare = true };
                         state.CurrentFile.Notes.Add(state.CurrentNote);
                     }
-                    state.CurrentNote!.FileLines.Add(line);
+                    else
+                    {
+                        if (line == null)
+                            throw new Exception($"Null reference for line ${i + 1} in file ${currentFile.FullPath}");
+
+                        // skip over the first blank lines
+                        if(state.CurrentNote.FileLines.Count == 0 && string.IsNullOrWhiteSpace(line.Text))
+                            continue;
+
+                        state.CurrentNote.FileLines.Add(line);
+                    }
                 }
             }
+
+            // remote empty notes
+            state.CurrentFile.Notes.RemoveAll(n => n.FileLines.Count == 0);
+
             return currentFile;
         }
     }
