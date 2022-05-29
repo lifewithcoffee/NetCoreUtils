@@ -1,0 +1,7 @@
+
+bar notes with ending mark
+}}____________________________________________________________________________]
+
+bare notes without ending mark
+bare note line 1
+	bare note line 2
