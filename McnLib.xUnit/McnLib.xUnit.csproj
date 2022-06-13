@@ -25,31 +25,31 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TestData\TestNote9.txt">
+    <None Update="TestData\Parsing\TestNote9.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\TestNote8.txt">
+    <None Update="TestData\Parsing\TestNote8.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\TestNote7.txt">
+    <None Update="TestData\Parsing\TestNote7.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\TestNote6.txt">
+    <None Update="TestData\Parsing\TestNote6.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\TestNote5.txt">
+    <None Update="TestData\Parsing\TestNote5.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\TestNote2.txt">
+    <None Update="TestData\Parsing\TestNote2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\TestNote1.txt">
+    <None Update="TestData\Parsing\TestNote1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\TestNote4.txt">
+    <None Update="TestData\Parsing\TestNote4.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\TestNote3.txt">
+    <None Update="TestData\Parsing\TestNote3.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
