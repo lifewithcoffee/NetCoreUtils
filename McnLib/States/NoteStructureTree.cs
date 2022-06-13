@@ -28,6 +28,9 @@ namespace McnLib.States
                     if (lines != null)
                         result.LinesFound.AddRange(lines);
                 });
+
+                if(result.LinesFound.Count > 0)
+                    results.Add(result);
             }
             return results;
         }

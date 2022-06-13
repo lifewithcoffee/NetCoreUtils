@@ -32,5 +32,19 @@ namespace McnLib.xUnit
             var noteFile = new NoteFileParser().ParseFile(file);
             Assert.Equal(notesCount, noteFile.Notes.Count);
         }
+
+        [Theory]
+        [InlineData(23, new string[] { "the" })]
+        [InlineData(5, new string[] { "that", "him" })]
+        [InlineData(5, new string[] { "that", "him", "   THAT   ", "him"})]     // duplicated & non-trimmed keywords
+        public void Test_FindNotes(int foundLineCount, string[] keywords)
+        {
+            var parser = new NoteFileParser();
+            parser.ParseFolder("TestData/Search");
+
+            //var found = parser.NST.FindNotes(new string[] { "the", "that", "his" });
+            var found = parser.NST.FindNotes(keywords);
+            Assert.Equal(foundLineCount, found[0].LinesFound.Count);
+        }
     }
 }

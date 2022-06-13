@@ -1,0 +1,90 @@
+
+========
+Header 1
+========
+
+[=============================================================================|
+{{ Normal note 1
+.. [2022_0526_234506]:
+
+BJay Pak, the former U.S. Attorney General for the Northern District of
+Georgia, will testify June 13 before the House committee investigating the Jan.
+6 attack on the Capitol.
+
+The committee first spoke to Pak in August. CNN reported that as part of his
+testimony, Pak said he stepped down as U.S. Attorney in Atlanta after Trump
+called Georgia¡¯s secretary of state and tried to pressure him into saying there
+had been election fraud.
+
+}}____________________________________________________________________________]
+
+-----------
+Indent Note
+-----------
+
+    [=============================================================================|
+    {{ test title 2
+    .. [2022_0526_233617]:
+
+	During that call, Trump referred to a ¡°never-Trump¡± official, though he
+	didn¡¯t specifically say Pak¡¯s name.
+
+	After Pak resigned, Trump appointed a new U.S. Attorney, and Pak said he
+	had confidence in his successor.
+
+    }}____________________________________________________________________________]
+
+
+----------------------------
+Incomplete Note & Bare Notes
+----------------------------
+
+[=============================================================================|
+{{ test title 3
+.. [2022_0526_234506]:
+
+Besides the sexual assault charges, the 62-year-old actor "has also been
+charged with causing a person to engage in penetrative sexual activity without
+consent," London's Metropolitan Police said.
+
+The charges date back to incidents that took place between 2003 and 2013. The
+investigation by the Metropolitan Police began following allegations that came
+out during the #metoo movement.
+
+[=============================================================================|
+{{ test title 4
+.. [2022_0526_234617]:
+
+The Old Vic theater in London, where Spacey had been artistic director between
+2004 and 2015, said in 2017 that it had received allegations of inappropriate
+behavior from 20 men who had come into contact with the actor at the theater
+between 1995 and 2013.
+
+British police first questioned him in 2019. The two-time Oscar winner has
+previously said that he will voluntarily appear in court to face the charges.
+
+}}____________________________________________________________________________]
+
+With Muslims making up just over 14% of India's 1.3 billion population, Modi
+will have to juggle the internal outrage as well as external protests from the
+Islamic world. Arguably the importance of the business ties between India and
+the Gulf is driving the government's reaction.
+
+Indian exports to the GCC nations in 2020-21 stood at $44 billion. These six
+countries account for nearly 65% of India's annual remittances of more than $80
+billion with some 9 million Indians living in the region. India imports around
+40% of its oil from the Gulf. Energy supplies have become even more crucial as
+a result of the war in Ukraine. Earlier this year, India signed a comprehensive
+trade deal with UAE.
+
+}}____________________________________________________________________________]
+
+Many of the autocratic countries lecturing India hardly uphold human rights or
+freedom of speech. But democracies must strive for higher values. Vitriolic
+discussions on many pro-government television news channels, often compared to
+Radio Rwanda fanning communal hatred against minorities, must stop.
+
+Protests in a democratic country must remain peaceful without inciting arson
+and violence. There can be no justification for public calls for capital
+punishment and beheadings by some elected Muslim lawmakers among other
+extremist voices.

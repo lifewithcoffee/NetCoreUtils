@@ -50,7 +50,7 @@ namespace McnLib.Structures
                 })
             ).ToList();
 
-            if (keywordList.Count > 0)
+            if (keywordList.Count == 0)
                 return lines;
             else
                 return null;
