@@ -29,9 +29,31 @@ namespace McnLib.Structures
         /// </summary>
         public bool IsBare { get; set; } = false;
 
-        public List<NoteLine> FindLines(string[] keywords)
+        /// <summary>
+        /// Find lines with all input keywords, i.e. apply the 'AND' but not 'OR' logic
+        /// </summary>
+        public List<NoteLine>? FindLinesAND(string[] keywords)
         {
-            return FileLines.FindAll(f => keywords.All(k => f.Text.ToLowerInvariant().Contains(k.ToLowerInvariant()))).ToList();
+            //return FileLines.FindAll(f => keywords.Any(k => f.Text.ToLowerInvariant().Contains(k.ToLowerInvariant()))).ToList();
+
+            var keywordList = keywords.Select(k => k.Trim().ToLowerInvariant()).Distinct().ToList();
+
+            var lines = FileLines.FindAll(f => 
+                keywords.Any(k => {
+                    if (f.Text.ToLowerInvariant().Contains(k)) 
+                    {
+                        keywordList.Remove(k);
+                        return true;
+                    }
+                    else
+                        return false;
+                })
+            ).ToList();
+
+            if (keywordList.Count > 0)
+                return lines;
+            else
+                return null;
         }
     }
 }
