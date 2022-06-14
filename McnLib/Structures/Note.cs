@@ -34,23 +34,25 @@ namespace McnLib.Structures
         /// </summary>
         public List<NoteLine>? FindLinesAND(string[] keywords)
         {
-            //return FileLines.FindAll(f => keywords.Any(k => f.Text.ToLowerInvariant().Contains(k.ToLowerInvariant()))).ToList();
+            var array = keywords.Select(k => k.Trim().ToLowerInvariant()).Distinct().ToArray();
+            var list = array.ToList();
 
-            var keywordList = keywords.Select(k => k.Trim().ToLowerInvariant()).Distinct().ToList();
-
-            var lines = FileLines.FindAll(f => 
-                keywords.Any(k => {
-                    if (f.Text.ToLowerInvariant().Contains(k)) 
+            var lines = FileLines.FindAll(fileLine =>
+            {
+                var line = fileLine.Text.ToLowerInvariant();
+                bool result = false;
+                for (int i = 0; i < array.Length; i++)
+                {
+                    if (line.Contains(array[i]))
                     {
-                        keywordList.Remove(k);
-                        return true;
+                        list.Remove(array[i]);
+                        result = true;
                     }
-                    else
-                        return false;
-                })
-            ).ToList();
+                }
+                return result;
+            }).ToList();
 
-            if (keywordList.Count == 0)
+            if (list.Count == 0)
                 return lines;
             else
                 return null;

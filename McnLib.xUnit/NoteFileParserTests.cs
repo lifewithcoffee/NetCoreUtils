@@ -35,7 +35,8 @@ namespace McnLib.xUnit
 
         [Theory]
         [InlineData(23, new string[] { "the" })]
-        [InlineData(5, new string[] { "that", "him" })]
+        [InlineData(5, new string[] { "that", "him" })] 
+        [InlineData(1, new string[] { "BJay", "former" })]      // two keywords in the same line
         [InlineData(5, new string[] { "that", "him", "   THAT   ", "him"})]     // duplicated & non-trimmed keywords
         public void Test_FindNotes(int foundLineCount, string[] keywords)
         {
