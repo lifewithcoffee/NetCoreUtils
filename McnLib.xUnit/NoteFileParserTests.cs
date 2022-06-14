@@ -42,7 +42,6 @@ namespace McnLib.xUnit
             var parser = new NoteFileParser();
             parser.ParseFolder("TestData/Search");
 
-            //var found = parser.NST.FindNotes(new string[] { "the", "that", "his" });
             var found = parser.NST.FindNotes(keywords);
             Assert.Equal(foundLineCount, found[0].LinesFound.Count);
         }

@@ -1,8 +1,10 @@
 @echo off
-SET DEBUG_PATH=%CD%\bin\Debug\net5.0
-SET NETCOREUTILS_ENVIRONMENT=Development
+::SET DEBUG_PATH=%CD%\bin\Debug\net5.0
+::SET NETCOREUTILS_ENVIRONMENT=Development
 
-dotnet %DEBUG_PATH%\TestApp.Cli.dll %*
+::dotnet %DEBUG_PATH%\TestApp.Cli.dll %*
+
+dotnet run %*
 
 :: or set the debug path to system path, then use the following statement to
 :: replace the above one:
