@@ -15,7 +15,7 @@ namespace TestApp.Cli.Commands
             Stopwatch sw = new Stopwatch();
             sw.Restart();
 
-            Console.WriteLine("debug 4");
+            Console.WriteLine("debug 5");
             var parser = new NoteFileParser();
             parser.ParseFolder(@"C:\__dell_sync_c\mcn\sync", "mcn");
 

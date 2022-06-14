@@ -34,7 +34,10 @@ namespace McnLib.Structures
         /// </summary>
         public List<NoteLine>? FindLinesAND(string[] keywords)
         {
+            // normalized keyword array
             var array = keywords.Select(k => k.Trim().ToLowerInvariant()).Distinct().ToArray();
+
+            // normalized keyword list, used for judging if all keywords are matched
             var list = array.ToList();
 
             var lines = FileLines.FindAll(fileLine =>
@@ -45,8 +48,15 @@ namespace McnLib.Structures
                 {
                     if (line.Contains(array[i]))
                     {
-                        list.Remove(array[i]);
-                        result = true;
+                        // if all keywords are matched, return true immediately if any one keyword is matched
+                        // otherwise, keep mathching all keywords in case multiple keywords are in the same line
+                        if (list.Count == 0)
+                            return true;
+                        else
+                        {
+                            list.Remove(array[i]);
+                            result = true;
+                        }
                     }
                 }
                 return result;
