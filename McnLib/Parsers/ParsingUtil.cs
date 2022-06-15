@@ -42,7 +42,7 @@ namespace McnLib.Parsers
         /// <returns></returns>
         public bool IsSectionHeader(string? line0, string? line1, string? line2, string? line3)
         {
-            // the current line must be a blank line
+            // the current line must be a blank line, for the 1st line of a file, line0 is null
             if (string.IsNullOrWhiteSpace(line0))
             {
                 // if the next 2nd line is a header line and the next 1st line is a header title, which must not blank

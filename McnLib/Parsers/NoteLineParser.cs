@@ -32,6 +32,8 @@ namespace McnLib.Parsers
 
             NoteLine? line = null;
             string? trimmedText = null;
+
+            // as util.IsSectionHeader() requires a blank line before a header, so start from -1
             for(int i = -1; i < lines.Count; i++)
             {
                 // parsing the first line
@@ -68,22 +70,14 @@ namespace McnLib.Parsers
                         continue;
                     }
 
-                    if(state.CurrentNote == null)
+                    if(state.CurrentNote == null)   // for content on the top of a file
                     {
                         state.CurrentNote = new Note { IsBare = true };
                         state.CurrentFile.Notes.Add(state.CurrentNote);
                     }
-                    else
-                    {
-                        if (line == null)
-                            throw new Exception($"Null reference for line ${i + 1} in file ${currentFile.FullPath}");
 
-                        // skip over the first blank lines
-                        if(state.CurrentNote.FileLines.Count == 0 && string.IsNullOrWhiteSpace(line.Text))
-                            continue;
-
-                        state.CurrentNote.FileLines.Add(line);
-                    }
+                    if (line != null)
+                        state.CurrentNote.FileLines.Add(line);  // including blank lines
                 }
             }
 

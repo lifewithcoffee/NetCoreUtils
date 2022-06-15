@@ -19,12 +19,12 @@ namespace McnLib.xUnit
         }
 
         [Theory]
-        [InlineData(6, "TestData/Parsing/TestNote1.txt")]
-        [InlineData(1, "TestData/Parsing/TestNote2.txt")]
-        [InlineData(1, "TestData/Parsing/TestNote3.txt")]
-        [InlineData(1, "TestData/Parsing/TestNote4.txt")]
+        [InlineData(11, "TestData/Parsing/TestNote1.txt")]
+        [InlineData(2, "TestData/Parsing/TestNote2.txt")]
+        [InlineData(3, "TestData/Parsing/TestNote3.txt")]
+        [InlineData(3, "TestData/Parsing/TestNote4.txt")]
         [InlineData(4, "TestData/Parsing/TestNote5.txt")]
-        [InlineData(2, "TestData/Parsing/TestNote6.txt")]
+        [InlineData(3, "TestData/Parsing/TestNote6.txt")]
         [InlineData(2, "TestData/Parsing/TestNote7.txt")]
         [InlineData(1, "TestData/Parsing/TestNote8.txt")]
         [InlineData(1, "TestData/Parsing/TestNote9.txt")]
