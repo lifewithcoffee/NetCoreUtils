@@ -9,12 +9,11 @@ namespace McnLib.Parsers
 {
     public class NoteFileParser
     {
-        NoteLineParser lineParser = new NoteLineParser();
         public NoteStructureTree NST { get; set; } = new NoteStructureTree();
 
         public NoteFile ParseFile(string fullPath)
         {
-            return lineParser.ParseLines(new NoteFile { FullPath = fullPath, Content = File.ReadAllLines(fullPath) });
+            return new NoteLineParser().ParseLines(new NoteFile { FullPath = fullPath, Content = File.ReadAllLines(fullPath) });
         }
 
         // TODO: need to handle UnauthorizedAccessException & PathTooLongException?
@@ -26,8 +25,9 @@ namespace McnLib.Parsers
                 .AsParallel()
                 .Select(f => new NoteFile { FullPath = f.FullName, Content = File.ReadAllLines(f.FullName) })
                 .ToList();
-                
-            NST.NoteFiles.ForEach(f => f = lineParser.ParseLines(f));
+
+            // code in AsParallel().ForAll() must be thread safe, so need to new NoteLineParser()
+            NST.NoteFiles.AsParallel().ForAll(f => f = new NoteLineParser().ParseLines(f));
         }
     }
 }

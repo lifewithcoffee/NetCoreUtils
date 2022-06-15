@@ -45,13 +45,11 @@ namespace McnLib.Parsers
 
                 if (trimmedText != null && trimmedText.StartsWith(Configs.NoteBegin))
                 {
-                    state.CurrentNote = new Note();
-                    state.CurrentFile.Notes.Add(state.CurrentNote);
+                    state.ResetCurrentNote();
                 }
                 else if (trimmedText != null && trimmedText.EndsWith(Configs.NoteEnd))
                 {
-                    state.CurrentNote = new Note { IsBare = true };
-                    state.CurrentFile.Notes.Add(state.CurrentNote);
+                    state.ResetCurrentNote(true);
                 }
                 else
                 {
@@ -64,26 +62,26 @@ namespace McnLib.Parsers
                     int skipOverLines = util.IsSectionHeader(line0, line1, line2, line3);
                     if(skipOverLines != 0)
                     {
-                        state.CurrentNote = new Note { IsBare = true };
-                        state.CurrentFile.Notes.Add(state.CurrentNote);
+                        state.ResetCurrentNote(true);
                         i += skipOverLines;
                         continue;
                     }
 
                     if(state.CurrentNote == null)   // for content on the top of a file
                     {
-                        state.CurrentNote = new Note { IsBare = true };
-                        state.CurrentFile.Notes.Add(state.CurrentNote);
+                        state.ResetCurrentNote(true);
                     }
 
                     if (line != null)
                     {
-                        state.CurrentNote.FileLines.Add(line);  // including blank lines
+                        state.AddLine(line);  // including blank lines
 
-                        if (string.IsNullOrWhiteSpace(state.CurrentNote.Title))
+                        // only get title info from the note's 1st line
+                        if (state.CurrentNoteLineCount == 1 && string.IsNullOrWhiteSpace(state.CurrentNote!.Title))
                             state.CurrentNote.ParseTitle(line);
 
-                        if (string.IsNullOrWhiteSpace(state.CurrentNote.Id))
+                        // only get id info from the note's 2nd line
+                        if (state.CurrentNoteLineCount == 2 && string.IsNullOrWhiteSpace(state.CurrentNote!.Id))
                             state.CurrentNote.ParseId(line);
                     }
                 }
