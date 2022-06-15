@@ -11,16 +11,9 @@ namespace McnLib.Structures
         public string? Title { get; set; }
 
         /// <summary>
-        /// If Id is null or white spaces, return create time
+        /// An Id is the string between the first [ and ] (including [ and ])
         /// </summary>
         public string? Id { get; set; }
-
-        /// <summary>
-        /// The create time is parsed from the note ID. For a bare note, it's null.
-        /// </summary>
-        public DateTime? CreateTime { get; set; } = null;
-
-        public DateTime? UpdateTime { get; set; } = null;
 
         public List<NoteLine> FileLines { get; set; } = new List<NoteLine>();
 
@@ -66,6 +59,26 @@ namespace McnLib.Structures
                 return lines;
             else
                 return null;
+        }
+
+        public void ParseTitle(NoteLine line)
+        {
+            var trimmed = line.Text.Trim();
+            if (trimmed.StartsWith("{{"))
+                this.Title = trimmed.Remove(0, 2).Trim();
+        }
+
+        internal void ParseId(NoteLine line)
+        {
+            var trimmed = line.Text.Trim();
+            if(trimmed.StartsWith(".."))
+            {
+                var id = trimmed.Remove(0, 2).Trim();
+                var from = id.IndexOf('[');
+                var to = id.IndexOf(']') + 1;
+                if(from != -1 && to != -1 && to > from)
+                    this.Id = id.Substring(from, to - from);  // get the string between the first [ and ] (including [ and ])
+            }
         }
     }
 }
