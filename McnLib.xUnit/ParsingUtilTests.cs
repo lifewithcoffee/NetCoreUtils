@@ -34,26 +34,41 @@ namespace McnLib.xUnit
             string tripple = new string(lineCharacter, 3);
             string single = $"{lineCharacter}";
 
-            Assert.False(util.IsSectionHeader(" ", tripple, "some header", null));
-            Assert.False(util.IsSectionHeader(" ", tripple, "some header", single));
+            Assert.Equal(0, util.IsSectionHeader(null, null, "a", tripple));        // shouldn't happen, but method should work
+            Assert.Equal(0, util.IsSectionHeader(null, null, tripple, "a"));        // shouldn't happen, but method should work
+            Assert.Equal(0, util.IsSectionHeader(null, null, null, tripple));       // shouldn't happen, but method should work
+            Assert.Equal(0, util.IsSectionHeader(null, null, null, "a"));           // shouldn't happen, but method should work
+            Assert.Equal(0, util.IsSectionHeader(null, null, tripple, null));       // shouldn't happen, but method should work
+            Assert.Equal(0, util.IsSectionHeader(null, null, tripple, tripple));    // shouldn't happen, but method should work
+            Assert.Equal(0, util.IsSectionHeader(null, null, null, "a"));       // shouldn't happen, but method should work
+            Assert.Equal(0, util.IsSectionHeader(null, null, null, null));      // shouldn't happen, but method should work
 
-            Assert.False(util.IsSectionHeader(" ", tripple, "", single));
-            Assert.False(util.IsSectionHeader(" ", tripple, " ", single));
+            Assert.Equal(3, util.IsSectionHeader(null, tripple, "a", tripple)); // begin of a file
+            Assert.Equal(2, util.IsSectionHeader(null, "a", tripple,"b"));      // begin of a file
 
-            Assert.False(util.IsSectionHeader(" ", tripple, "", tripple));
-            Assert.False(util.IsSectionHeader(" ", tripple, " ", tripple));
+            Assert.Equal(0, util.IsSectionHeader(" ", tripple, "some header", null));
+            Assert.Equal(0, util.IsSectionHeader(" ", tripple, "some header", single));
 
-            Assert.False(util.IsSectionHeader(" ", "a", "a", tripple));
-            Assert.True(util.IsSectionHeader(" ", "", "a", tripple));
-            Assert.True(util.IsSectionHeader(" ", "  ", "a", tripple));
+            Assert.Equal(0, util.IsSectionHeader(" ", tripple, "", single));
+            Assert.Equal(0, util.IsSectionHeader(" ", tripple, " ", single));
+            Assert.Equal(0, util.IsSectionHeader(" ", tripple, "", tripple));
+            Assert.Equal(0, util.IsSectionHeader(" ", tripple, " ", tripple));
 
-            Assert.False(util.IsSectionHeader("a", tripple, "a", tripple));
-            Assert.True(util.IsSectionHeader(" ", tripple, "a", tripple));
+            Assert.Equal(0, util.IsSectionHeader(" ", "a", "a", tripple));
+            Assert.Equal(0, util.IsSectionHeader(" ", "", "a", tripple));
+            Assert.Equal(0, util.IsSectionHeader(" ", "  ", "a", tripple));
 
-            // begin of a file
-            Assert.True(util.IsSectionHeader(null, tripple, "a", tripple));
-            Assert.True(util.IsSectionHeader(null, null, "a", tripple));
-            Assert.True(util.IsSectionHeader(null, "a", tripple,"b"));
+            Assert.Equal(2, util.IsSectionHeader(" ", "a", tripple, ""));
+            Assert.Equal(2, util.IsSectionHeader(" ", "a", tripple, null)); // null: end of file
+            Assert.Equal(2, util.IsSectionHeader(" ", "a", tripple, "a"));
+
+            Assert.Equal(0, util.IsSectionHeader("a", tripple, "a", tripple));
+            Assert.Equal(3, util.IsSectionHeader(" ", tripple, "a", tripple));
+
+            // line0 must be a blank line or begin of file,i.e. null
+            Assert.Equal(0, util.IsSectionHeader(tripple, "a", tripple, " "));
+            Assert.Equal(0, util.IsSectionHeader(tripple, "a", tripple, "a"));
+            Assert.Equal(0, util.IsSectionHeader(tripple, "a", tripple, null));
         }
 
     }

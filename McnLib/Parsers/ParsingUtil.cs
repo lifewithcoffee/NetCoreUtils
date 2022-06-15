@@ -39,30 +39,25 @@ namespace McnLib.Parsers
         /// 
         /// <param name="line3">The 4nd line being processed, if line0 is the
         /// real current line, then it's the next 3st line</param>
-        /// <returns></returns>
-        public bool IsSectionHeader(string? line0, string? line1, string? line2, string? line3)
+        /// <returns>skip over line number</returns>
+        public int IsSectionHeader(string? line0, string? line1, string? line2, string? line3)
         {
             // the current line must be a blank line, for the 1st line of a file, line0 is null
             if (string.IsNullOrWhiteSpace(line0))
             {
                 // if the next 2nd line is a header line and the next 1st line is a header title, which must not blank
-                if(IsHeaderLine(line2) && !string.IsNullOrWhiteSpace(line1))
-                    return true;
+                if(!string.IsNullOrWhiteSpace(line1) && IsHeaderLine(line2))
+                    return 2;
 
                 // if the next 3rd line is a header line and the next 2nd line is a header title, which must not blank
-                if (IsHeaderLine(line3) && !string.IsNullOrWhiteSpace(line2))
-                {
-                    // if the next 1st line is a blank line
-                    if (string.IsNullOrWhiteSpace(line1))
-                        return true;
-
-                    // if the next 1st line is a header line, its length must be equal to the next 3rd line
-                    if (IsHeaderLine(line1) && line3 == line1)
-                        return true;
-                }
+                if (IsHeaderLine(line1) 
+                    && !string.IsNullOrWhiteSpace(line2) 
+                    && IsHeaderLine(line3) 
+                    && line1 == line3
+                ) return 3;
             }
 
-            return false;
+            return 0;
         }
     }
 }

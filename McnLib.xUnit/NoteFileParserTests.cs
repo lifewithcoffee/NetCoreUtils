@@ -15,12 +15,12 @@ namespace McnLib.xUnit
             parser.ParseFolder("TestData/Parsing");
             //parser.ParseFolder(@"C:\__dell_sync_c\mcn\sync", "mcn");
             Assert.Equal(9, parser.NST.NoteFiles!.Count);
-            Assert.Equal(19, parser.NST.GetAllNotes().Count);
+            Assert.Equal(32, parser.NST.GetAllNotes().Count);
         }
 
         [Theory]
         [InlineData(11, "TestData/Parsing/TestNote1.txt")]
-        [InlineData(2, "TestData/Parsing/TestNote2.txt")]
+        [InlineData(4, "TestData/Parsing/TestNote2.txt")]
         [InlineData(3, "TestData/Parsing/TestNote3.txt")]
         [InlineData(3, "TestData/Parsing/TestNote4.txt")]
         [InlineData(4, "TestData/Parsing/TestNote5.txt")]

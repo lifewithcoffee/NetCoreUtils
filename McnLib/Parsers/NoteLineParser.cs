@@ -55,14 +55,14 @@ namespace McnLib.Parsers
                 }
                 else
                 {
-                    const int skipOverLines = 3;
                     string? line0 = line != null ? line.Text : null;
                     string? line1 = i <= lines.Count - 2 ? lines[i + 1].Text : null;
                     string? line2 = i <= lines.Count - 3 ? lines[i + 2].Text : null;
                     string? line3 = i <= lines.Count - 4 ? lines[i + 3].Text : null;
 
                     // parse header sections and skip over the header lines
-                    if(util.IsSectionHeader(line0, line1, line2, line3))
+                    int skipOverLines = util.IsSectionHeader(line0, line1, line2, line3);
+                    if(skipOverLines != 0)
                     {
                         state.CurrentNote = new Note { IsBare = true };
                         state.CurrentFile.Notes.Add(state.CurrentNote);
@@ -81,7 +81,7 @@ namespace McnLib.Parsers
                 }
             }
 
-            // remote empty notes
+            // remove empty notes
             state.CurrentFile.Notes.RemoveAll(n => n.FileLines.Count == 0);
 
             return currentFile;
