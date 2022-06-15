@@ -67,5 +67,19 @@ namespace McnLib.Structures
             else
                 return null;
         }
+
+        public void ParseTitle(NoteLine line)
+        {
+            var trimmed = line.Text.Trim();
+            if (trimmed.StartsWith("{{"))
+                this.Title = trimmed.Remove(0, 2).Trim();
+        }
+
+        internal void ParseId(NoteLine line)
+        {
+            var trimmed = line.Text.Trim();
+            if(trimmed.StartsWith(".."))
+                this.Id = trimmed.Remove(0, 2).Trim();
+        }
     }
 }

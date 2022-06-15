@@ -77,7 +77,15 @@ namespace McnLib.Parsers
                     }
 
                     if (line != null)
+                    {
                         state.CurrentNote.FileLines.Add(line);  // including blank lines
+
+                        if (string.IsNullOrWhiteSpace(state.CurrentNote.Title))
+                            state.CurrentNote.ParseTitle(line);
+
+                        if (string.IsNullOrWhiteSpace(state.CurrentNote.Id))
+                            state.CurrentNote.ParseId(line);
+                    }
                 }
             }
 
