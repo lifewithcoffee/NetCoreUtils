@@ -17,6 +17,7 @@ namespace McnLib.xUnit
             Assert.True(util.IsHeaderLine("==========         "));
             Assert.True(util.IsHeaderLine("==================="));
 
+            Assert.False(util.IsHeaderLine("  ================"));
             Assert.False(util.IsHeaderLine("------ x  "));
             Assert.False(util.IsHeaderLine("- -"));
             Assert.False(util.IsHeaderLine("--==="));

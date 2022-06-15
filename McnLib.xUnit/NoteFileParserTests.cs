@@ -14,8 +14,8 @@ namespace McnLib.xUnit
             var parser = new NoteFileParser();
             parser.ParseFolder("TestData/Parsing");
             //parser.ParseFolder(@"C:\__dell_sync_c\mcn\sync", "mcn");
-            Assert.Equal(9, parser.NST.NoteFiles!.Count);
-            Assert.Equal(32, parser.NST.GetAllNotes().Count);
+            Assert.Equal(10, parser.NST.NoteFiles!.Count);
+            Assert.Equal(43, parser.NST.GetAllNotes().Count);
         }
 
         [Theory]
