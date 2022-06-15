@@ -47,5 +47,45 @@ namespace McnLib.xUnit
             var found = parser.NST.FindNotes(keywords);
             Assert.Equal(foundLineCount, found[0].NotesFound.SelectMany(n => n.LinesFound).Count());
         }
+
+        [Fact]
+        public void Test_Parse_note_title_and_id()
+        {
+            var noteFile = new NoteFileParser().ParseFile( "TestData/Parsing/TestNote11.txt");
+            Assert.Equal(11, noteFile.Notes.Count);
+
+            Assert.Null(noteFile.Notes[0].Title);
+            Assert.Null(noteFile.Notes[0].Id);
+
+            Assert.Null(noteFile.Notes[1].Title);
+            Assert.Null(noteFile.Notes[1].Id);
+
+            Assert.Null(noteFile.Notes[3].Title);
+            Assert.Null(noteFile.Notes[3].Id);
+
+            Assert.Null(noteFile.Notes[5].Title);
+            Assert.Null(noteFile.Notes[5].Id);
+
+            Assert.Null(noteFile.Notes[6].Title);
+            Assert.Null(noteFile.Notes[6].Id);
+
+            Assert.Null(noteFile.Notes[9].Title);
+            Assert.Null(noteFile.Notes[9].Id);
+
+            Assert.Null(noteFile.Notes[10].Title);
+            Assert.Null(noteFile.Notes[10].Id);
+
+            Assert.Equal("Normal note 1", noteFile.Notes[2].Title);
+            Assert.Equal("2022_0526_234506", noteFile.Notes[2].Id);
+
+            Assert.Equal("test title 2", noteFile.Notes[4].Title);
+            Assert.Equal("2022_1526_233617", noteFile.Notes[4].Id);
+
+            Assert.Equal("test title 3", noteFile.Notes[7].Title);
+            Assert.Equal("2042_0526_234506", noteFile.Notes[7].Id);
+
+            Assert.Equal("test title 4", noteFile.Notes[8].Title);
+            Assert.Equal("2192_0526_234617", noteFile.Notes[8].Id);
+        }
     }
 }
