@@ -5,10 +5,11 @@ namespace McnLib.States
     public class FindNotesResult
     {
         public string FilePath { get; set; } = "";
-        public List<NoteLine> LinesFound { get; set; } = new List<NoteLine>();
+
+        public List<(Note Note, List<NoteLine> LinesFound)> NotesFound { get; set; } = new List<(Note, List<NoteLine>)>();
     }
 
-    public class NoteStructureTree
+    public class NoteStructureTree  // aka. NST
     {
         public List<NoteFile> NoteFiles { get; set; } = new List<NoteFile>();
 
@@ -26,10 +27,10 @@ namespace McnLib.States
                 file.Notes.ForEach(n => {
                     var lines = n.FindLinesAND(keywords);
                     if (lines != null)
-                        result.LinesFound.AddRange(lines);
+                        result.NotesFound.Add((n, lines));
                 });
 
-                if(result.LinesFound.Count > 0)
+                if(result.NotesFound.Count > 0)
                     results.Add(result);
             }
             return results;

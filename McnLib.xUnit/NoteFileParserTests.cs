@@ -1,6 +1,7 @@
 using McnLib.Parsers;
 using McnLib.States;
 using System.Text.RegularExpressions;
+using System.Linq;
 using Xunit;
 
 namespace McnLib.xUnit
@@ -44,7 +45,7 @@ namespace McnLib.xUnit
             parser.ParseFolder("TestData/Search");
 
             var found = parser.NST.FindNotes(keywords);
-            Assert.Equal(foundLineCount, found[0].LinesFound.Count);
+            Assert.Equal(foundLineCount, found[0].NotesFound.SelectMany(n => n.LinesFound).Count());
         }
     }
 }

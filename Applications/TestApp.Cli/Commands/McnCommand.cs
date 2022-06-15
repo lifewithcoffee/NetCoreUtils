@@ -24,11 +24,15 @@ namespace TestApp.Cli.Commands
             foreach(var note in found)
             {
                 Console.WriteLine(note.FilePath);
-                foreach(var line in note.LinesFound)
-                {
-                    Console.WriteLine($"    {line.LineNumber}\t: {line.Text}");
-                }
-                Console.WriteLine();
+
+                note.NotesFound.ForEach(n => { 
+                    Console.WriteLine("---" + n.Note.Title, n.Note.Id);
+                    foreach(var line in n.LinesFound)
+                    {
+                        Console.WriteLine($"    {line.LineNumber}\t: {line.Text}");
+                    }
+                    Console.WriteLine();
+                });
             }
 
             sw.Stop();
