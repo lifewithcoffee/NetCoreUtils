@@ -26,7 +26,7 @@ namespace TestApp.Cli.Commands
                 Console.WriteLine(note.FilePath);
 
                 note.NotesFound.ForEach(n => { 
-                    Console.WriteLine("--- {0} | {1}", n.Note.Id, n.Note.Title);
+                    Console.WriteLine("--- {0} {1}", n.Note.Id, n.Note.Title);
                     foreach(var line in n.LinesFound)
                     {
                         Console.WriteLine($"    {line.LineNumber}\t: {line.Text}");

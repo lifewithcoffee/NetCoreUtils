@@ -76,16 +76,16 @@ namespace McnLib.xUnit
             Assert.Null(noteFile.Notes[10].Id);
 
             Assert.Equal("Normal note 1", noteFile.Notes[2].Title);
-            Assert.Equal("2022_0526_234506", noteFile.Notes[2].Id);
+            Assert.Equal("[2022_0526_234506]", noteFile.Notes[2].Id);
 
             Assert.Equal("test title 2", noteFile.Notes[4].Title);
-            Assert.Equal("2022_1526_233617", noteFile.Notes[4].Id);
+            Assert.Equal("[2022 1526   233617]", noteFile.Notes[4].Id);
 
             Assert.Equal("test title 3", noteFile.Notes[7].Title);
-            Assert.Equal("2042_0526_234506", noteFile.Notes[7].Id);
+            Assert.Equal("[#2042_0526_234506]", noteFile.Notes[7].Id);
 
             Assert.Equal("test title 4", noteFile.Notes[8].Title);
-            Assert.Equal("2192_0526_234617", noteFile.Notes[8].Id);
+            Assert.Equal("[  2192_0526_234617  ]", noteFile.Notes[8].Id);
         }
     }
 }
