@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestApp.Cli.Commands
+namespace TextNotesSearch.Commands
 {
     public class McnCommand
     {
@@ -40,23 +40,24 @@ namespace TestApp.Cli.Commands
             }
         }
 
-        private void Search(NoteFileParser parser,string keywords)
+        private void Search(NoteFileParser parser, string keywords)
         {
             sw.Restart();
             var found = parser.NST.FindNotes(keywords.Split());
 
             int fileCount = 0;
-            foreach(var note in found)
+            foreach (var note in found)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"{fileCount} : {note.FilePath}");
                 Console.ResetColor();
 
-                note.NotesFound.ForEach(n => {
+                note.NotesFound.ForEach(n =>
+                {
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
                     Console.WriteLine($"{fileCount} : {n.Note.Id} {n.Note.Title}");
                     Console.ResetColor();
-                    foreach(var line in n.LinesFound)
+                    foreach (var line in n.LinesFound)
                     {
                         Console.WriteLine($"{fileCount} {line.LineNumber} : {line.Text}");
                     }
@@ -68,7 +69,7 @@ namespace TestApp.Cli.Commands
             sw.Stop();
             Console.WriteLine("Time elapse: {0}\n", sw.Elapsed);
 
-            while(found.Count > 0)
+            while (found.Count > 0)
             {
                 Console.Write("Open: ");
                 string[] select = Console.ReadLine().ToLower().Trim().Split();
@@ -79,11 +80,11 @@ namespace TestApp.Cli.Commands
                     if (select[0] == "q")
                         break;
 
-                    if (!Int32.TryParse(select[0], out int selectFile))
+                    if (!int.TryParse(select[0], out int selectFile))
                         continue;
                     else
                     {
-                        if(selectFile > found.Count - 1)
+                        if (selectFile > found.Count - 1)
                             continue;
 
                         int selectLine = found[selectFile].NotesFound[0].LinesFound[0].LineNumber;
@@ -97,13 +98,13 @@ namespace TestApp.Cli.Commands
                         Process.Start(startInfo);
                     }
                 }
-                else if(select.Length == 2)
-                { 
-                    if (!Int32.TryParse(select[0], out int selectFile) || !Int32.TryParse(select[1], out int selectLine))
+                else if (select.Length == 2)
+                {
+                    if (!int.TryParse(select[0], out int selectFile) || !int.TryParse(select[1], out int selectLine))
                         continue;
                     else
                     {
-                        if(selectFile > found.Count - 1)
+                        if (selectFile > found.Count - 1)
                             continue;
 
                         var startInfo = new ProcessStartInfo
