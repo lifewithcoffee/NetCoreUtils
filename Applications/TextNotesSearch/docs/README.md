@@ -4,7 +4,7 @@ TNS stands for Text Notes Search
 
 ## Releases
 
-### Next (v1.1.0)
+### Next (v2.0.0)
 
 Working:
 
@@ -14,6 +14,8 @@ Working:
 Done: 
 
 - Add alias for "content" and "name" subcommands
+- Add note piece search by subcommand: mcn notes
+- Upgrade to .net6
 
 ### v1.0.0
 
