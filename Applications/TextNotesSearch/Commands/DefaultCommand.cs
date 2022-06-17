@@ -6,10 +6,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using TextNotesSearch;
 
-namespace TextNotesSearch
+namespace TextNotesSearch.Commands
 {
-
     partial class DefaultCommand
     {
         string baseDir = @"C:\__dell_sync_c\mcn\sync\";

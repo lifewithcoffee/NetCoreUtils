@@ -1,12 +1,9 @@
 ﻿namespace TextNotesSearch
 {
-    partial class DefaultCommand
+    class LineInfo
     {
-        class LineInfo
-        {
-            public string FileFullName { get; set; }
-            public int LineNumber { get; set; }
-            public string LineText { get; set; }
-        }
+        public string FileFullName { get; set; }
+        public int LineNumber { get; set; }
+        public string LineText { get; set; }
     }
 }
