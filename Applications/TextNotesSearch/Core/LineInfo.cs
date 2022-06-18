@@ -1,4 +1,4 @@
-﻿namespace TextNotesSearch
+﻿namespace TextNotesSearch.Core
 {
     class LineInfo
     {

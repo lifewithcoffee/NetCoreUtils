@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using TextNotesSearch;
+using TextNotesSearch.Core;
 
 namespace TextNotesSearch.Commands
 {

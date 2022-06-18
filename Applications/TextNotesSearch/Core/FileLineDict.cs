@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TextNotesSearch
+namespace TextNotesSearch.Core
 {
     class FileLineDict
     {
