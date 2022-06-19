@@ -7,12 +7,16 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using TextNotesSearch.Core;
+using TextNotesSearch.Configuration;
 
 namespace TextNotesSearch.Commands
 {
-    partial class DefaultCommand
+    public class DefaultCommand
     {
-        string baseDir = @"C:\__dell_sync_c\mcn\sync\";
+        Configs _configs = new Configs();
+        string BaseDir { get { return _configs.DefaultFolder.FolderPath; } }
+        string ExtensionName { get { return _configs.DefaultFolder.FileExtentions; } }
+
         FileSearcher _svc = new FileSearcher();
 
         [Help("Alias of 'name' command")]
@@ -25,7 +29,7 @@ namespace TextNotesSearch.Commands
         [Help("Search by name")]
         public void Name(string keywords)
         {
-            var files = _svc.Find(baseDir, "mcn", keywords.Split(',',';'));
+            var files = _svc.Find(BaseDir, ExtensionName, keywords.Split(',',';'));
             foreach(var file in files)
             {
                 Console.WriteLine(file);
@@ -41,10 +45,9 @@ namespace TextNotesSearch.Commands
         [Help("Search by content")]
         public void Content(string keywords)
         {
-            string extensionName = "mcn";
             string[] keywordArray = keywords.Split(',', ';');
 
-            var filesWithAllKeywords = new DirectoryInfo(baseDir).EnumerateFiles($"*.{extensionName}", SearchOption.AllDirectories)
+            var filesWithAllKeywords = new DirectoryInfo(BaseDir).EnumerateFiles($"*.{ExtensionName}", SearchOption.AllDirectories)
                                                                  .AsParallel()     // RL: it does increase the performance
                                                                  .Select(f => (f.FullName, File.ReadAllText(f.FullName)))
                                                                  .Where(t => keywordArray.All(k => t.Item2.ToLowerInvariant().Contains(k.ToLowerInvariant())));
@@ -60,12 +63,11 @@ namespace TextNotesSearch.Commands
             //IEnumerable<string> linesWithAnyKeywords = filesWithAllKeywords
             var linesWithAnyKeywords = filesWithAllKeywords
                 .SelectMany(f =>
-                {
-                    int lineCount = 1;
-
-                    return File.ReadLines(f.FullName)
-                               .Select(line => new LineInfo{ FileFullName = f.FullName, LineNumber = lineCount++, LineText = line });
-                })
+                 {
+                     int lineCount = 1;
+                     return File.ReadLines(f.FullName)
+                                .Select(line => new LineInfo{ FileFullName = f.FullName, LineNumber = lineCount++, LineText = line });
+                 })
                 .Where(t => keywordArray.Any(k => t.LineText.ToLowerInvariant().Contains(k.ToLowerInvariant())))
                 .GroupBy(t => t.FileFullName);
 
