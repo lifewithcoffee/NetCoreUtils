@@ -4,14 +4,14 @@ TNS stands for Text Notes Search
 
 ## Releases
 
-### Next (v2.0.0)
+### Next
 
 Working:
 
 - Change result selection format from "{file_number}/{line_number}" to "{file_number} {line_number}"
 - Change keyworld separator charactor for content search from ',' to space
 
-Done: 
+### v2.0.0
 
 - Upgrade to .net6
 - Add note piece search by subcommand: mcn notes
