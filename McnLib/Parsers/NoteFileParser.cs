@@ -23,7 +23,7 @@ namespace McnLib.Parsers
             NST.NoteFiles = new DirectoryInfo(folderPath)
                 .EnumerateFiles($"*.{extensionName}", SearchOption.AllDirectories)
                 .AsParallel()
-                .Select(f => new NoteFile { FullPath = f.FullName, Content = File.ReadAllLines(f.FullName) })
+                .Select(f => new NoteFile { FullPath = f.FullName, Name = f.Name , Content = File.ReadAllLines(f.FullName) })
                 .ToList();
 
             // code in AsParallel().ForAll() must be thread safe, so need to new NoteLineParser()

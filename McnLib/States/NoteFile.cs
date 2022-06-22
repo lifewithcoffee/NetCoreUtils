@@ -4,7 +4,12 @@ namespace McnLib.States
 {
     public class NoteFile
     {
-        public string FullPath { get; set; } = "";
+        public string FullPath { get; set; } = string.Empty;
+
+        /// <summary>
+        /// File name without path
+        /// </summary>
+        public string Name { get; set; } = string.Empty;
 
         public string[] Content { get; set; } = new string[0];
 
