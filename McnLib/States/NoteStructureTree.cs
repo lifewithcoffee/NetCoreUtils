@@ -18,10 +18,16 @@ namespace McnLib.States
             return NoteFiles!.SelectMany(f => f.Notes).ToList();
         }
 
-        public List<FindNotesResult> FindNotes(string[] keywords)
+        public List<FindNotesResult> FindNotes(string[] keywords, string[]? fileFilterWords = null)
         {
             List<FindNotesResult> results = new List<FindNotesResult>();
-            foreach(var file in NoteFiles)
+
+            // get files with their names contain all file filter words
+            List<NoteFile> filteredFiles = NoteFiles;
+            if(fileFilterWords != null)
+                filteredFiles = NoteFiles.Where(f => fileFilterWords.All(w => f.Name.Trim().ToLower().Contains(w))).ToList();
+
+            foreach(var file in filteredFiles)
             {
                 FindNotesResult result = new FindNotesResult { FilePath = file.FullPath };
                 file.Notes.ForEach(n => {

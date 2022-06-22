@@ -45,11 +45,18 @@ namespace TextNotesSearch.Commands
         }
 
         /// <returns>The updated keywords (input from its "open" mode) for another search.</returns>
-        private string? Search(NoteFileParser parser, string keywords)
+        private string? Search(NoteFileParser parser, string searchString)
         {
-            Console.WriteLine($"DEBUG|keywords: {keywords}");
+            //Console.WriteLine($"DEBUG|keywords: {searchString}");
             sw.Restart();
-            var found = parser.NST.FindNotes(keywords.Split());
+
+            string[] keywords_and_filter = searchString.Split('|');
+            string[] keywords = keywords_and_filter[0].Trim().Split();
+            string[] filter = null;
+            if (keywords_and_filter.Length > 1)
+                filter = keywords_and_filter[1].Trim().Split();
+
+            var found = parser.NST.FindNotes(keywords, filter);
 
             int fileCount = 0;
             foreach (var note in found)
