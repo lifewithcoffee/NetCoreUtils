@@ -37,7 +37,7 @@ namespace TextNotesSearch.Commands
                     break;
                 else if (!string.IsNullOrEmpty(input))
                 {
-                    string? moreInput = Search(parser, input);
+                    string moreInput = Search(parser, input);
                     while(moreInput != null)
                         moreInput = Search(parser, moreInput); 
                 }
@@ -45,7 +45,7 @@ namespace TextNotesSearch.Commands
         }
 
         /// <returns>The updated keywords (input from its "open" mode) for another search.</returns>
-        private string? Search(NoteFileParser parser, string searchString)
+        private string Search(NoteFileParser parser, string searchString)
         {
             //Console.WriteLine($"DEBUG|keywords: {searchString}");
             sw.Restart();
