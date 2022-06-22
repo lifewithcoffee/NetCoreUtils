@@ -4,16 +4,16 @@ TNS stands for Text Notes Search
 
 ## TODO
 
+- Change prompt to "notes :> ", "content :> " and "filename :> "
 - Change result selection format from "{file_number}/{line_number}" to "{file_number} {line_number}"
 - Change keyworld separator charactor for content search from ',' to space
 
 ## Releases
 
-### v2.1.0 (working)
+### v2.1.0
 
-Working:
-
-- Type none-numeric string to do a new search
+- Type none-numeric string to do a new search in the "open" mode of "mcn notes"
+- Add file name filter support when do "mcn notes" search
 
 ### v2.0.0
 
