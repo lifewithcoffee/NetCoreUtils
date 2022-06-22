@@ -36,12 +36,18 @@ namespace TextNotesSearch.Commands
                 else if (input == "q")
                     break;
                 else if (!string.IsNullOrEmpty(input))
-                    Search(parser, input);
+                {
+                    string? moreInput = Search(parser, input);
+                    while(moreInput != null)
+                        moreInput = Search(parser, moreInput); 
+                }
             }
         }
 
-        private void Search(NoteFileParser parser, string keywords)
+        /// <returns>The updated keywords (input from its "open" mode) for another search.</returns>
+        private string? Search(NoteFileParser parser, string keywords)
         {
+            Console.WriteLine($"DEBUG|keywords: {keywords}");
             sw.Restart();
             var found = parser.NST.FindNotes(keywords.Split());
 
@@ -72,16 +78,17 @@ namespace TextNotesSearch.Commands
             while (found.Count > 0)
             {
                 Console.Write("Open: ");
-                string[] select = Console.ReadLine().ToLower().Trim().Split();
+                string inputForOpen = Console.ReadLine();
+                string[] select = inputForOpen.ToLower().Trim().Split();
                 if (select.Length > 2)
-                    continue;
+                    return inputForOpen;
                 else if (select.Length == 1) // select.Length is always >= 1
                 {
                     if (select[0] == "q")
                         break;
 
                     if (!int.TryParse(select[0], out int selectFile))
-                        continue;
+                        return inputForOpen;
                     else
                     {
                         if (selectFile > found.Count - 1)
@@ -101,7 +108,7 @@ namespace TextNotesSearch.Commands
                 else if (select.Length == 2)
                 {
                     if (!int.TryParse(select[0], out int selectFile) || !int.TryParse(select[1], out int selectLine))
-                        continue;
+                        return inputForOpen;
                     else
                     {
                         if (selectFile > found.Count - 1)
@@ -120,6 +127,8 @@ namespace TextNotesSearch.Commands
                 }
             }
             Console.WriteLine("");
+
+            return null;
         }
     }
 }
