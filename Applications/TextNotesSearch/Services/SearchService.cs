@@ -29,6 +29,7 @@ namespace TextNotesSearch.Services
 
             var found = parser.NST.FindNotes(keywords, filter);
 
+            // TODO: replace using SelectService.PrintFoundNotes()
             int fileCount = 0;
             foreach (var note in found)
             {
