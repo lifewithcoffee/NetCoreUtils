@@ -10,6 +10,8 @@ namespace TextNotesSearch.Configuration
     {
         public string FolderPath { get; set; } = @"C:\__dell_sync_c\mcn\sync";
         public string FileExtentions { get; set; } = "mcn";
+        public string VimPath { get; set; }
+
     }
     public class Configs
     {
