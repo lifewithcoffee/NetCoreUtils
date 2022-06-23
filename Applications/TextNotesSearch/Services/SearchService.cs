@@ -13,6 +13,7 @@ namespace TextNotesSearch.Services
     {
 
         IConsoleService _consoleService = new ConsoleService();
+        ISelectService _selectService = new SelectService();
         Stopwatch sw = new Stopwatch();
 
         /// <returns>The updated keywords (input from its "open" mode) for another search.</returns>
@@ -28,26 +29,8 @@ namespace TextNotesSearch.Services
                 filter = keywords_and_filter[1].Trim().Split();
 
             var found = parser.NST.FindNotes(keywords, filter);
+            _selectService.PrintFoundNotes(found);
 
-            // TODO: replace using SelectService.PrintFoundNotes()
-            int fileCount = 0;
-            foreach (var note in found)
-            {
-                _consoleService.WriteLine($"{fileCount} : {note.FilePath}", ConsoleColor.Green);
-
-                note.NotesFound.ForEach(n =>
-                {
-                    _consoleService.WriteLine($"{fileCount} : {n.Note.Id} {n.Note.Title}", ConsoleColor.DarkCyan);
-
-                    foreach (var line in n.LinesFound)
-                    {
-                        Console.WriteLine($"{fileCount} {line.LineNumber} : {line.Text}");
-                    }
-                    Console.WriteLine();
-                });
-
-                fileCount++;
-            }
             sw.Stop();
             Console.WriteLine("Time elapse: {0}\n", sw.Elapsed);
 
