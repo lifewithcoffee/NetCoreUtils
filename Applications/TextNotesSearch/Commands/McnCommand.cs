@@ -12,6 +12,7 @@ namespace TextNotesSearch.Commands
     public class McnCommand
     {
         ISearchService _searchService = new SearchService();
+        IConsoleService _consoleService = new ConsoleService();
 
         public void Notes()
         {
@@ -23,11 +24,7 @@ namespace TextNotesSearch.Commands
 
             while (true)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("% ");
-                var input = Console.ReadLine().ToLower().Trim();
-                Console.ResetColor();
-
+                var input = _consoleService.ReadLine("% ", ConsoleColor.Red);
                 if (input == "r")
                 {
                     Console.WriteLine("Reloading notes ...\n");
