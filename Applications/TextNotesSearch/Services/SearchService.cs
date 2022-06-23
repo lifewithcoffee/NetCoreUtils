@@ -2,9 +2,8 @@
 using System;
 using System.Diagnostics;
 
-namespace TextNotesSearch.Commands
+namespace TextNotesSearch.Services
 {
-
     public interface ISearchService
     {
         string SearchNotes(NoteFileParser parser, string searchString);
@@ -13,6 +12,7 @@ namespace TextNotesSearch.Commands
     public class SearchService : ISearchService
     {
 
+        IConsoleService _consoleService = new ConsoleService();
         Stopwatch sw = new Stopwatch();
 
         /// <returns>The updated keywords (input from its "open" mode) for another search.</returns>
@@ -32,15 +32,12 @@ namespace TextNotesSearch.Commands
             int fileCount = 0;
             foreach (var note in found)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"{fileCount} : {note.FilePath}");
-                Console.ResetColor();
+                _consoleService.WriteLine($"{fileCount} : {note.FilePath}", ConsoleColor.Green);
 
                 note.NotesFound.ForEach(n =>
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    Console.WriteLine($"{fileCount} : {n.Note.Id} {n.Note.Title}");
-                    Console.ResetColor();
+                    _consoleService.WriteLine($"{fileCount} : {n.Note.Id} {n.Note.Title}", ConsoleColor.DarkCyan);
+
                     foreach (var line in n.LinesFound)
                     {
                         Console.WriteLine($"{fileCount} {line.LineNumber} : {line.Text}");
