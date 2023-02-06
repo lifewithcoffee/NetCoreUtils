@@ -1,5 +1,9 @@
 # Release Notes
 
+## v3.0.0-working
+
+- Upgrade to .net7
+
 ## v2.1.0
 
 Major Enhancement:

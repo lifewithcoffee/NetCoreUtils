@@ -55,6 +55,10 @@ View data in Compass:
 
 ## Release Notes
 
+## 1.3.0-working
+
+- Upgrade to .net7
+
 ## 1.2.0
 
 - Remove MongoDoc.CreateAt since it can be get from ObjectId

@@ -14,6 +14,10 @@ public void ConfigureServices(IServiceCollection services)
 
 ## Release Notes
 
+## v1.4.0-working
+
+- Upgrade to .net7
+
 ### v1.3.0.3
 
 - Add non-POCO query method: `Task<PivotData> IInfluxReader.QueryAsync`
