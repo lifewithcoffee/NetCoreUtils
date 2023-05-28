@@ -1,6 +1,6 @@
 @echo off
-SET DLL_FOLDER=%CD%\bin\Debug\net6.0
-::SET DLL_FOLDER=%CD%\bin\Release\net6.0
+::SET DLL_FOLDER=%CD%\bin\Debug\net7.0
+SET DLL_FOLDER=%CD%\bin\Debug\net7.0-windows10.0.22621.0
 SET NETCOREUTILS_ENVIRONMENT=Development
 
 :: Using "dotnet run" is too slow
