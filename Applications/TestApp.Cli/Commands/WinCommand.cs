@@ -49,6 +49,9 @@ class WinCommand
         notifier.Show(notification);
     }
 
+    /**
+     * from: https://stackoverflow.com/questions/65054564/netcore-show-windows-10-notification-toast
+     */
     private void DemoImpl1(string appid, string imageFullPath, string h1, string h2, string p1)
     {
 
