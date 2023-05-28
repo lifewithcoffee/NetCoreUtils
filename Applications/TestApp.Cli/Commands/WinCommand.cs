@@ -86,9 +86,15 @@ class WinCommand
         // Console.ReadKey();  // _note_Activated-2/2: for demonstrating notification.Activated above
     }
 
+    /**
+     * _note_:
+     * - from: https://www.c-sharpcorner.com/article/creating-a-toast-notification-containing-image-selection-box-and-buttons/
+     * - The max number of selection seems to be 5
+     * - ref:
+     *   See <toast> xml schema: https://learn.microsoft.com/en-us/uwp/schemas/tiles/toastschema/element-toast
+     */
     private XmlDocument DemoImpl2()
     {
-        // _note_|see <toast> xml schema: https://learn.microsoft.com/en-us/uwp/schemas/tiles/toastschema/element-toast
         string toastXml = """
             <toast scenario="alarm">  
                 <visual>  
