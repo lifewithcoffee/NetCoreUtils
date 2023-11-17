@@ -4,14 +4,19 @@
 
 - Every entity's repository is committable.
 - All repositories and UnitOfWork are injected as Scoped (using .net core build-in DI API "AddScoped").
+- Decide to give up adding support for MongoDB as the MongoDB API is too
+  different from that of Entity Framework's. Therefore library
+  NetCoreUtils.Database is only used for relational database.
 
-## TODOs
+## TODO
 
-- Merge EfRepository into Repository, and remove EfRepository
-  
-  Decide to give up adding support for MongoDB as the MongoDB API is too different from that of Entity Framework's.
-
-  Therefore library NetCoreUtils.Database is only used for relational database.
+- Test: are DbContext of IRepositoryReadonly and IRepository the same instance?
+- Perform unit test on PostgreSQL
+- Review multi-tenant implementation (use global filter)
+- Move NetCoreUtils.Database to separate git repo, then use github action to release package
+- Update unit test with performance benchmark
+- Default to enable transaction in UnitOfWork  
+  find more: https://learn.microsoft.com/en-us/ef/core/saving/
 
 ## Design Thoughts
 
@@ -53,6 +58,10 @@ See [release notes](./release-notes.md)
 
 - If one job involes multiple repositories, the last repository shall be
   responsible for committing the unit of work for all. 
-- Call `services.AddRepositories<ApplicationDbContext>()` to register
-  dependencies. This method is implemented in `Extensions.cs`.
-- A `services.AddDbContext<ApplicationDbContext>()` must be called
+
+- Register DI by:
+  ```
+  services.AddDbContext<ApplicationDbContext>();
+  services.AddRepositories<ApplicationDbContext>();
+  ```
+  Then inject `IRepository<Entity>` or `IRepositoryReadonly<Entity>` in program.

@@ -1,137 +1,115 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace NetCoreUtils.Database
 {
-    public interface IRepository<TEntity>
-        : ICommittable
-        , IRepositoryRead<TEntity>
-        , IRepositoryWrite<TEntity>
-        where TEntity : class
-    { }
-
-    /// <summary>
-    /// originated from (but changed quite a lot):
-    /// http://www.asp.net/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application
-    /// https://github.com/MarlabsInc/webapi-angularjs-spa/blob/28bea19b3267aeed1768920b0d77be329b0278a5/source/ResourceMetadata/ResourceMetadata.Data/Infrastructure/RepositoryBase.cs
-    /// </summary>
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class 
+    public interface IRepository<TEntity> :
+        IRepositoryReadable<TEntity>,
+        IRepositoryWritable<TEntity> where TEntity : class
     {
-        private readonly IRepositoryRead<TEntity> _repoReader;
-        private readonly IRepositoryWrite<TEntity> _repoWriter;
+    }
 
-        public Repository(
-            IRepositoryRead<TEntity> repoReader,
-            IRepositoryWrite<TEntity> repoWriter
-        ){
+    public class Repository<TEntity> : RepositoryReadable<TEntity>, IRepository<TEntity> where TEntity : class
+    {
+        private IUnitOfWork _unitOfWork;
+        private DbSet<TEntity> dbSet;
 
-            _repoReader = repoReader;
-            _repoWriter = repoWriter;
-        }
-
-        public bool Exist(Expression<Func<TEntity, bool>> predicate)
+        public Repository(IUnitOfWork unitOfWork):base(unitOfWork)
         {
-            return _repoReader.Exist(predicate);
+            this._unitOfWork = unitOfWork;
+            this.dbSet = unitOfWork.Context.Set<TEntity>();
         }
 
-        public async Task<bool> ExistAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            return await _repoReader.ExistAsync(predicate);
-        }
-
-        public TEntity Get(int? id)
-        {
-            return _repoReader.Get(id);
-        }
-
-        public async Task<TEntity> GetAsync(int? id)
-        {
-            return await _repoReader.GetAsync(id);
-        }
-
+        /// <summary> Reason of not implementing AddAsync:
+        /// According to: http://stackoverflow.com/questions/42034282/are-there-dbset-updateasync-and-removeasync-in-net-core
+        /// DbSet.AddAsync() should not be used.
+        /// 
+        /// Quote:
+        ///
+        /// AddAsync however, only begins tracking an entity but won't actually send any changes 
+        /// to the database until you call SaveChanges or SaveChangesAsync. You shouldn't really 
+        /// be using this method unless you know what you're doing. The reason the async version 
+        /// of this method exists is explained in the docs:
+        /// 
+        /// This method is async only to allow special value generators, such as the one used by
+        /// 'Microsoft.EntityFrameworkCore.Metadata.SqlServerValueGenerationStrategy.SequenceHiLo',
+        /// to access the database asynchronously. For all other cases the non async method should
+        /// be used.
+        /// 
+        /// The same reason is also applied to AddRagne, Remove and Update methods.
+        /// </summary>
         public virtual TEntity Add(TEntity entity)
         {
-            return _repoWriter.Add(entity); // NOTIC: see comment of RepositoryWrite.Add() for "Reason of not implementing AddAsync"
+            dbSet.Add(entity);
+            return entity;
         }
 
+        /// <summary> Do not use AddRagneAsync() if not necessary
+        /// According to: https://stackoverflow.com/questions/56241351/what-is-the-difference-between-addrange-and-addrangeasync-in-ef-core
+        /// AddRangeAsync() may be slower and should only used when value
+        /// generators need access to the database before they generate a
+        /// value.
+        /// 
+        /// The reason looks the same with that of AddAsync()
+        /// 
+        /// </summary>
         public virtual void AddRange(IEnumerable<TEntity> entities)
         {
-            _repoWriter.AddRange(entities);
+            dbSet.AddRange(entities);
         }
 
-        public virtual void Update(TEntity entity)
+        public virtual void Remove(TEntity entity)
         {
-            _repoWriter.Update(entity);
-        }
-
-        public virtual void UpdateRange(IEnumerable<TEntity> entities)
-        {
-            _repoWriter.UpdateRange(entities);
-        }
-
-        public virtual void Remove(TEntity entity)  
-        {
-            _repoWriter.Remove(entity);
+            dbSet.Remove(entity);
         }
 
         public virtual void Remove(Expression<Func<TEntity, bool>> where)
         {
-            _repoWriter.Remove(where);
+            IEnumerable<TEntity> objects = dbSet.Where<TEntity>(where).AsEnumerable();
+            dbSet.RemoveRange(objects);
         }
 
         public virtual void RemoveRange(IEnumerable<TEntity> entities)
         {
-            _repoWriter.RemoveRange(entities);
+            dbSet.RemoveRange(entities);
         }
 
-        public virtual IQueryable<TEntity> QueryAll()
+        public virtual void Update(TEntity entity)
         {
-            return _repoReader.QueryAll();
-        }
-        
-        public virtual IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> where)
-        {
-            return _repoReader.Query(where);
+           /**
+            * For reference, the old impl in EF6:
+            *
+            * dbSet.Attach(entity);
+            * _unitOfWork.Context.Entry(entity).State = EntityState.Modified; 
+            */
+
+            dbSet.Update(entity);
         }
 
-        public bool Commit()
+        public virtual void UpdateRange(IEnumerable<TEntity> entities)
         {
-            return _repoWriter.Commit();
+            dbSet.UpdateRange(entities);
         }
 
-        public async Task<bool> CommitAsync()
+        public virtual bool Commit()
         {
-            return await _repoWriter.CommitAsync();
+            return this._unitOfWork.Commit();
         }
 
-        public TEntity GetByIdNoTracking(int? id)
+        public virtual async Task<bool> CommitAsync()
         {
-            return _repoReader.GetByIdNoTracking(id);
+            return await this._unitOfWork.CommitAsync();
         }
 
-        public async Task<TEntity> GetByIdNoTrackingAsync(int? id)
+        public void RemoveAll()
         {
-            return await _repoReader.GetByIdNoTrackingAsync(id);
-        }
-
-        public IQueryable<TEntity> GetAllNoTracking()
-        {
-            return _repoReader.GetAllNoTracking();
-        }
-
-        public IQueryable<TEntity> GetManyNoTracking(Expression<Func<TEntity, bool>> where)
-        {
-            return _repoReader.GetManyNoTracking(where);
-        }
-
-        public IQueryable<TEntity> GetManyLocalFirst(Expression<Func<TEntity, bool>> where)
-        {
-            return _repoReader.GetManyLocalFirst(where);
+            dbSet.RemoveRange(dbSet);
         }
     }
+
 }

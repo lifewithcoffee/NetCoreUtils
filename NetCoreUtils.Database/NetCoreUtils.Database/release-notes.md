@@ -1,6 +1,12 @@
 # Release Notes
 
-## v2.1.0
+## v3.0 (breaking changes) ... (in progress)
+
+- Remove RepositoryWrite, RepositoryRead, add RepositoryReadonly,
+  RepositoryReadable, update Repository to inherit from RepositoryReadable
+- Upgrade to .net7
+
+## v2.1
 
 Major Enhancement:
 
@@ -12,7 +18,7 @@ Other Enhancement:
 - Add package dependency `Microsoft.EntityFrameworkCore.SqlServer`
 - Add package dependency `Microsoft.EntityFrameworkCore.Sqlite`
 
-## v2.0.0
+## v2.0 (breaking changes)
 
 Major Enhancement:
 
@@ -30,7 +36,7 @@ Other Enhancement:
 - Add package dependency `Microsoft.EntityFrameworkCore.Relational` to enable
   `DbContext.Database.MigrateAsync()` method
 
-## v1.1.0
+## v1.1
 
 - Stop exposing DbContext from IRepository<>
 - Remove useless unitOfWork and dbSet members from Repository<,> implementation

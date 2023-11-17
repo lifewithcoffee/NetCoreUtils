@@ -40,7 +40,11 @@ namespace NetCoreUtils.Database
             _tenantProvider = tenantProvider;
             _logger = logger;
 
-            _logger.LogTrace("Initializing UnitOfWork with system default setting");
+            /**
+             * Always turn off AutoDetectChangesEnabled to improve performance
+             * Must do DetectChanges() when commit
+             */
+            _context.ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
         public void EnableQueryTracking(bool enabled)
@@ -56,6 +60,7 @@ namespace NetCoreUtils.Database
             bool result = false;
             try
             {
+                _context.ChangeTracker.DetectChanges();
                 ConfirmSingleTenant();
                 await _context.SaveChangesAsync();
                 result = true;
@@ -91,6 +96,7 @@ namespace NetCoreUtils.Database
             bool result = false;
             try
             {
+                _context.ChangeTracker.DetectChanges();
                 SetTenantsIds();
                 ConfirmSingleTenant();
                 _context.SaveChanges();
