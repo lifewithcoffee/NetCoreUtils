@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using NetCoreUtils.Database.MultiTenancy;
 
 namespace NetCoreUtils.Database
 {
@@ -15,12 +16,11 @@ namespace NetCoreUtils.Database
      */
     abstract public class RepositoryReadable<TEntity> : IRepositoryReadable<TEntity> where TEntity : class
     {
-        private IUnitOfWork _unitOfWork;        // _todo_ need?
-        private DbSet<TEntity> dbSet;
+        protected IUnitOfWork _unitOfWork;
+        protected DbSet<TEntity> dbSet;
 
         public RepositoryReadable(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = unitOfWork;
             this.dbSet = unitOfWork.Context.Set<TEntity>();
         }
 
