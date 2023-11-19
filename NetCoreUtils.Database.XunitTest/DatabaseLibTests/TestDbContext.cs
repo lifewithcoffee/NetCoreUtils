@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NetCoreUtils.Database.MultiTenancy;
+using NetCoreUtils.Database.MultiTenant;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
@@ -18,13 +18,19 @@ namespace DatabaseLibTests
         public virtual List<TaskItem> TaskItems { get; set; } = new List<TaskItem>();
     }
 
-    //public class TestDbContext : DbContext
-    public class TestDbContext : MultiTenantContext
+    public class TestDbContext : DbContext
     {
-        //public TestDbContext(DbContextOptions<TestDbContext> options) : base(options)
-        public TestDbContext([NotNull] DbContextOptions options, ITenantProvider tenantProvider) : base(options, tenantProvider)
+        public TestDbContext()
         {
-            Database.EnsureCreated();
+        }
+
+        public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) { }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql("Host=localhost;Database=xUnit;Port=5432;Username=postgres;Password=open");
+            //Database.EnsureCreated();
+            base.OnConfiguring(optionsBuilder);
         }
 
         public DbSet<Project> Projects { get; set; }

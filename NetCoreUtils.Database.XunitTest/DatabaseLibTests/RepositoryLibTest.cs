@@ -29,28 +29,36 @@ namespace DatabaseLibTests
         }
 
         [Fact]
-        public void MultiTenant_CRUD_should_work()
+        public async Task MultiTenant_CRUD_should_work()
         {
             // arrange
-            var before = _provider.GetServiceNewScope<IRepositoryRead<Project>>();
+            var before = _provider.GetServiceNewScope<IRepository<Project>>();
+            before.RemoveAll();
+            before.Commit();
             Assert.Equal(0, before.QueryAll().Count());
 
             // act
-            var writer = _provider.GetServiceNewScope<IRepositoryWrite<Project>>();
-            writer.Add(new Project { Name = "project1" });
+            var writer = _provider.GetServiceNewScope<IRepository<Project>>();
+            var proj = new Project { Name = "project1" };
+            writer.Add(proj);
             writer.Add(new Project { Name = "project2" });
             writer.Commit();
+
+            var writer2 = _provider.GetServiceNewScope<IRepository<Project>>();
+            var projSaved = await writer2.GetAsync(proj.Id);
+            projSaved.Name = "updated_name";
+            writer2.Commit();
 
             // assert
 
             // If use sqlite non-shared in-memory db, need to call
             // _provider.GetServiceExistingScope<>() instead;
-            var reader = _provider.GetServiceNewScope<IRepositoryRead<Project>>();    
+            var reader = _provider.GetServiceNewScope<IRepositoryReadonly<Project>>();    
 
             var all = reader.QueryAll().ToList();
             Assert.Equal(2, all.Count);
-            Assert.Equal("project1", all[0].Name);
-            Assert.Equal("project2", all[1].Name);
+            Assert.Equal("project2", all[0].Name);
+            Assert.Equal("updated_name", all[1].Name);
 
             Assert.Equal("tenant1", all[0].TenantId);
             Assert.Equal("tenant1", all[1].TenantId);

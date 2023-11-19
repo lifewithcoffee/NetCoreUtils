@@ -60,7 +60,11 @@ namespace NetCoreUtils.Database.XunitTest
              * Or use EF InMemory DB:
              * serviceCollection.AddDbContext<TestDbContext>(options => options.UseInMemoryDatabase("xUnit"));
              */
-            serviceCollection.AddDbContext<TestDbContext>(options => options.UseSqlite(CreateSqliteInMemoryDatabase()));
+            //serviceCollection.AddDbContext<TestDbContext>(options => options.UseSqlite(CreateSqliteInMemoryDatabase()));
+            serviceCollection.AddDbContext<TestDbContext>(options =>
+                        options.UseNpgsql(
+                            "Host=localhost;Database=xUnit;Port=5432;Username=postgres;Password=open"
+                        ));
 
             serviceCollection.AddRepositories<TestDbContext>(new TenantProvider());
 
