@@ -5,7 +5,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NetCoreUtils.Database.MultiTenancy;
 
 namespace NetCoreUtils.Database;
 public class Repository<TEntity> : RepositoryReadable<TEntity>, IRepository<TEntity> where TEntity : class

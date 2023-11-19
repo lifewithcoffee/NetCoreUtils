@@ -7,8 +7,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NetCoreUtils.Database.MultiTenancy;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using NetCoreUtils.Database.MultiTenant;
 
 namespace NetCoreUtils.Database
 {
@@ -21,7 +21,7 @@ namespace NetCoreUtils.Database
     public interface IUnitOfWork : ICommittable
     {
         DbContext Context { get; }
-        void EnableQueryTracking(bool enabled);
+
         void RejectAllChanges();
     }
 
@@ -47,6 +47,11 @@ namespace NetCoreUtils.Database
             _context.ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
+        /*****************************************************************
+        Since using approach of:
+            _context.ChangeTracker.AutoDetectChangesEnabled = false;
+        the following method is not requied:
+
         public void EnableQueryTracking(bool enabled)
         {
             if (enabled)
@@ -54,6 +59,7 @@ namespace NetCoreUtils.Database
             else
                 _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
+        *****************************************************************/
 
         public async Task<bool> CommitAsync()
         {
@@ -96,9 +102,17 @@ namespace NetCoreUtils.Database
             bool result = false;
             try
             {
+                /**
+                 * Since _context.ChangeTracker.AutoDetectChangesEnabled is set to false by default,
+                 * _context.ChangeTracker.DetectChanges() must be called before do _context.SaveChanges()
+                 */
                 _context.ChangeTracker.DetectChanges();
-                SetTenantsIds();
-                ConfirmSingleTenant();
+
+                if(!string.IsNullOrWhiteSpace(_tenantProvider?.GetTenantId()))
+                {
+                    ConfirmSingleTenant();
+                }
+
                 _context.SaveChanges();
                 result = true;
             }
@@ -110,6 +124,9 @@ namespace NetCoreUtils.Database
             return result;
         }
 
+        /********************************************************************************
+        Call this method to make sure the update only applies to one tenant if necessary:
+         
         private void SetTenantsIds()
         {
             var entities = from e in _context.ChangeTracker.Entries()
@@ -121,6 +138,7 @@ namespace NetCoreUtils.Database
                 entity.TenantId = _tenantProvider.GetTenantId();
             }
         }
+        ********************************************************************************/
 
         /**
          * Make sure all the changes apply to the same tenant

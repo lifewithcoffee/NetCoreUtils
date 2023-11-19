@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using NetCoreUtils.Database.MultiTenancy;
 
 namespace NetCoreUtils.Database
 {
