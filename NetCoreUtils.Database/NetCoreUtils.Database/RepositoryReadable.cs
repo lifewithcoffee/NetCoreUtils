@@ -20,7 +20,8 @@ namespace NetCoreUtils.Database
 
         public RepositoryReadable(IUnitOfWork unitOfWork)
         {
-            this._dbSet = unitOfWork.Context.Set<TEntity>();
+            _unitOfWork = unitOfWork;
+            _dbSet = unitOfWork.Context.Set<TEntity>();
         }
 
         public virtual async Task<bool> ExistAsync(Expression<Func<TEntity, bool>> predicate)
