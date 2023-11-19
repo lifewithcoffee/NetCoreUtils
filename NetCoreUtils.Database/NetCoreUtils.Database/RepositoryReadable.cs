@@ -17,16 +17,16 @@ namespace NetCoreUtils.Database
     abstract public class RepositoryReadable<TEntity> : IRepositoryReadable<TEntity> where TEntity : class
     {
         protected IUnitOfWork _unitOfWork;
-        protected DbSet<TEntity> dbSet;
+        protected DbSet<TEntity> _dbSet;
 
         public RepositoryReadable(IUnitOfWork unitOfWork)
         {
-            this.dbSet = unitOfWork.Context.Set<TEntity>();
+            this._dbSet = unitOfWork.Context.Set<TEntity>();
         }
 
         public virtual async Task<bool> ExistAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await dbSet.AnyAsync<TEntity>(predicate);
+            return await _dbSet.AnyAsync<TEntity>(predicate);
         }
 
         public virtual async Task<TEntity> GetAsync(int? id)
@@ -34,7 +34,7 @@ namespace NetCoreUtils.Database
             if (id == null)
                 return null;
             else
-                return await dbSet.FindAsync(id);
+                return await _dbSet.FindAsync(id);
         }
 
 
@@ -45,17 +45,17 @@ namespace NetCoreUtils.Database
              * an exception will throw out:
              * "There is already an open DataReader associated with this Command which must be closed first"
              */
-            return dbSet.Where(where);
+            return _dbSet.Where(where);
         }
 
         public virtual IQueryable<TEntity> QueryAll()
         {
-            return dbSet;
+            return _dbSet;
         }
 
         public virtual async Task<List<TEntity>> GetAllAsync()
         {
-            return await dbSet.ToListAsync();
+            return await _dbSet.ToListAsync();
         }
 
         public virtual async Task<TEntity> GetByIdAsync(int? id)
@@ -83,12 +83,12 @@ namespace NetCoreUtils.Database
         /// <returns>See the return comment of <see cref="QueryAll()"/></returns>
         public virtual IQueryable<TEntity> GetManyLocalFirst(Expression<Func<TEntity, bool>> where)
         {
-            return dbSet.FindLocalFirst(where);
+            return _dbSet.FindLocalFirst(where);
         }
 
         public virtual async Task<List<TEntity>> GetManyAsync(Expression<Func<TEntity, bool>> where)
         {
-            return await dbSet.Where(where).ToListAsync();
+            return await _dbSet.Where(where).ToListAsync();
         }
     }
 }
