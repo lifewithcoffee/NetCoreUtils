@@ -67,7 +67,7 @@ namespace NetCoreUtils.Database
             try
             {
                 _context.ChangeTracker.DetectChanges();
-                ConfirmSingleTenant();
+                EnsureSingleTenant();
                 await _context.SaveChangesAsync();
                 result = true;
             }
@@ -110,7 +110,8 @@ namespace NetCoreUtils.Database
 
                 if(!string.IsNullOrWhiteSpace(_tenantProvider?.GetTenantId()))
                 {
-                    ConfirmSingleTenant();
+                    MakeupMissingTenantIds();
+                    EnsureSingleTenant();
                 }
 
                 _context.SaveChanges();
@@ -124,10 +125,7 @@ namespace NetCoreUtils.Database
             return result;
         }
 
-        /********************************************************************************
-        Call this method to make sure the update only applies to one tenant if necessary:
-         
-        private void SetTenantsIds()
+        private void MakeupMissingTenantIds()
         {
             var entities = from e in _context.ChangeTracker.Entries()
                            where e.Entity is TenantEntity && ((TenantEntity)e.Entity).TenantId == null
@@ -135,10 +133,10 @@ namespace NetCoreUtils.Database
 
             foreach (var entity in entities)
             {
-                entity.TenantId = _tenantProvider.GetTenantId();
+                if(string.IsNullOrWhiteSpace(entity.TenantId)) // if entity doesn't set tenant id
+                    entity.TenantId = _tenantProvider.GetTenantId();
             }
         }
-        ********************************************************************************/
 
         /**
          * Make sure all the changes apply to the same tenant
@@ -147,12 +145,10 @@ namespace NetCoreUtils.Database
          *     Defensive database context for multi-tenant ASP.NET Core applications
          *     https://gunnarpeipman.com/aspnet-core-defensive-database-context/
          */
-        private void ConfirmSingleTenant()
+        private void EnsureSingleTenant()
         {
             if (_tenantProvider.GetTenantId() is null)
-            {
                 return;
-            }
 
             var ids = (
                 from e in _context.ChangeTracker.Entries()
@@ -163,21 +159,16 @@ namespace NetCoreUtils.Database
             // TenantEntity is not used as the base class for other entities,
             // i.e. this is a "traditional" design without multi-tenant design
             if (ids.Count == 0)
-            {
                 return;
-            }
 
             if (ids.Count > 1)
-            {
-                //throw new CrossTenantUpdateException(ids);
                 throw new Exception("Updating multiple tenant"); // TODO: need to log tenant IDs
-            }
+
+            if (ids.First() == null)
+                throw new Exception("Invalid tenant ID: null");
 
             if (ids.First() != _tenantProvider.GetTenantId())
-            {
-                //throw new CrossTenantUpdateException(ids);
                 throw new Exception($"Invalid tenant ID: {ids[0]}");
-            }
         }
     }
 }

@@ -39,8 +39,12 @@
 - (not tested) Call `TenantUtil.EnableMultiTenant(..)` in
   `DbContext.OnModelCreating(..)` to register global query filter
 
-- In `UnitOfWork.CommitAsync()`, a `ConfirmSingleTenant()` will be called to make sure all the
-  updated Entities use the same tenant ID if the tenant ID is available.
+- In `UnitOfWork.CommitAsync()`:
+  * A `MakeupMissingTenantIds()` will be called if an entity doesn't specify the tenant ID
+  * A `EnsureSingleTenant()` will be called to make sure all the updated Entities use the
+    same tenant ID if the tenant ID is available.
+
+- Provide TenantProvider by: `serviceCollection.AddRepositories<TestDbContext>(new TenantProvider());`
 
 ### Reasons of wrapping extra repositories for dbSets
 
