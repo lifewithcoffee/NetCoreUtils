@@ -4,6 +4,7 @@
 
 - Remove RepositoryWrite, RepositoryRead, add RepositoryReadonly,
   RepositoryReadable, update Repository to inherit from RepositoryReadable
+- Update multi-tenant support
 - Upgrade to .net7
 
 ## v2.1

@@ -1,5 +1,17 @@
 # NetCoreUtils.Database
 
+<!--TOC-->
+  - [Overview](#overview)
+  - [TODOs](#todos)
+  - [Design Notes](#design-notes)
+    - [Implementation of multi-tenancy](#implementation-of-multi-tenancy)
+    - [Reasons of wrapping extra repositories for dbSets](#reasons-of-wrapping-extra-repositories-for-dbsets)
+    - [Reasons of wrapping an extra IUnitOfWork for DbContext](#reasons-of-wrapping-an-extra-iunitofwork-for-dbcontext)
+    - [Reasons of returning IQueryable<> in `Query()` and `QueryAll()](#reasons-of-returning-iqueryable-in-query-and-queryall)
+  - [Release Notes](#release-notes)
+  - [Usage](#usage)
+<!--/TOC-->
+
 ## Overview
 
 - Every entity's repository is committable.
@@ -8,9 +20,10 @@
   different from that of Entity Framework's. Therefore library
   NetCoreUtils.Database is only used for relational database.
 
-## TODO
+## TODOs
 
 - Test: are DbContext of IRepositoryReadonly and IRepository the same instance?
+- Test: TenantUtil.EnableMultiTenant
 - Perform unit test on PostgreSQL
 - Review multi-tenant implementation (use global filter)
 - Move NetCoreUtils.Database to separate git repo, then use github action to release package
@@ -18,22 +31,27 @@
 - Default to enable transaction in UnitOfWork  
   find more: https://learn.microsoft.com/en-us/ef/core/saving/
 
-## Design Thoughts
+## Design Notes
 
-### Reason of wrapping extra repositories for dbSets
+### Implementation of multi-tenancy
 
-The main reason is for readibility.
+- If an entity should have tenant information, it should inherit from `TenantEntity`
+- (not tested) Call `TenantUtil.EnableMultiTenant(..)` in
+  `DbContext.OnModelCreating(..)` to register global query filter
 
-Just like using constructor dependency injection, by wrapping individual entities in to repositories,
-and injecting them from a class's constructor, it will be very clear helpful to understand which entities
-the business logic will perform data access to.
+- In `UnitOfWork.CommitAsync()`, a `ConfirmSingleTenant()` will be called to make sure all the
+  updated Entities use the same tenant ID if the tenant ID is available.
 
-You can even further to dependent on only IRepositoryRead<> or IRepositoryWrite<> to express clearer
-about which operation (read or write) the business logic will depend on.
+### Reasons of wrapping extra repositories for dbSets
 
-### Reason of wrapping an extra IUnitOfWork for DbContext
+- Able to view clearer repository/dbset dependency relationship from a service's
+  constructor
 
-Two reasons:
+- Able to declare a readonly repository by using IRepositoryReadonly
+
+### Reasons of wrapping an extra IUnitOfWork for DbContext
+
+- Improve performance by disabling `ChangeTracker.AutoDetectChangesEnabled` by default
 
 - Help for debugging. The SaveChanges() is wrapped in a try..catch block, if something's wrong,
   the error message will be output to the injected logger. And it also helps to intercept the error
@@ -41,12 +59,11 @@ Two reasons:
 
 - The RejectAllChanges() method
 
-### Reason of returning IQueryable<> in `Query()` and `QueryAll()
-
-Two reasons:
+### Reasons of returning IQueryable<> in `Query()` and `QueryAll()
 
 - Allow the invocation client to use ".Include()" method to load an entity's navigation
   properties
+
 - Allow to use the dbSet in a linq statement without loading all relevant data into the
   memory, which is the behavior if one uses IEnumerable instead of IQueryable
 
