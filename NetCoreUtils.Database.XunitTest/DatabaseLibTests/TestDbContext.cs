@@ -1,7 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using NetCoreUtils.Database.MultiTenant;
+using NetCoreUtils.Database.XunitTest.Utils;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 
 namespace DatabaseLibTests
 {
@@ -20,16 +24,18 @@ namespace DatabaseLibTests
 
     public class TestDbContext : DbContext
     {
-        public TestDbContext()
-        {
-        }
+        /**
+         * _note_: Must provide a parameterless constructor, and it must be the first constructor,
+         * otherwise command "update-command" can't work.
+         */
+        public TestDbContext() { }
 
-        public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) { }
+        public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) { }   // used in DI
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Database=xUnit;Port=5432;Username=postgres;Password=open");
-            //Database.EnsureCreated();
+            var connStr = ConfigUtil.AppSettings.GetConnectionString("PostgresConnection");
+            optionsBuilder.UseNpgsql(connStr);
             base.OnConfiguring(optionsBuilder);
         }
 

@@ -22,6 +22,10 @@
 
 ## TODOs
 
+- Upgrade to .net8
+  ```
+  dotnet tool update -g dotnet-ef
+  ```
 - Test: are DbContext of IRepositoryReadonly and IRepository the same instance?
 - Test: TenantUtil.EnableMultiTenant
 - Perform unit test on PostgreSQL
