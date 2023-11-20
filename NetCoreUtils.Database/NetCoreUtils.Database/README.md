@@ -22,16 +22,16 @@
 
 ## TODOs
 
-- Upgrade to .net8
-  ```
-  dotnet tool update -g dotnet-ef
-  ```
-- Test: are DbContext of IRepositoryReadonly and IRepository the same instance?
-- Test: TenantUtil.EnableMultiTenant
-- Perform unit test on PostgreSQL
-- Review multi-tenant implementation (use global filter)
 - Move NetCoreUtils.Database to separate git repo, then use github action to release package
+- Test: are DbContext of IRepositoryReadonly and IRepository the same instance?
+
+---
 - Update unit test with performance benchmark
+- Test: TenantUtil.EnableMultiTenant
+
+---
+- Upgrade to .net8  
+  dotnet tool update -g dotnet-ef
 - Default to enable transaction in UnitOfWork  
   find more: https://learn.microsoft.com/en-us/ef/core/saving/
 

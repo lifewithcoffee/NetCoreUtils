@@ -38,16 +38,16 @@ namespace DatabaseLibTests
             Assert.Equal(0, before.QueryAll().Count());
 
             // act
-            var writer = _provider.GetServiceNewScope<IRepository<Project>>();
+            var repo1 = _provider.GetServiceNewScope<IRepository<Project>>();
             var proj = new Project { Name = "project1" };
-            writer.Add(proj);
-            writer.Add(new Project { Name = "project2" });
-            writer.Commit();
+            repo1.Add(proj);
+            repo1.Add(new Project { Name = "project2" });
+            repo1.Commit();
 
-            var writer2 = _provider.GetServiceNewScope<IRepository<Project>>();
-            var projSaved = await writer2.GetAsync(proj.Id);
-            projSaved.Name = "updated_name";
-            writer2.Commit();
+            var repo2 = _provider.GetServiceNewScope<IRepository<Project>>();
+            var loadedProj = await repo2.GetAsync(proj.Id);
+            loadedProj.Name = "updated_name";
+            repo2.Commit();
 
             // assert
 
