@@ -101,10 +101,9 @@ namespace NetCoreUtils.Database
                 else
                     return tenantProvider;
             });
-            services.AddTransient(typeof(DbContext), sp => sp.GetService<TDbContext>());
+            services.AddTransient(typeof(DbContext), sp => sp.GetService<TDbContext>());        // reason of using transient: readonly repository will have different context configuration
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
-            services.AddScoped(typeof(IRepositoryRead<>), typeof(RepositoryRead<>));
-            services.AddScoped(typeof(IRepositoryWrite<>), typeof(RepositoryWrite<>));
+            services.AddScoped(typeof(IRepositoryReadonly<>), typeof(RepositoryReadonly<>));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }
     }

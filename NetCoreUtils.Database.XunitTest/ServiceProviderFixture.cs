@@ -12,13 +12,12 @@ using DatabaseLibTests;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 using Microsoft.Data.Sqlite;
+using NetCoreUtils.Database.XunitTest.Utils;
 
 namespace NetCoreUtils.Database.XunitTest
 {
     public class ServiceProviderFixture : IDisposable
     {
-        string _jsonSetting = "appsettings.json";
-
         IServiceProvider _serviceProvider;
 
         public T GetServiceExistingScope<T>()
@@ -37,30 +36,21 @@ namespace NetCoreUtils.Database.XunitTest
 
         public ServiceProviderFixture()
         {
-            string projectDir = AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"));
-            string settingFileDir = Path.Combine(projectDir, ".");
-
-            /**
-             * - If need to add more json files, call .AddJsonFile() multiple times
-             * - If need to apply secrets, apply .AddUserSecrets(userSecretsId: "<secret-id>") before .Build()
-             */
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(settingFileDir)
-                .AddJsonFile(_jsonSetting, optional: true, reloadOnChange: true)
-                .AddEnvironmentVariables()
-                .Build();
-
             IServiceCollection serviceCollection = new ServiceCollection();
 
             serviceCollection.AddLogging(c => c.AddDebug()); // or use moq mock: serviceCollection.AddTransient<ILogger>(f => new Mock<ILogger>().Object);
-            serviceCollection.AddSingleton<IConfiguration>(configuration);
+            serviceCollection.AddSingleton<IConfiguration>(ConfigUtil.AppSettings);
             serviceCollection.AddTransient<IConfigTest, ConfigTest>();
 
             /**
              * Or use EF InMemory DB:
              * serviceCollection.AddDbContext<TestDbContext>(options => options.UseInMemoryDatabase("xUnit"));
              */
-            serviceCollection.AddDbContext<TestDbContext>(options => options.UseSqlite(CreateSqliteInMemoryDatabase()));
+            //serviceCollection.AddDbContext<TestDbContext>(options => options.UseSqlite(CreateSqliteInMemoryDatabase()));
+            serviceCollection.AddDbContext<TestDbContext>(options =>
+                        options.UseNpgsql(
+                            "Host=localhost;Database=xUnit;Port=5432;Username=postgres;Password=open"
+                        ));
 
             serviceCollection.AddRepositories<TestDbContext>(new TenantProvider());
 

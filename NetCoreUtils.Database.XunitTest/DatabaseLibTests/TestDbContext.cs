@@ -1,7 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NetCoreUtils.Database.MultiTenancy;
+using Microsoft.Extensions.Configuration;
+using NetCoreUtils.Database.MultiTenant;
+using NetCoreUtils.Database.XunitTest.Utils;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 
 namespace DatabaseLibTests
 {
@@ -18,13 +22,21 @@ namespace DatabaseLibTests
         public virtual List<TaskItem> TaskItems { get; set; } = new List<TaskItem>();
     }
 
-    //public class TestDbContext : DbContext
-    public class TestDbContext : MultiTenantContext
+    public class TestDbContext : DbContext
     {
-        //public TestDbContext(DbContextOptions<TestDbContext> options) : base(options)
-        public TestDbContext([NotNull] DbContextOptions options, ITenantProvider tenantProvider) : base(options, tenantProvider)
+        /**
+         * _note_: Must provide a parameterless constructor, and it must be the first constructor,
+         * otherwise command "update-command" can't work.
+         */
+        public TestDbContext() { }
+
+        public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) { }   // used in DI
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            Database.EnsureCreated();
+            var connStr = ConfigUtil.AppSettings.GetConnectionString("PostgresConnection");
+            optionsBuilder.UseNpgsql(connStr);
+            base.OnConfiguring(optionsBuilder);
         }
 
         public DbSet<Project> Projects { get; set; }

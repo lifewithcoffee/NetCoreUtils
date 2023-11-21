@@ -7,8 +7,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NetCoreUtils.Database.MultiTenancy;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using NetCoreUtils.Database.MultiTenant;
 
 namespace NetCoreUtils.Database
 {
@@ -21,7 +21,7 @@ namespace NetCoreUtils.Database
     public interface IUnitOfWork : ICommittable
     {
         DbContext Context { get; }
-        void EnableQueryTracking(bool enabled);
+
         void RejectAllChanges();
     }
 
@@ -40,8 +40,17 @@ namespace NetCoreUtils.Database
             _tenantProvider = tenantProvider;
             _logger = logger;
 
-            _logger.LogTrace("Initializing UnitOfWork with system default setting");
+            /**
+             * Always turn off AutoDetectChangesEnabled to improve performance
+             * Must do DetectChanges() when commit
+             */
+            _context.ChangeTracker.AutoDetectChangesEnabled = false;
         }
+
+        /*****************************************************************
+        Since using approach of:
+            _context.ChangeTracker.AutoDetectChangesEnabled = false;
+        the following method is not requied:
 
         public void EnableQueryTracking(bool enabled)
         {
@@ -50,13 +59,15 @@ namespace NetCoreUtils.Database
             else
                 _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
+        *****************************************************************/
 
         public async Task<bool> CommitAsync()
         {
             bool result = false;
             try
             {
-                ConfirmSingleTenant();
+                _context.ChangeTracker.DetectChanges();
+                EnsureSingleTenant();
                 await _context.SaveChangesAsync();
                 result = true;
             }
@@ -91,8 +102,18 @@ namespace NetCoreUtils.Database
             bool result = false;
             try
             {
-                SetTenantsIds();
-                ConfirmSingleTenant();
+                /**
+                 * Since _context.ChangeTracker.AutoDetectChangesEnabled is set to false by default,
+                 * _context.ChangeTracker.DetectChanges() must be called before do _context.SaveChanges()
+                 */
+                _context.ChangeTracker.DetectChanges();
+
+                if(!string.IsNullOrWhiteSpace(_tenantProvider?.GetTenantId()))
+                {
+                    MakeupMissingTenantIds();
+                    EnsureSingleTenant();
+                }
+
                 _context.SaveChanges();
                 result = true;
             }
@@ -104,7 +125,7 @@ namespace NetCoreUtils.Database
             return result;
         }
 
-        private void SetTenantsIds()
+        private void MakeupMissingTenantIds()
         {
             var entities = from e in _context.ChangeTracker.Entries()
                            where e.Entity is TenantEntity && ((TenantEntity)e.Entity).TenantId == null
@@ -112,7 +133,8 @@ namespace NetCoreUtils.Database
 
             foreach (var entity in entities)
             {
-                entity.TenantId = _tenantProvider.GetTenantId();
+                if(string.IsNullOrWhiteSpace(entity.TenantId)) // if entity doesn't set tenant id
+                    entity.TenantId = _tenantProvider.GetTenantId();
             }
         }
 
@@ -123,12 +145,10 @@ namespace NetCoreUtils.Database
          *     Defensive database context for multi-tenant ASP.NET Core applications
          *     https://gunnarpeipman.com/aspnet-core-defensive-database-context/
          */
-        private void ConfirmSingleTenant()
+        private void EnsureSingleTenant()
         {
             if (_tenantProvider.GetTenantId() is null)
-            {
                 return;
-            }
 
             var ids = (
                 from e in _context.ChangeTracker.Entries()
@@ -139,21 +159,16 @@ namespace NetCoreUtils.Database
             // TenantEntity is not used as the base class for other entities,
             // i.e. this is a "traditional" design without multi-tenant design
             if (ids.Count == 0)
-            {
                 return;
-            }
 
             if (ids.Count > 1)
-            {
-                //throw new CrossTenantUpdateException(ids);
                 throw new Exception("Updating multiple tenant"); // TODO: need to log tenant IDs
-            }
+
+            if (ids.First() == null)
+                throw new Exception("Invalid tenant ID: null");
 
             if (ids.First() != _tenantProvider.GetTenantId())
-            {
-                //throw new CrossTenantUpdateException(ids);
                 throw new Exception($"Invalid tenant ID: {ids[0]}");
-            }
         }
     }
 }
