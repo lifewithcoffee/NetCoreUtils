@@ -10,6 +10,10 @@ TNS stands for Text Notes Search
 
 ## Releases
 
+### v3.0.0-working
+
+- Upgrade to .net7
+
 ### v2.1.0
 
 - Type none-numeric string to do a new search in the "open" mode of "mcn notes"
