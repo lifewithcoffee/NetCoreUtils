@@ -16,7 +16,8 @@ jobs:
         dotnet-version: 7.0.x
     - name: change to NetCoreUtils.Database directory
       run: cd NetCoreUtils.Database\NetCoreUtils.Database
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore --configuration Release
+    - name: pack
+      run: dotnet pack --configuration Release --output bin\Pack
+    - name: view packed file
+      run: cd bin\Pack && dir
+    
