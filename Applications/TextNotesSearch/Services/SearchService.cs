@@ -22,6 +22,7 @@ namespace TextNotesSearch.Services
             //Console.WriteLine($"DEBUG|keywords: {searchString}");
             sw.Restart();
 
+            // _working_ refactoring in CommandService.cs
             string[] keywords_and_filter = searchString.Split('|');
             string[] keywords = keywords_and_filter[0].Trim().Split();
             string[] filter = null;

@@ -5,7 +5,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>tns</ToolCommandName>
-    <Version>3.0.0-working</Version>
+    <Version>3.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

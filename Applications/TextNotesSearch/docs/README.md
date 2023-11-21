@@ -4,14 +4,25 @@ TNS stands for Text Notes Search
 
 ## TODO
 
+Working:
+
+- Search: `_working_ find notes only by file title`
+- Search: `_working_ refactoring in CommandService.cs`
+
+---
+More:
+- Make up usage documents
 - Change prompt to "notes :> ", "content :> " and "filename :> "
 - Change result selection format from "{file_number}/{line_number}" to "{file_number} {line_number}"
 - Change keyworld separator charactor for content search from ',' to space
 
 ## Releases
 
-### v3.0.0-working
+### v3.0 ~ working
 
+- Find by file title only
+
+Done:
 - Upgrade to .net7
 
 ### v2.1.0
