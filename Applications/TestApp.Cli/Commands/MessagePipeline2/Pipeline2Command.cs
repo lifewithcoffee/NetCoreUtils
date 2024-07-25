@@ -7,19 +7,49 @@ using System.Threading.Tasks;
 
 namespace TestApp.Cli.Commands.MessagePipeline2;
 
-public class SomeBL : ExecutableBase    // a test business logic object
+public class SomeBL2 : IExecutable
 {
-    SequentFlow Flow { get; set; } = new();
-    public override bool Execute()
+    ConcurrentFlow _flow = new ConcurrentFlow();
+    public bool Execute()
+    {
+        this._flow
+            .AddStep(BLStepA)
+            .AddStep("BL2 custom step 1", s => Console.WriteLine("BL2 custom step 1 executed."))
+            .AddStep(BLStepB)
+            .AddStep("BL2 custom step 2", s => Console.WriteLine("BL2 custom step 2 executed."))
+            ;
+        return _flow.Execute();
+    }
+
+    public void BLStepA(StepState state)
+    {
+        Console.WriteLine("BL2 StepA executed.");
+        state.Result = false;
+        throw new Exception("bla bla");
+    }
+
+    public void BLStepB(StepState state)
+    {
+        Console.WriteLine("BL2 StepB executed.");
+        state.Result = false;
+    }
+}
+
+public class SomeBL1 : IExecutable    // a test business logic object
+{
+    SequentFlow _flow = new();
+    public bool Execute()
     {
         try
         {
-            Flow.AddStep(BLStepA)
-                .AddStep("SomeBL's custom step 1", s => Console.WriteLine("SomeBL's custom step 1 executed."))
+            this._flow
+                .AddStep(BLStepA)
+                .AddStep("BL1 custom step 1", s => Console.WriteLine("BL1 custom step 1 executed."))
+                .AddExecutable(new SomeBL2())
                 .AddStep(BLStepB)
-                .AddStep("SomeBL's custom step 2", s => Console.WriteLine("SomeBL's custom step 2 executed."))
+                .AddStep("BL1 custom step 2", s => Console.WriteLine("BL1 custom step 2 executed."))
                 ;
-            return Flow.Execute();
+            return _flow.Execute();
         }
         catch (Exception ex)
         {
@@ -30,13 +60,13 @@ public class SomeBL : ExecutableBase    // a test business logic object
 
     public void BLStepA(StepState state)
     {
-        Console.WriteLine("BLStepA executed.");
+        Console.WriteLine("BL1 StepA executed.");
     }
 
     public void BLStepB(StepState state)
     {
-        Console.WriteLine("BLStepB executed.");
-        state.Result = false;
+        Console.WriteLine("BL1 StepB executed.");
+        //state.Result = false;
     }
 }
 public class Pipeline2Command
@@ -44,6 +74,6 @@ public class Pipeline2Command
     public void Do()
     {
         //Console.WriteLine("Pipeline2 command executed.");
-        new SomeBL().Execute();
+        new SomeBL1().Execute();
     }
 }

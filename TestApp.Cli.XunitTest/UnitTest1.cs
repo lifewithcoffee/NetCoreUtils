@@ -7,6 +7,6 @@ public class UnitTest1
     [Fact]
     public void Test1()
     {
-        new SomeBL().Execute();
+        new SomeBL1().Execute();
     }
 }
