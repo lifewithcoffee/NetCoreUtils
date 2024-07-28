@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TestApp.Cli.Commands.MessagePipeline3;
 public class Flow1
 {
-    public Flow2 ChildMsg { get; set; }
+    public Msg1 Msg1 { get; set; }
 
     public Flow1 DoAction1_1()
     {
@@ -26,4 +26,9 @@ public class Flow1
         Console.WriteLine("DoAction1_3");
         return new Flow2 { ParentMsg = this };
     }
+}
+
+public class Msg1
+{
+    public int Value { get; set; }
 }
