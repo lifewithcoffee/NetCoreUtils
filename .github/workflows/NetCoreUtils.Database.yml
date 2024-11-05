@@ -35,5 +35,5 @@ jobs:
         release_name: "NetCoreUtils.Database ${{ env.TAG_VERSION }}"
         draft: false
         prerelease: false
-        generate_release_notes: true
+
     
