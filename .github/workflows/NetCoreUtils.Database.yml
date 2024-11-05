@@ -2,7 +2,11 @@ name: NetCoreUtils.Database
 
 on:
   workflow_dispatch:
-    
+    inputs:
+      tag_version:
+        description: 'Tag version for the release (e.g., v1.0.0)'
+        required: false
+        default: 'latest'
 jobs:
   build:
 
@@ -19,8 +23,17 @@ jobs:
     - name: view packed file
       run: cd bin\Pack && dir
     - name:  Upload NuGet packages
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: nupkg-files
         path: bin/Pack/*.nupkg
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ env.TAG_VERSION }}
+        release_name: "NetCoreUtils.Database ${{ env.TAG_VERSION }}"
+        draft: false
+        prerelease: false
+        generate_release_notes: true
     
