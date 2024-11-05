@@ -33,15 +33,13 @@ jobs:
       with:
         tag_name: ${{ github.event.inputs.tag_version }}
         release_name: "NetCoreUtils.Database ${{ github.event.inputs.tag_version }}"
+        body: |
+          Download package file from: ${{ steps.artifact-upload-step.outputs.artifact-url }}
         draft: false
         prerelease: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Add Artifacts to Release
-      uses: meeDamian/github-release@v2.0.3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        files: bin/Pack/*.nupkg
+
           
 
     
