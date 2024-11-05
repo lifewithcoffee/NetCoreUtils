@@ -14,10 +14,13 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
-    - name: change to NetCoreUtils.Database directory
-      run: cd NetCoreUtils.Database/NetCoreUtils.Database
     - name: pack
-      run: dotnet pack --configuration Release --output bin/Pack
+      run: dotnet pack NetCoreUtils.Database\NetCoreUtils.Database\NetCoreUtils.Database.csproj --configuration Release --output bin/Pack
     - name: view packed file
       run: cd bin\Pack && dir
+    - name:  Upload NuGet packages
+      uses: actions/upload-artifact@v3
+      with:
+        name: nupkg-files
+        path: bin/Pack/*.nupkg
     
