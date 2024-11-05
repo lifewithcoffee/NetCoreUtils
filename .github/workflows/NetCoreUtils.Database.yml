@@ -35,5 +35,7 @@ jobs:
         release_name: "NetCoreUtils.Database ${{ env.TAG_VERSION }}"
         draft: false
         prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     
