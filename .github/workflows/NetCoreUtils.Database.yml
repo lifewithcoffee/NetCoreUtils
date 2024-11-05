@@ -36,6 +36,6 @@ jobs:
         draft: false
         prerelease: false
       env:
-        GITHUB_TOKEN: ${{ secrets.RON_GITHUB_ACTION_PUBLIC_RELEASE }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     
