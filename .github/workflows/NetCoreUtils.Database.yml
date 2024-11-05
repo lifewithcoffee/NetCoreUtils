@@ -38,7 +38,7 @@ jobs:
       uses: actions/create-release@v1
       with:
         tag_name: ${{ github.event.inputs.tag_version }}
-        release_name: "NetCoreUtils.Database ${{ steps.package_version.version }}"
+        release_name: "NetCoreUtils.Database - ${{ steps.package_version.outputs.version }}"
         body: |
           Download package file from: ${{ steps.artifact-upload-step.outputs.artifact-url }}
           The above download link may expire in 90 days.
