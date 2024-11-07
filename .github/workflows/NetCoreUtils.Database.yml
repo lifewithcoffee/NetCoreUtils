@@ -1,12 +1,16 @@
 name: NetCoreUtils.Database
 
 on:
-  workflow_dispatch:
-    inputs:
-      tag_version:
-        description: 'Tag version for the release (e.g., v1.0.0)'
-        required: false
-        default: 'latest'
+#   push:
+#     branches:
+#       - main
+    workflow_dispatch: # manually trigger
+#     inputs:
+#       tag_version:  # use with: ${{ github.event.inputs.tag_version }}
+#         description: 'Tag version for the release (e.g., v1.0.0)'
+#         required: false
+#         default: 'latest'
+
 jobs:
   build:
 
@@ -37,8 +41,9 @@ jobs:
       id: create_release
       uses: actions/create-release@v1
       with:
-        tag_name: ${{ github.event.inputs.tag_version }}
-        release_name: "NetCoreUtils.Database - ${{ steps.package_version.outputs.version }}"
+        #tag_name: ${{ github.event.inputs.tag_version }}  # use the manually input workflow_dispatch parameter
+        tag_name: db_${{ steps.package_version.outputs.version }}
+        release_name: "NetCoreUtils.Database v${{ steps.package_version.outputs.version }}"
         body: |
           Download package file from: ${{ steps.artifact-upload-step.outputs.artifact-url }}
           The above download link may expire in 90 days.
