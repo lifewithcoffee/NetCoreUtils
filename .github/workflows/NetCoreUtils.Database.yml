@@ -51,8 +51,6 @@ jobs:
         prerelease: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Push generated package to GitHub registry
-      run: dotnet nuget push bin/Pack/*.nupkg --skip-duplicate --no-symbols true
     - name: Prep packages
       run: dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
     - name: Publish to GitHub Packages
