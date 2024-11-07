@@ -32,6 +32,12 @@ jobs:
       with:
         name: nupkg-files
         path: bin/Pack/*.nupkg
+    - name: Prepare for publishing packages
+      run: dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+    - name: Publish to GitHub Packages
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: dotnet nuget push "bin/Pack/*.nupkg" --api-key $GITHUB_TOKEN --source "github" # --skip-duplicate --no-symbols
     - name: Get csproj version
       id: package_version
       uses: KageKirin/get-csproj-version@v1.0.0
@@ -51,12 +57,6 @@ jobs:
         prerelease: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Prep packages
-      run: dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
-    - name: Publish to GitHub Packages
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: dotnet nuget push "bin/Pack/*.nupkg" --api-key $GITHUB_TOKEN --source "github" # --skip-duplicate --no-symbols
 
 
           
