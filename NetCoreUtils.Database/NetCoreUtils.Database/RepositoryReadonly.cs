@@ -4,13 +4,16 @@ namespace NetCoreUtils.Database
 {
     public interface IRepositoryReadonly<TEntity> : IRepositoryReadable<TEntity> where TEntity : class { }
 
+    /// <summary>
+    /// RepositoryReadonly has special configurations to improve the performance
+    /// </summary>
     public class RepositoryReadonly<TEntity> : RepositoryReadable<TEntity>, IRepositoryReadonly<TEntity> where TEntity : class
     {
-        public RepositoryReadonly(IUnitOfWork unitOfWork) : base(unitOfWork) 
+        public RepositoryReadonly(DbContext ctx) : base(ctx) 
         {
-            unitOfWork.Context.ChangeTracker.AutoDetectChangesEnabled = false;
-            unitOfWork.Context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTrackingWithIdentityResolution;      // verify by: context.ChangeTracker.Entries().Count()
-            unitOfWork.Context.ChangeTracker.LazyLoadingEnabled = false;    // disable proxy creation
+            ctx.ChangeTracker.AutoDetectChangesEnabled = false;
+            ctx.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTrackingWithIdentityResolution;      // can be verified by: context.ChangeTracker.Entries().Count()
+            ctx.ChangeTracker.LazyLoadingEnabled = false;    // disable proxy creation
         }
     }
 }

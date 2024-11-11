@@ -10,18 +10,17 @@ using Microsoft.Extensions.Configuration;
 namespace NetCoreUtils.Database
 {
     /**
+     * RepositoryReadable provides reading methods for an entity.
      * Declared as abstract to prevent it to be instantiated.
      * Use <see cref="RepositoryReadonly{TEntity}"> to instantiate a readonly instance
      */
     abstract public class RepositoryReadable<TEntity> : IRepositoryReadable<TEntity> where TEntity : class
     {
-        protected IUnitOfWork _unitOfWork;
         protected DbSet<TEntity> _dbSet;
 
-        public RepositoryReadable(IUnitOfWork unitOfWork)
+        public RepositoryReadable(DbContext ctx)
         {
-            _unitOfWork = unitOfWork;
-            _dbSet = unitOfWork.Context.Set<TEntity>();
+            _dbSet = ctx.Set<TEntity>();
         }
 
         public virtual async Task<bool> ExistAsync(Expression<Func<TEntity, bool>> predicate)
