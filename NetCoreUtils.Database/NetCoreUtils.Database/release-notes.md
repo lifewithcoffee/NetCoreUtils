@@ -1,6 +1,6 @@
 # Release Notes
 
-## v3.0 (breaking changes) ... (in progress)
+## v3.0 (breaking changes)
 
 - Remove RepositoryWrite, RepositoryRead, add RepositoryReadonly,
   RepositoryReadable, update Repository to inherit from RepositoryReadable

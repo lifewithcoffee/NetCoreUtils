@@ -1,22 +1,63 @@
 name: NetCoreUtils.Database
 
 on:
-  workflow_dispatch:
-    
+#   push:
+#     branches:
+#       - main
+    workflow_dispatch: # manually trigger
+#     inputs:
+#       tag_version:  # use with: ${{ github.event.inputs.tag_version }}
+#         description: 'Tag version for the release (e.g., v1.0.0)'
+#         required: false
+#         default: 'latest'
+
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 7.0.x
-    - name: change to NetCoreUtils.Database directory
-      run: cd NetCoreUtils.Database\NetCoreUtils.Database
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore --configuration Release
+        source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    - name: pack
+      run: dotnet pack NetCoreUtils.Database\NetCoreUtils.Database\NetCoreUtils.Database.csproj --configuration Release --output bin/Pack
+    - name: view packed file
+      run: cd bin\Pack && dir
+    - name:  Upload NuGet packages
+      uses: actions/upload-artifact@v4
+      id: artifact-upload-step
+      with:
+        name: nupkg-files
+        path: bin/Pack/*.nupkg
+    - name: Publish to GitHub Packages
+      run: dotnet nuget push bin\Pack\*.nupkg
+    - name: Get csproj version
+      id: package_version
+      uses: KageKirin/get-csproj-version@v1.0.0
+      with:
+        file: NetCoreUtils.Database\NetCoreUtils.Database\NetCoreUtils.Database.csproj
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      with:
+        #tag_name: ${{ github.event.inputs.tag_version }}  # use the manually input workflow_dispatch parameter
+        tag_name: db_${{ steps.package_version.outputs.version }}
+        release_name: "NetCoreUtils.Database v${{ steps.package_version.outputs.version }}"
+        body: |
+          Download package file from: ${{ steps.artifact-upload-step.outputs.artifact-url }}
+          The above download link may expire in 90 days.
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+          
+
+    
