@@ -58,7 +58,7 @@ namespace TextNotesSearch.Services
 
                         var startInfo = new ProcessStartInfo
                         {
-                            FileName = @"D:\apps_dell\Vim\vim82\gvim.exe",
+                            FileName = @"D:\apps_dell\Vim\vim91\gvim.exe",
                             Arguments = $"--remote-tab-silent +{selectLine} \"{found[selectFile].FilePath}\"",
                             UseShellExecute = true,  // UseShellExecute is false by default on .NET Core.
                         };
