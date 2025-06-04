@@ -23,7 +23,9 @@ More:
 - Find by file title only
 
 Done:
-- Upgrade to .net7
+- Upgrade to .net9
+- Update to use gvim 9.1
+- Able to use 'r' command in 'open' prompt mode
 
 ### v2.1.0
 
