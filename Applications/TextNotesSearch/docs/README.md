@@ -4,15 +4,29 @@ TNS stands for Text Notes Search
 
 ## TODO
 
+Working:
+
+- Search: `_working_ find notes only by file title`
+- Search: `_working_ refactoring in CommandService.cs`
+
+---
+More:
+- Make up usage documents
 - Change prompt to "notes :> ", "content :> " and "filename :> "
 - Change result selection format from "{file_number}/{line_number}" to "{file_number} {line_number}"
 - Change keyworld separator charactor for content search from ',' to space
 
 ## Releases
+### v3.1 - working
 
-### v3.0.0-working
+### v3.0
 
-- Upgrade to .net7
+- Find by file title only
+
+Done:
+- Upgrade to .net9
+- Update to use gvim 9.1
+- Able to use 'r' command in 'open' prompt mode
 
 ### v2.1.0
 

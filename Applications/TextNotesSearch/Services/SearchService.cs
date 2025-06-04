@@ -6,7 +6,7 @@ namespace TextNotesSearch.Services
 {
     public interface ISearchService
     {
-        string SearchNotes(NoteFileParser parser, string searchString);
+        string SearchNotes(INoteFileParser parser, string searchString);
     }
 
     public class SearchService : ISearchService
@@ -17,11 +17,12 @@ namespace TextNotesSearch.Services
         Stopwatch sw = new Stopwatch();
 
         /// <returns>The updated keywords (input from its "open" mode) for another search.</returns>
-        public string SearchNotes(NoteFileParser parser, string searchString)
+        public string SearchNotes(INoteFileParser parser, string searchString)
         {
             //Console.WriteLine($"DEBUG|keywords: {searchString}");
             sw.Restart();
 
+            // _working_ refactoring in CommandService.cs
             string[] keywords_and_filter = searchString.Split('|');
             string[] keywords = keywords_and_filter[0].Trim().Split();
             string[] filter = null;
@@ -34,17 +35,25 @@ namespace TextNotesSearch.Services
             sw.Stop();
             Console.WriteLine("Time elapse: {0}\n", sw.Elapsed);
 
+            const string vimDirectory = @"D:\apps_dell\Vim\vim91";
             while (found.Count > 0)
             {
                 Console.Write("Open: ");
                 string inputForOpen = Console.ReadLine();
-                string[] select = inputForOpen.ToLower().Trim().Split();
+                string[] select = inputForOpen.ToLower().Trim().Split();        // case insensitive, split by whitespace
                 if (select.Length > 2)
                     return inputForOpen;
                 else if (select.Length == 1) // select.Length is always >= 1
                 {
-                    if (select[0] == "q")
+                    if (select[0].Trim() == "q")
                         break;
+
+                    if (select[0].Trim() == "r")
+                    {
+                        Console.WriteLine("Reloading notes ...\n");
+                        parser.ParseFolder(@"C:\__dell_sync_c\mcn\sync", "mcn");
+                        break;
+                    }
 
                     if (!int.TryParse(select[0], out int selectFile))
                         return inputForOpen;
@@ -57,7 +66,7 @@ namespace TextNotesSearch.Services
 
                         var startInfo = new ProcessStartInfo
                         {
-                            FileName = @"D:\apps_dell\Vim\vim82\gvim.exe",
+                            FileName = @$"{vimDirectory}\gvim.exe",
                             Arguments = $"--remote-tab-silent +{selectLine} \"{found[selectFile].FilePath}\"",
                             UseShellExecute = true,  // UseShellExecute is false by default on .NET Core.
                         };
@@ -75,7 +84,7 @@ namespace TextNotesSearch.Services
 
                         var startInfo = new ProcessStartInfo
                         {
-                            FileName = @"D:\apps_dell\Vim\vim82\gvim.exe",
+                            FileName = @$"{vimDirectory}\gvim.exe",
                             Arguments = $"--remote-tab-silent +{selectLine} \"{found[selectFile].FilePath}\"",
                             UseShellExecute = true,  // UseShellExecute is false by default on .NET Core.
                         };
