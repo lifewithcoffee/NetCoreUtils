@@ -40,13 +40,20 @@ namespace TextNotesSearch.Services
             {
                 Console.Write("Open: ");
                 string inputForOpen = Console.ReadLine();
-                string[] select = inputForOpen.ToLower().Trim().Split();
+                string[] select = inputForOpen.ToLower().Trim().Split();        // case insensitive, split by whitespace
                 if (select.Length > 2)
                     return inputForOpen;
                 else if (select.Length == 1) // select.Length is always >= 1
                 {
-                    if (select[0] == "q")
+                    if (select[0].Trim() == "q")
                         break;
+
+                    if (select[0].Trim() == "r")
+                    {
+                        Console.WriteLine("Reloading notes ...\n");
+                        parser.ParseFolder(@"C:\__dell_sync_c\mcn\sync", "mcn");
+                        break;
+                    }
 
                     if (!int.TryParse(select[0], out int selectFile))
                         return inputForOpen;
