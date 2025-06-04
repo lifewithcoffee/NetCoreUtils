@@ -17,8 +17,9 @@ More:
 - Change keyworld separator charactor for content search from ',' to space
 
 ## Releases
+### v3.1 - working
 
-### v3.0 ~ working
+### v3.0
 
 - Find by file title only
 
