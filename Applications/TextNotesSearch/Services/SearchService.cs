@@ -6,7 +6,7 @@ namespace TextNotesSearch.Services
 {
     public interface ISearchService
     {
-        string SearchNotes(NoteFileParser parser, string searchString);
+        string SearchNotes(INoteFileParser parser, string searchString);
     }
 
     public class SearchService : ISearchService
@@ -17,7 +17,7 @@ namespace TextNotesSearch.Services
         Stopwatch sw = new Stopwatch();
 
         /// <returns>The updated keywords (input from its "open" mode) for another search.</returns>
-        public string SearchNotes(NoteFileParser parser, string searchString)
+        public string SearchNotes(INoteFileParser parser, string searchString)
         {
             //Console.WriteLine($"DEBUG|keywords: {searchString}");
             sw.Restart();
