@@ -35,6 +35,7 @@ namespace TextNotesSearch.Services
             sw.Stop();
             Console.WriteLine("Time elapse: {0}\n", sw.Elapsed);
 
+            const string vimDirectory = @"D:\apps_dell\Vim\vim91";
             while (found.Count > 0)
             {
                 Console.Write("Open: ");
@@ -58,7 +59,7 @@ namespace TextNotesSearch.Services
 
                         var startInfo = new ProcessStartInfo
                         {
-                            FileName = @"D:\apps_dell\Vim\vim91\gvim.exe",
+                            FileName = @$"{vimDirectory}\gvim.exe",
                             Arguments = $"--remote-tab-silent +{selectLine} \"{found[selectFile].FilePath}\"",
                             UseShellExecute = true,  // UseShellExecute is false by default on .NET Core.
                         };
@@ -76,7 +77,7 @@ namespace TextNotesSearch.Services
 
                         var startInfo = new ProcessStartInfo
                         {
-                            FileName = @"D:\apps_dell\Vim\vim82\gvim.exe",
+                            FileName = @$"{vimDirectory}\gvim.exe",
                             Arguments = $"--remote-tab-silent +{selectLine} \"{found[selectFile].FilePath}\"",
                             UseShellExecute = true,  // UseShellExecute is false by default on .NET Core.
                         };
