@@ -18,8 +18,8 @@ namespace NetCoreUtils.Database.MongoDb
         Task<List<TDoc>> FindAsync(Expression<Func<TDoc, bool>> where);
         TDoc Find(string id);
         Task<TDoc> FindAsync(string id);
-        IMongoQueryable<TDoc> Query(Expression<Func<TDoc, bool>> where);
-        IMongoQueryable<TDoc> Query();
+        IQueryable<TDoc> Query(Expression<Func<TDoc, bool>> where);
+        IQueryable<TDoc> Query();
     }
 
     public class MongoDocReader<TDoc> : MongoRepository<TDoc>, IMongoDocReader<TDoc> where TDoc : MongoDoc
@@ -71,12 +71,12 @@ namespace NetCoreUtils.Database.MongoDb
             return Collection.Find<TDoc>(where).ToList();
         }
 
-        public IMongoQueryable<TDoc> Query(Expression<Func<TDoc, bool>> where)
+        public IQueryable<TDoc> Query(Expression<Func<TDoc, bool>> where)
         {
             return Collection.AsQueryable<TDoc>().Where(where);
         }
 
-        public IMongoQueryable<TDoc> Query()
+        public IQueryable<TDoc> Query()
         {
             return Collection.AsQueryable<TDoc>();
         }

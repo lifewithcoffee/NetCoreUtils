@@ -7,7 +7,14 @@ using System.Threading.Tasks;
 
 namespace McnLib.Parsers
 {
-    public class NoteFileParser
+    public interface INoteFileParser
+    {
+        NoteStructureTree NST { get; set; }
+        NoteFile ParseFile(string fullPath);
+        void ParseFolder(string folderPath, string extensionName = "*");
+    }
+
+    public class NoteFileParser : INoteFileParser
     {
         public NoteStructureTree NST { get; set; } = new NoteStructureTree();
 
@@ -20,6 +27,7 @@ namespace McnLib.Parsers
         //       see https://docs.microsoft.com/en-us/dotnet/api/system.io.file.readlines?redirectedfrom=MSDN&view=net-6.0#overloads
         public void ParseFolder(string folderPath, string extensionName = "*")
         {
+            NST  = new NoteStructureTree();
             NST.NoteFiles = new DirectoryInfo(folderPath)
                 .EnumerateFiles($"*.{extensionName}", SearchOption.AllDirectories)
                 .AsParallel()

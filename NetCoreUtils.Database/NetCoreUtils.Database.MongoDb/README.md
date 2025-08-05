@@ -53,11 +53,12 @@ Start local mongodb instance:
 View data in Compass:
 > D:\Program Files\MongoDB\mongodb-compass\MongoDBCompass.exe
 
-## Release Notes
+# Release Notes
 
 ## 1.3.0-working
 
-- Upgrade to .net7
+- Upgrade to .net9
+- Upgrade MongoDB.Driver to v3.4.2
 
 ## 1.2.0
 

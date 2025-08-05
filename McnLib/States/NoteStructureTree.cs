@@ -18,15 +18,15 @@ namespace McnLib.States
             return NoteFiles!.SelectMany(f => f.Notes).ToList();
         }
 
+        /// <param name="keywords">The target searching keywords</param>
+        /// <param name="fileFilterWords">Give a list of files that their file
+        /// names (not inluce the pathes) contai all the specified filter
+        /// words. The search will only apply to this list of files.</param>
         public List<FindNotesResult> FindNotes(string[] keywords, string[]? fileFilterWords = null)
         {
             List<FindNotesResult> results = new List<FindNotesResult>();
 
-            // get files with their names contain all file filter words
-            List<NoteFile> filteredFiles = NoteFiles;
-            if(fileFilterWords != null)
-                filteredFiles = NoteFiles.Where(f => fileFilterWords.All(w => f.Name.Trim().ToLower().Contains(w))).ToList();
-
+            List<NoteFile> filteredFiles = this.FindFilesAND(fileFilterWords);
             foreach(var file in filteredFiles)
             {
                 FindNotesResult result = new FindNotesResult { FilePath = file.FullPath };
@@ -39,6 +39,29 @@ namespace McnLib.States
                 if(result.NotesFound.Count > 0)
                     results.Add(result);
             }
+            return results;
+        }
+
+        /// <summary>
+        /// File files with their names contain all the keywords (AND logic)
+        /// </summary>
+        private List<NoteFile> FindFilesAND(string[]? keywords)
+        {
+            if(keywords != null)
+                return NoteFiles.Where(f => keywords.All(w => f.Name.Trim().ToLower().Contains(w))).ToList();
+            return NoteFiles;
+        }
+
+        // _working_ find notes only by file title
+        private List<FindNotesResult> FindNoteByTitle(string[] strings, string[]? fileFilterWords = null)
+        {
+            var results = new List<FindNotesResult>();
+            List<NoteFile> filteredFiles = this.FindFilesAND(fileFilterWords);
+            foreach(var file in filteredFiles)
+            {
+
+            }
+
             return results;
         }
     }

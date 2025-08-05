@@ -30,5 +30,10 @@ namespace TextNotesSearch.Services
             if (target_filter_strings.Length > 1)
                 this.FilterWords = target_filter_strings[1].Trim().Split();
         }
+
+        public bool ProcessCommand(string cmd)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
