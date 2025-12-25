@@ -34,7 +34,7 @@ https://www.nuget.org/packages/NetCoreUtils/
 
 **Enhancement**:
 
-- Update to .net7
+- Update to .net10
 - Add JsonConfigOperator
 - Add ProcUtil
 - Add SystemUtil

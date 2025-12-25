@@ -24,7 +24,7 @@ RCM stands for Robocopy Configuration Manager
 
 ### v1.1.0-working
 
-- Upgrade to .net7
+- Upgrade to .net10
 
 ### v1.0.0
 
