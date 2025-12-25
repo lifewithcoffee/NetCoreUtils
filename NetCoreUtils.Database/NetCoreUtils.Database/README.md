@@ -52,6 +52,8 @@
 
 ### Reasons of wrapping extra repositories for dbSets
 
+- To bind a dedicated validator for the relevant entity class
+
 - Able to view clearer repository/dbset dependency relationship from a service's
   constructor
 
