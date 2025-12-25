@@ -25,6 +25,7 @@ namespace TextNotesSearch.Commands
             while (true)
             {
                 var input = _consoleService.ReadLine("% ", ConsoleColor.Red);
+                //Console.WriteLine($"DEBUG|Input: {input}"); Console.ReadKey();
                 if (input == "r")
                 {
                     Console.WriteLine("Reloading notes ...\n");

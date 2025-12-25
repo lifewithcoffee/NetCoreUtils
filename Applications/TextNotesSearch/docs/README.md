@@ -19,6 +19,8 @@ More:
 ## Releases
 ### v3.1 - working
 
+- Bug: character '|' seems to be ignored when contained in a keyword (reproduced by searching "|mixin|")
+
 ### v3.0
 
 - Find by file title only

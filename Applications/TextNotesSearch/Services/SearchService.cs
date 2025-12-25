@@ -19,7 +19,7 @@ namespace TextNotesSearch.Services
         /// <returns>The updated keywords (input from its "open" mode) for another search.</returns>
         public string SearchNotes(INoteFileParser parser, string searchString)
         {
-            //Console.WriteLine($"DEBUG|keywords: {searchString}");
+            //Console.WriteLine($"DEBUG|keywords: {searchString}"); Console.ReadKey();
             sw.Restart();
 
             // _working_ refactoring in CommandService.cs
