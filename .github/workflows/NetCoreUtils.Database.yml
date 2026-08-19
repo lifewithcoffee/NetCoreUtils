@@ -18,7 +18,9 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-    - uses: actions/checkout@v5
+    - name: Checkout code
+      uses: actions/checkout@v5
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
       with:
@@ -26,24 +28,30 @@ jobs:
         source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-    - name: pack
+
+    - name: Pack
       run: dotnet pack NetCoreUtils.Database/NetCoreUtils.Database/NetCoreUtils.Database.csproj --configuration Release --output bin/Pack
-    - name: view packed file
+
+    - name: View packed file
       run: cd bin/Pack && ls
-    - name:  Upload NuGet packages
+
+    - name: Upload NuGet packages
       uses: actions/upload-artifact@v4
       id: artifact-upload-step
       with:
         name: nupkg-files
         path: bin/Pack/*.nupkg
+
     - name: Publish to GitHub Packages
       run: dotnet nuget push bin/Pack/*.nupkg
+
     - name: Get csproj version
       id: package_version
       shell: bash
       run: |
         version=$(sed -n 's/.*<Version>\([^<]*\)<\/Version>.*/\1/p' NetCoreUtils.Database/NetCoreUtils.Database/NetCoreUtils.Database.csproj | head -1)
         echo "version=$version" >> "$GITHUB_OUTPUT"
+
     - name: Generate release notes body
       run: |
         echo "Download package file from: ${{ steps.artifact-upload-step.outputs.artifact-url }}" > release-body.md
@@ -55,6 +63,7 @@ jobs:
           found { print }
         ' NetCoreUtils.Database/NetCoreUtils.Database/release-notes.md >> release-body.md
         cat release-body.md
+
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
       with:
