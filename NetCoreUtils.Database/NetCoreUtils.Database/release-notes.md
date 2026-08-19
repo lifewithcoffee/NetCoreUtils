@@ -1,5 +1,7 @@
 # Release Notes
 
+Note: this file is also used in the github actions workflow to generate release notes for each release. Please keep the format of this file consistent.
+
 ## v3.0.0 (breaking changes)
 
 - (Breaking Change) Remove RepositoryWrite, RepositoryRead 
