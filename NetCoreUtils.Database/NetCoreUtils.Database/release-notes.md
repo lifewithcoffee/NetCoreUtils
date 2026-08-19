@@ -1,11 +1,14 @@
 # Release Notes
 
-## v3.0 (breaking changes)
+## v3.0.0 (breaking changes)
 
-- Remove RepositoryWrite, RepositoryRead, add RepositoryReadonly,
-  RepositoryReadable, update Repository to inherit from RepositoryReadable
+- (Breaking Change) Remove RepositoryWrite, RepositoryRead 
+- Add RepositoryReadonly, RepositoryReadable
+- Update Repository to inherit from RepositoryReadable
+- Remove IUnitOfWork dependency from RepositoryReadable and RepositoryReadonly
 - Update multi-tenant support
-- Upgrade to .net7
+- Upgrade target framework to .net10
+- Update all dependency packages to latest version (v10.x)
 
 ## v2.1
 

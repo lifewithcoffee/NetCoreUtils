@@ -9,8 +9,12 @@ using Microsoft.EntityFrameworkCore;
 namespace NetCoreUtils.Database;
 public class Repository<TEntity> : RepositoryReadable<TEntity>, IRepository<TEntity> where TEntity : class
 {
-    public Repository(IUnitOfWork unitOfWork):base(unitOfWork)
-    { }
+    IUnitOfWork _unitOfWork;
+
+    public Repository(IUnitOfWork unitOfWork, DbContext ctx) :base(ctx)
+    {
+        _unitOfWork = unitOfWork;
+    }
 
     /// <summary> Reason of not implementing AddAsync:
     /// According to: http://stackoverflow.com/questions/42034282/are-there-dbset-updateasync-and-removeasync-in-net-core

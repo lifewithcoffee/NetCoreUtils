@@ -4,17 +4,16 @@ namespace NetCoreUtils.Database
 {
     public interface IRepositoryReadonly<TEntity> : IRepositoryReadable<TEntity> where TEntity : class { }
 
+    /// <summary>
+    /// RepositoryReadonly has special configurations to improve the performance
+    /// </summary>
     public class RepositoryReadonly<TEntity> : RepositoryReadable<TEntity>, IRepositoryReadonly<TEntity> where TEntity : class
     {
-        public RepositoryReadonly(IUnitOfWork unitOfWork) : base(unitOfWork) 
+        public RepositoryReadonly(DbContext ctx) : base(ctx) 
         {
-            /**
-             * Another proposed approach to have a readonly repository (may need to upgrade ef core to 7.0):
-             * 
-             * unitOfWork.Context.Configuration.AutoDetectChangesEnabled = false;       // better to use this for batch updating, use with DetectChanges()
-             * unitOfWork.Context.Configuration.ProxyCreationEnabled = false;
-             */
-            //unitOfWork.Context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTrackingWithIdentityResolution;      // verify by: context.ChangeTracker.Entries().Count()
+            ctx.ChangeTracker.AutoDetectChangesEnabled = false;
+            ctx.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTrackingWithIdentityResolution;      // can be verified by: context.ChangeTracker.Entries().Count()
+            ctx.ChangeTracker.LazyLoadingEnabled = false;    // disable proxy creation
         }
     }
 }

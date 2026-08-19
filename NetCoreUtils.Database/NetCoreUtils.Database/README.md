@@ -22,7 +22,6 @@
 
 ## TODOs
 
-- Move NetCoreUtils.Database to separate git repo, then use github action to release package
 - Test: are DbContext of IRepositoryReadonly and IRepository the same instance?
 
 ---
@@ -40,6 +39,7 @@
 ### Implementation of multi-tenancy
 
 - If an entity should have tenant information, it should inherit from `TenantEntity`
+
 - (not tested) Call `TenantUtil.EnableMultiTenant(..)` in
   `DbContext.OnModelCreating(..)` to register global query filter
 
@@ -51,6 +51,8 @@
 - Provide TenantProvider by: `serviceCollection.AddRepositories<TestDbContext>(new TenantProvider());`
 
 ### Reasons of wrapping extra repositories for dbSets
+
+- To bind a dedicated validator for the relevant entity class
 
 - Able to view clearer repository/dbset dependency relationship from a service's
   constructor
