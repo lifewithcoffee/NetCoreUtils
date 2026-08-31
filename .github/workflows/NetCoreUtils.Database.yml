@@ -52,6 +52,10 @@ jobs:
         version=$(sed -n 's/.*<Version>\([^<]*\)<\/Version>.*/\1/p' NetCoreUtils.Database/NetCoreUtils.Database/NetCoreUtils.Database.csproj | head -1)
         echo "version=$version" >> "$GITHUB_OUTPUT"
 
+    #----------------------------------------------------------------------
+    # Publish to GitHub Release
+    #----------------------------------------------------------------------
+
     - name: Generate release notes body
       run: |
         echo "Download package file from: ${{ steps.artifact-upload-step.outputs.artifact-url }}" > release-body.md
@@ -76,7 +80,21 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+    #----------------------------------------------------------------------
+    # Publish to NuGet.org
+    #----------------------------------------------------------------------
 
-          
+    # Get a short-lived NuGet API key
+    - name: NuGet login (OIDC → temp API key)
+      uses: NuGet/login@v1
+      id: nuget_login
+      with:
+        user: ${{ secrets.NUGET_USER }}
+  
+    # Push the package to NuGet.org
+    - name: NuGet push
+      run: dotnet nuget push artifacts/my-sdk.nupkg --api-key ${{steps.nuget_login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
 
-    
+        
+
+  
