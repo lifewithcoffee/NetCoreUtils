@@ -17,8 +17,9 @@ jobs:
     # runs-on: windows-latest
     runs-on: ubuntu-24.04
     permissions:
-      id-token: write  # enable GitHub OIDC token issuance for this job
-      contents: read
+      id-token: write   # enable GitHub OIDC token issuance for nuget.org trusted publishing
+      contents: write   # create the GitHub Release
+      packages: write   # push to GitHub Packages
  
 
     steps:
@@ -97,7 +98,7 @@ jobs:
   
     # Push the package to NuGet.org
     - name: NuGet push
-      run: dotnet nuget push artifacts/my-sdk.nupkg --api-key ${{steps.nuget_login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push bin/Pack/*.nupkg --api-key ${{steps.nuget_login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
 
         
 

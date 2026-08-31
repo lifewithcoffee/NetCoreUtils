@@ -6,15 +6,9 @@ Note: this file is also used in the github actions workflow to generate release 
 
 (only for github action release testing)
 
-## v3.0.3
-
-(only for github action release testing)
-
-## v3.0.2
-
-(only for github action release testing, manually deleted from github)
-
 - Update GitHubt Actions workflow to publish to nuget.org
+- v3.0.3: failed to relase
+- v3.0.2: manually deleted from github release and package pages
 
 ## v3.0.1
 
