@@ -16,6 +16,9 @@ jobs:
 
     # runs-on: windows-latest
     runs-on: ubuntu-24.04
+    permissions:
+      id-token: write  # enable GitHub OIDC token issuance for this job
+ 
 
     steps:
     - name: Checkout code
