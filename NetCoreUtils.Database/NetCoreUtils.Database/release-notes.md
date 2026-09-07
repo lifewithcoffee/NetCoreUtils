@@ -20,11 +20,12 @@ The following header is incorrect:
 - `  ## v1.2.3` (spaces before ##).
 - `### v1.2.3` (three hashes)
 
-## v3.0.4
+## v3.0.5
 
 (only for github action release testing)
 
 - Update GitHubt Actions workflow to publish to nuget.org
+- v3.0.4: released
 - v3.0.3: failed to relase
 - v3.0.2: manually deleted from github release and package pages
 
