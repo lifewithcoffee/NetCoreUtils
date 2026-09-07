@@ -26,6 +26,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v5
 
+    #----------------------------------------------------------------------
+    # Publish package to Github
+    #----------------------------------------------------------------------
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
       with:
@@ -58,7 +62,7 @@ jobs:
         echo "version=$version" >> "$GITHUB_OUTPUT"
 
     #----------------------------------------------------------------------
-    # Publish to GitHub Release
+    # Create GitHub Release page
     #----------------------------------------------------------------------
 
     - name: Generate release notes body

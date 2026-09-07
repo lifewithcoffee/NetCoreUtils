@@ -1,6 +1,24 @@
 # Release Notes
 
-Note: this file is also used in the github actions workflow to generate release notes for each release. Please keep the format of this file consistent.
+**Note**: This file is also used in the github actions workflow to generate
+**release notes for each release.
+
+Github actions workflow will extract the release notes according to the version
+titles with the prefix of "## v{version_number}", where {version_number} must
+match the version number in the csproj file's <Version> element.
+
+Header format examples:
+
+The following header is correct:
+- `## v1.2.3`
+- `## v1.2.3 - working`
+- `## v1.2.3 (working)`
+- `## v1.2.3 some description`.
+
+The following header is incorrect:
+- `##v1.2.3` (missing space between ## and v1.2.3)
+- `  ## v1.2.3` (spaces before ##).
+- `### v1.2.3` (three hashes)
 
 ## v3.0.4
 
