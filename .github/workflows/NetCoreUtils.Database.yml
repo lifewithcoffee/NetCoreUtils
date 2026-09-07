@@ -62,7 +62,27 @@ jobs:
         echo "version=$version" >> "$GITHUB_OUTPUT"
 
     #----------------------------------------------------------------------
-    # Create GitHub Release page
+    # Publish to NuGet.org
+    # (continue-on-error: a failure here must not block the GitHub Release
+    #  creation below; it is highlighted in the release notes instead)
+    #----------------------------------------------------------------------
+
+    # Get a short-lived NuGet API key
+    - name: NuGet login (OIDC → temp API key)
+      uses: NuGet/login@v1
+      id: nuget_login
+      continue-on-error: true
+      with:
+        user: ${{ secrets.NUGET_USER }}
+  
+    # Push the package to NuGet.org
+    - name: NuGet push
+      id: nuget_push
+      continue-on-error: true
+      run: dotnet nuget push bin/Pack/*.nupkg --api-key ${{steps.nuget_login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
+
+    #----------------------------------------------------------------------
+    # Create GitHub Release page (runs last, even if the NuGet.org publish failed)
     #----------------------------------------------------------------------
 
     - name: Generate release notes body
@@ -70,6 +90,14 @@ jobs:
         echo "Download package file from: ${{ steps.artifact-upload-step.outputs.artifact-url }}" > release-body.md
         echo "The above download link may expire in 90 days." >> release-body.md
         echo "" >> release-body.md
+        if [ "${{ steps.nuget_push.outcome }}" = "success" ]; then
+          echo "NuGet.org package page: https://www.nuget.org/packages/NetCoreUtils.Database/${{ steps.package_version.outputs.version }}" >> release-body.md
+          echo "" >> release-body.md
+        else
+          echo "> ⚠️ **NuGet.org publish FAILED for this version** — this version was NOT published to nuget.org." >> release-body.md
+          echo "> Check the [workflow run log](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details." >> release-body.md
+          echo "" >> release-body.md
+        fi
         awk -v ver="v${{ steps.package_version.outputs.version }}" '
           index($0, "## " ver) == 1 { found = 1; next }
           found && /^## / { exit }
@@ -88,21 +116,6 @@ jobs:
         prerelease: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    #----------------------------------------------------------------------
-    # Publish to NuGet.org
-    #----------------------------------------------------------------------
-
-    # Get a short-lived NuGet API key
-    - name: NuGet login (OIDC → temp API key)
-      uses: NuGet/login@v1
-      id: nuget_login
-      with:
-        user: ${{ secrets.NUGET_USER }}
-  
-    # Push the package to NuGet.org
-    - name: NuGet push
-      run: dotnet nuget push bin/Pack/*.nupkg --api-key ${{steps.nuget_login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
 
         
 
